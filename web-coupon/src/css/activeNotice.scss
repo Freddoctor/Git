@@ -1,0 +1,159 @@
+h1.h1_title {
+  z-index: 9;
+  position: absolute;
+  top: 2.82rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3.54rem;
+  height: 1.16rem;
+
+  img {
+    width: 100%;
+  }
+}
+
+.coupon-wrap {
+  position: relative;
+  z-index: 1;
+  margin: -0.48rem 0.2rem 0.2rem;
+  padding-bottom: 0.23rem;
+  border-radius: 0.16rem;
+  background: #fff;
+
+  h3 {
+    overflow: hidden;
+    padding: 0.94rem 0.43rem 0;
+    font-size: 0.3rem;
+    line-height: 0.48rem;
+    text-align: center;
+    font-weight: normal;
+    color: #333333;
+
+    span {
+      color: #3297ed;
+    }
+  }
+
+  .use_btn {
+    display: block;
+    width: 6.22rem;
+    height: 1.19rem;
+    margin: 0 auto;
+    line-height: 1.08rem;
+    font-size: 0.32rem;
+    text-align: center;
+    background: url("../images/use_button@2x.png") no-repeat 0 0;
+    background-size: 100% 100%;
+    color: #fff;
+  }
+
+  .nouse_btn {
+    display: block;
+    width: 5.96rem;
+    height: 0.94rem;
+    font-size: .32rem;
+    margin: 0.48rem auto 0.2rem;
+    line-height: 0.94rem;
+    text-align: center;
+    border-radius: 0.14rem;
+    background: rgb(160,160,160);
+    color: #fff;
+  }
+}
+
+.copy_area {
+  margin-top: 0.3rem;
+  margin-bottom: 0.39rem;
+  font-size: 0;
+  text-align: center;
+  color: rgb(51,51,51);
+
+  span {
+    display: inline-block;
+    font-size: 0.26rem;
+    line-height: 0.4rem;
+    vertical-align: middle;
+    max-width: 3.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  a {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0.82rem;
+    margin-left: 0.22rem;
+    line-height: 0.38rem;
+    color: #3297ed;
+    font-size: 0.26rem;
+    border: 1px solid #3297ed;
+    border-radius: 0.05rem;
+  }
+}
+
+.deadline {
+  float: right;
+  margin-right: 0.34rem;
+
+  h5 {
+    font-size: 0.18rem;
+    font-weight: normal;
+    color: rgb(102,102,102);
+  }
+}
+
+.guide_h4 {
+  position: relative;
+  margin-left: 0.34rem;
+  margin-bottom: 0.08rem;
+  padding-left: 0.17rem;
+  font-size: 0.24rem;
+  line-height: 1.5em;
+  font-weight: normal;
+  color: rgb(51,51,51);
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0.08rem;
+    height: 0.08rem;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    background: rgb(203,203,203);
+  }
+}
+
+.guide_p {
+  text-indent: -1em;
+  padding: 0 0.4rem 0.1rem 0.8rem;
+  font-size: 0.24rem;
+  line-height: 0.34rem;
+  color: rgb(102,102,102);
+}
+
+.use_zuo {
+  position: absolute;
+  top: 2.31rem;
+  left: 0.4rem;
+  width: 0.41rem;
+  height: 0.45rem;
+
+  img {
+    width: 100%;
+  }
+}
+
+.use_you {
+  position: absolute;
+  top: 2.06rem;
+  right: 0.43rem;
+  width: 0.37rem;
+  height: 0.39rem;
+
+  img {
+    width: 100%;
+  }
+}

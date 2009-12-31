@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: normal;
+}
+
+img {
+  display: block;
+}
+
+.error {
+  background: #fff;
+
+  img {
+    width: 4.64rem;
+    height: 3.9rem;
+    margin: 2.44rem auto 0;
+  }
+
+  h3 {
+    font-size: 0.34rem;
+    text-align: center;
+    color: rgb(102,102,102);
+  }
+}
