@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="applicable-device" content="mobile">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no">
+	<title>日历指标内页</title>
+	<link rel="stylesheet" type="text/css" href="cjrlcss/rlzbny.css">
+	<script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="http://cdn.hcharts.cn/highstock/highstock.js"></script>
+	<!-- <script type="text/javascript" src="datejs/exporting.js"></script> -->
+	<script type="text/javascript" src="datejs/rlzb.js"></script>
+	
+	 <script type="text/javascript">
+        var phoneWidth =  parseInt(window.screen.width);
+        var phoneScale = phoneWidth/750;
+        var ua = navigator.userAgent;
+        if (/Android (\d+\.\d+)/.test(ua)){
+            var version = parseFloat(RegExp.$1);
+            if(version>2.3){
+                document.write('<meta name="viewport" content="width=0, minimum-scale = '+phoneScale+', maximum-scale = '+phoneScale+', target-densitydpi=device-dpi">');
+            }else{
+                document.write('<meta name="viewport" content="width=750, target-densitydpi=device-dpi">');
+            }
+        } else {
+            document.write('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
+        }
+    </script>
+</head>
+<body  style='overflow:-Scroll;overflow-x:hidden;'>
+	<div class="wrapa">
+        <nav class="titleBar">
+            <p>日历指标</p>      
+        </nav>
+    </div>
+
+    <div class="head_wrap">
+    	<div class="head_inner1">
+    		<ul class="zb_tile">
+    			<li class="zb_tile_cun"></li>
+
+	    		<li class="xingxing" data-src="">
+	    			<img class="xingxing1" src="" alt="">
+	    			<!-- <img class="xingxing2" src="cjrImg/xing@2x.png" alt="">
+	    			<img class="xingxing3" src="cjrImg/xing@2x.png" alt=""> -->
+	    		</li>
+    		</ul>
+    		<div class="zb_tile_tile"></div>
+    		
+    	</div>
+    	<div class="head_inner2">
+    		<div class="beforeAndAffter">
+    			<li class="ba_li1">前值：</li>
+    			<li class="ba_li2">预测：</li>
+    			<li class="ba_li3">实际：</li>
+    		</div>
+    		<div class="define"></div>
+    	</div>
+    	<div class="head_inner3"></div>
+    	
+    </div>
+
+
+    <!-- 折线图 -->
+	 <div id="container" style="min-width:100%;height:4rem;"></div>
+
+	 <div class="lastBt">
+	 	<div class="lssj">
+	 	<span>历史数据</span>
+	 	</div>
+	 	<div class="zqgbz">
+	 		<p>周期</p>
+	 		<p>公布值</p>
+	 	</div>
+		<div class="highData"></div>
+	 </div>
+
+	 <!-- 相关资讯 -->
+	 <div>
+	 	<div class="aboutzx_tile">
+	 	<span>相关新闻</span>
+	 	</div>
+
+		<ul class="a_aboutwrap">
+			
+		</ul>
+		<a href="../../H5_wapProject/newsInner.html">
+			<div class="btn">查看更多资讯</div>
+		</a>
+		
+	 </div>
+</body>
+</html>

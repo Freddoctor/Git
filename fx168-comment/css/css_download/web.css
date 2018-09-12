@@ -1,0 +1,177 @@
+.header {
+  width: 100%;
+  height: 0.9rem;
+  /*
+	background: url(../../img/top_bg.png);*/
+  background: url(../../img/img_download/top_bg.png);
+  background-size: 100% 100%;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+}
+
+.header img {
+  vertical-align: top;
+  margin-top: 0.23rem;
+  margin-left: 30%;
+}
+
+#topBanner {
+  min-height: 4.8rem;
+  vertical-align: top;
+  width: 100%;
+  background-size: 100% 100%;
+}
+
+.con_banner ._img {
+  min-height: 4.8rem;
+  vertical-align: top;
+  width: 11rem;
+  background-size: 100% 100%;
+}
+
+.con_banner {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  min-height: 4.8rem;
+  /*background: url(../img/banner-bg.png);*/
+  margin-top: 0.78rem;
+  background-size: 100% 100%;
+}
+
+.banner {
+  /*height: 4.8rem;*/
+  width: 100%;
+}
+
+.footer {
+  height: 1.02rem;
+  /*width: 100%;*/
+  min-width: 1200px;
+  background: #444;
+}
+
+.footer_content {
+  position: relative;
+  overflow: hidden;
+  width: 70%;
+  min-width: 70%;
+  /*border: 1px solid red;*/
+  height: 100%;
+  margin: 0 auto;
+}
+
+.footer_content_logo {
+  vertical-align: top;
+  margin-top: 0.25rem;
+}
+
+.footer_content_left, .footer_content_right {
+  float: left;
+  height: 100%;
+  /*border: 1px solid green;*/
+}
+
+.footer_content_right {
+  margin-left: 0.4rem;
+}
+
+h3 {
+  font-size: 0.18rem;
+  margin-top: 0.25rem;
+  color: #bbb;
+}
+
+.footer_content_right p a span {
+  display: inline-block;
+  font-size: 0.14rem;
+  vertical-align: top;
+  color: #bbb;
+  margin-top: 0.15rem;
+  border-right: 1px solid #bbb;
+  padding-right: 0.2rem;
+}
+
+.footer_content_right p a span:nth-child(4) {
+  border: none;
+}
+
+.footer_content_right_inner {
+  height: 1.3rem;
+}
+
+.ewm_wrap {
+  position: relative;
+  float: right;
+}
+
+.ewm_wrap img {
+  vertical-align: top;
+  margin-top: 0.25rem;
+}
+
+.bot_wrap {
+  min-width: 1200px;
+  /*width: 100%;*/
+  /*border: 1px solid blue;*/
+  margin: 0 auto;
+  height: 0.4rem;
+  background: #333;
+  /*padding-bottom: 0.4rem;*/
+  /*position: relative;
+	top: 0.4rem;*/
+}
+
+.bot_wrap_inner {
+  position: relative;
+  /*border: 1px solid red;*/
+  width: 70%;
+  height: 0.4rem;
+  margin: auto;
+}
+
+.bot_wrap {
+  font-size: 0.12rem;
+  color: #bbb;
+}
+
+.bot_wrap a {
+  color: #bbb;
+  display: inline-block;
+  margin-top: 0.13rem;
+}
+
+.bot_wrap_inner2 {
+  display: inline-block;
+  /*border: 1px solid white;*/
+  /*float: right;*/
+  position: absolute;
+  right: 0;
+}
+
+.bot_wrap_inner a {
+  margin-left: 0.12rem;
+}
+
+a:hover {
+  color: white;
+}
+
+.footer_content_right_inner p a span:hover {
+  color: white;
+}
+
+.fx_ewm {
+  position: absolute;
+  bottom: 0;
+  z-index: 100;
+  right: 2.8rem;
+  /*bottom: 2rem;*/
+  display: none;
+}
+
+/*footer{
+	position: absolute;
+	bottom: 0;
+}*/

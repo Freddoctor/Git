@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="applicable-device" content="mobile">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no">
+	<script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/common.js"></script>
+    <script type="text/javascript" src="js/echarts.js"></script>
+	<script type="text/javascript" src="js/hq_inner.js"></script>
+    <script type="text/javascript" src="js/newk_demo2.js"></script>
+    <script type="text/javascript" src="js/socket.io.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/hq_inner.css">
+	
+	<title>行情内页</title>
+	<script type="text/javascript">
+        var phoneWidth =  parseInt(window.screen.width);
+        var phoneScale = phoneWidth/750;
+        var ua = navigator.userAgent;
+        if (/Android (\d+\.\d+)/.test(ua)){
+            var version = parseFloat(RegExp.$1);
+            if(version>2.3){
+                document.write('<meta name="viewport" content="width=0, minimum-scale = '+phoneScale+', maximum-scale = '+phoneScale+', target-densitydpi=device-dpi">');
+            }else{
+                document.write('<meta name="viewport" content="width=750, target-densitydpi=device-dpi">');
+            }
+        } else {
+            document.write('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
+        }
+    </script>
+</head>
+<body>
+<!-- 头部 -->
+    <div class="wrapa">
+        <nav class="titleBar">
+            <p class="hqIn_title">实时行情内页</p>
+            <p class="title_date">2017/4/05</p>
+        </nav>     
+    </div>
+
+<!-- content -->
+<div class="hq_inner_content">
+    <ul class="hq_inner_con_Left" data-key="">
+        <li class="hq_inner_tradeWrap">
+            <span class="hq_inner_trade"></span>
+            <img src="">
+        </li>
+        <li class="hq_inner_tradeWrap2"">
+            <span class="hq_inner_range">111</span>
+            <span class="hq_inner_rangePercent">222</span>
+        </li>
+    </ul>
+    <ul class="hq_inner_con_right">
+        <li class="hq_jk_wrap">
+            <div>
+                <p class="hq_title">今开</p>
+                <p class="hq_data hq_data_open">1</p>
+            </div>
+            <div>
+                <p class="hq_title">最高</p>
+                <p class="hq_data hq_data_high">2</p>
+            </div>
+        </li>
+        <li class="hq_zs_wrap">
+            <div>
+                <p class="hq_title">昨收</p>
+                <p class="hq_data hq_data_preClose">3</p>
+            </div>
+            <div>
+                <p class="hq_title">最低</p>
+                <p class="hq_data hq_data_low">4</p>
+            </div>
+        </li>
+
+    </ul>
+</div>
+
+<!-- k线图tab选项卡 -->
+<div class="find_nav">
+    <div class="find_nav_left">
+        <div class="find_nav_list">
+            <ul>
+                
+                <li class="find_nav_cur min"><a href="###">分时</a></li>
+                <li class="hq_hour"><a href="###">1小时</a></li>
+                <li class="hq_day"><a href="###">日线</a></li>
+                <li class="hq_week"><a href="###">周线</a></li>
+                <li class="hq_month"><a href="###">月线</a></li>
+                <li class="hq_inner_fz">
+                    <a href="###">分钟</a>
+
+                </li>               
+                <li class="sideline"></li>
+                <img class="hq_jb" src="img/ljb@2x.png">
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="hq_inner_fzx_wrap">
+    <ul>
+        <li class="hq_min01">
+            <span>1分钟</span>
+        </li>
+        <li class="hq_min03">
+            <span>3分钟</span>
+        </li>
+        <li class="hq_min05">
+            <span>5分钟</span>
+        </li>
+        <li class="hq_min15">
+            <span>15分钟</span>
+        </li>
+        <li class="hq_min30">
+            <span>30分钟</span>
+        </li>
+    </ul>
+    
+</div>
+<!-- 绘图——分时线 -->
+ <div id="container" style="min-width:100%;height:6.22rem"></div> 
+ <!-- <div id="report" style="height:100px;padding-top:25px;"></div> -->
+ <div id="container2" style="min-width:100%;height:9.52rem"></div> 
+
+
+ <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-47403057-1', 'auto');
+  ga('require', 'displayfeatures');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F779dfdbe4a000d1108b8a1daa23f17bd' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</body>
+</html>

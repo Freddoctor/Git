@@ -1,0 +1,71 @@
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+html{
+	font-size: 625%;
+}
+body,html{
+	height: 100%;
+}
+
+.wrap{
+	height: 100%;
+	width: 100%;
+	margin: auto;
+	background: no-repeat;
+	background-position:bottom;
+	background-image: url(../img/背景@2x.png);
+	background-size: 100% auto;
+	/*border: 1px solid red;*/
+}
+.logo{
+	text-align: center;
+	padding-top: 0.86rem;
+}
+.font{
+	margin-top: 0.36rem;
+	text-align: center;
+}
+.font1{
+	font-size: 0.4rem;
+	color: rgb(37,37,37);
+	font-weight: bold;
+}
+.font2{
+	font-size: 0.3rem;
+	color: rgb(153,153,153);
+	margin-top: 0.26rem;
+}
+.ul_wrap{
+	width: 100%;
+	font-size: 0.28rem;
+	display: inline-block;
+	margin: 1rem auto;
+	color: rgb(102,102,102);
+}
+
+.ul_wrap ul{
+	width: 3.99rem;
+	margin: auto;
+	/*margin-left: 5rem;*/
+}
+.ul_wrap li{
+	line-height: 0.52rem;
+}
+
+footer{
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	bottom: 0.5rem;
+	font-size: 0.28rem;
+	
+}
+footer a{
+	color: rgb(1,61,102);
+}

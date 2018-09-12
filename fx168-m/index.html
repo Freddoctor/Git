@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="applicable-device" content="mobile">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="shenma-site-verification" content="dfec0c9841567b8dc05b96a77d72656f_1533263992">
+	<meta name="keywords" content="FX168财经,外汇,外汇牌价,外汇报价,黄金外汇,外汇宝,黄金,黄金价格,今日黄金价格,外汇汇率,财经日历,外汇网,黄金价格走势图,汇率换算">
+	<meta name="description" content="FX168财经为投资者提供外汇行业、黄金行业、原油期货行业等相关实时资讯。">
+
+	<title>FX168财经网_外汇,黄金,外汇牌价,今日黄金价格,外汇汇率</title>
+	<link rel="stylesheet" href="css/homePage.css">
+	<link rel="stylesheet" href="css/swiper.min.css">
+	<link rel="stylesheet" href="css/css_app/dropload.css">
+	<script src="js/common.js"></script>
+	<!-- 插件 -->
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/dropload.min.js"></script>
+	<script type="text/javascript" src="js/socket.io.js"></script>
+	<script src="js/swiper.jquery.min.js"></script>
+	<script src="js/jquery.lazyload.min.js"></script>
+	<!-- ********* -->
+	<script src="js/homePage.js"></script>
+	<script src="js/startApp.js"></script>
+	<script>
+		var phoneWidth = parseInt(window.screen.width);
+		var phoneScale = phoneWidth / 750;
+		var ua = navigator.userAgent;
+		if (/Android (\d+\.\d+)/.test(ua)) {
+			var version = parseFloat(RegExp.$1);
+			if (version > 2.3) {
+				document.write('<meta name="viewport" content="width=0, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+			} else {
+				document.write('<meta name="viewport" content="width=750, target-densitydpi=device-dpi">');
+			}
+		} else {
+			document.write('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
+		}
+	</script>
+	<style>
+		.wrap {
+			display: none;
+		}
+
+		.moudle {
+			height: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>外汇</h1>
+	<!-- header start -->
+	<div class="fixed_wrap">
+		<div class="wrap">
+			<a class="wrap_a" onclick="openApp(startApp)">
+          <span class="open_wrap">打开</span>
+        </a>
+			<img class="close" src="img/img_h5_v.2.0/guanbi@2x.png" alt="">
+		</div>
+		<div class="moudle"></div>
+	</div>
+	<!-- header end -->
+	<!-- 首页新闻轮播 start -->
+	<div class="banner">
+		<div class="swiper-container swiper-container1">
+			<div class="swiper-wrapper wrapper_ban">
+
+			</div>
+			<!-- 如果需要分页器 -->
+			<div class="swiper-pagination myswiper-pagination"></div>
+		</div>
+
+	</div>
+
+	<!-- 首页新闻轮播 end -->
+
+	<!-- h行情入口 start -->
+	<div class="quoteExit">
+		<div class="quoteExit_wrap">
+			<img class="quote_img" src="img/img_h5_v.2.0/hangqing@2x.png" alt="外汇行情">
+			<span class="quoteExit_font_">行情</span>
+		</div>
+		<a href="quote.html">
+		<img class="exit" src="img/img_h5_v.2.0/dakai@2x.png" alt="中国银行外汇牌价">
+	</a>
+
+	</div>
+	<!-- h行情入口 end -->
+
+
+	<!-- 行情轮播图 start -->
+	<div class="quote_banner_wrap">
+		<div class="swiper-container swiper-container2">
+			<div class="swiper-wrapper quote_ban">
+				<!-- <div class="swiper-slide swiper-slide_banner1 flex">
+
+       		</div>
+            <div class="swiper-slide swiper-slide_banner2 flex"">
+
+            </div> -->
+				<!--   <div class="swiper-slide swiper-slide_banner3 flex"">
+
+            </div> -->
+			</div>
+
+		</div>
+		<!-- 如果需要分页器 -->
+		<div id="quote_pagination" class="swiper-pagination myswiper-pagination"></div>
+	</div>
+
+
+	<!-- 行情轮播图 end -->
+
+	<!-- 速递 start -->
+	<div class="sudi_big_wrap">
+		<div class="quoteExit sudiExit">
+			<div class="quoteExit_wrap">
+				<img class="quote_img" src="img/img_h5_v.2.0/sudi@2x.png" title="外汇速递">
+				<span class="sudiExit_font_">速递</span>
+			</div>
+			<a href="sudi.html" title="火线速递">
+            <img class="exit" src="img/img_h5_v.2.0/dakai@2x.png" alt="火线速递">
+        </a>
+
+		</div>
+		<div class="sudi_wrap_">
+			<a class="sudi_wrap_a" href="sudi.html">
+
+        </a>
+		</div>
+	</div>
+
+	<!-- 速递 end -->
+
+
+	<!-- 热门 start -->
+	<div class="quoteExit sudiExit">
+		<div class="quoteExit_wrap">
+			<img class="quote_img" src="img/img_h5_v.2.0/remen@2x.png" alt="外汇热门新闻">
+			<span class="hotExit_font_">热门</span>
+		</div>
+
+	</div>
+
+	<div id="con" class="newCon_wrap">
+		<div id="content"></div>
+		<!-- <div class="click_more">点击加载更多</div> -->
+	</div>
+
+
+	<!-- 热门 end -->
+
+
+	<!-- footer start -->
+	<footer>
+		<div class="footer">
+
+			<span class="lia">
+            <a href="index.html" title="FX168财经首页">
+                <img src="img/img_h5_v.2.0/shouye@2x.png"  alt="FX168财经首页"><br>
+                <a  style="color: #3285ea;">首页</a>
+            </a>
+
+        </span>
+			<span class="lia">
+        <a href="news.html" title="财经新闻">
+            <img src="img/zixun.png" data-src="img/zixun1.png" remove-src="img/zixun.png" alt="财经新闻"><br>
+            <a>资讯</a>
+        </a>
+
+        </span>
+			<span>
+        <a href="sudi.html" title="外汇黄金速递">
+            <img src="img/sudi.png" data-src="img/sudi1.png" remove-src="img/sudi.png"  alt="外汇黄金速递"><br>
+           <a>速递</a>
+
+        </a>
+        </span>
+			<span>
+        <a href="quote.html" title="外汇行情">
+            <img src="img/hangqing.png" data-src="img/hangqing1.png" remove-src="img/hangqing.png"  alt="外汇行情"><br>
+           <a>行情</a>
+            </a>
+        </span>
+			<span class="mycjrl">
+        <a href="calendar.html" title="财经日历">
+            <img src="img/cjrl.png" data-src="img/cjrl1.png" remove-src="img/cjrl.png"  alt="财经日历"><br>
+            <a>财经日历</a>
+            </a>
+
+        </span>
+
+		</div>
+		<div class="moudle_footer"></div>
+	</footer>
+	<!-- footer end -->
+	<script>
+		(function(i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function() {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-47403057-1', 'auto');
+		ga('require', 'displayfeatures');
+		ga('require', 'linkid', 'linkid.js');
+		ga('send', 'pageview');
+	</script>
+	<script type="text/javascript">
+		var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+		document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F779dfdbe4a000d1108b8a1daa23f17bd' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+</body>
+
+</html>

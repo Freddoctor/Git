@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="applicable-device" content="mobile">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="keywords" content="央行,美联储,中央银行,外汇宝,银行利率,银行贷款,银行理财产品,银行信用卡,银行理财,网上银行,FX168财经">
+	<meta name="description" content="FX168财经央行频道提供银行理财产品、银行信用卡、网上银行等最新银行资讯。">
+
+	<title>央行_美联储_中央银行_外汇宝-FX168财经网</title>
+	<link rel="stylesheet" type="text/css" href="css/newsList.css">
+	<link rel="stylesheet" href="css/home.css" />
+	<script src="js/common.js"></script>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/jquery.lazyload.min.js"></script>
+	<script type="text/javascript" src="js/newsList.js"></script>
+	<script src="js/home.js"></script>
+	<script type="text/javascript" src="js/dropload.min.js"></script>
+	<script type="text/javascript">
+		var phoneWidth = parseInt(window.screen.width);
+		var phoneScale = phoneWidth / 750;
+		var ua = navigator.userAgent;
+		if (/Android (\d+\.\d+)/.test(ua)) {
+			var version = parseFloat(RegExp.$1);
+			if (version > 2.3) {
+				document.write('<meta name="viewport" content="width=0, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+			} else {
+				document.write('<meta name="viewport" content="width=750, target-densitydpi=device-dpi">');
+			}
+		} else {
+			document.write('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
+		}
+	</script>
+	<style media="screen">
+		.wrap {
+			display: none;
+		}
+
+		.find_nav {
+			top: 0px;
+		}
+
+		.moudle {
+			height: 0.88rem;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>中央银行</h1>
+	<div class="upWrap">加载中...</div>
+	<!-- titele -->
+	<div class="fixed_wrap">
+		<div class="wrap">
+			<a class="wrap_a" onclick="openApp()">
+                <span class="open_wrap">打开</span>
+        </a>
+			<img class="close" src="img/img_h5_v.2.0/guanbi@2x.png" alt="">
+		</div>
+		<!-- tab start -->
+		<div class="find_nav">
+			<div class="find_nav_left">
+				<div class="find_nav_list">
+					<ul>
+						<li class="find_nav_cur"><a href="news.html" title="要闻">要闻</a></li>
+						<li><a href="forex.html" title="外汇">外汇</a></li>
+						<li class="myGjs"><a href="24k99.html" title="贵金属">贵金属</a></li>
+						<li><a href="oil.html" title="原油">原油</a></li>
+						<li><a href="v.html" title="视频">视频</a></li>
+						<li><a href="bank.html" title="央行">央行</a></li>
+						<li><a href="politics.html" title="政经">政经</a></li>
+						<li><a href="stock.html" title="股市">股市</a></li>
+						<li><a href="bond.html" title="债市">债市</a></li>
+						<li><a href="99qh.html" title="期货">期货</a></li>
+						<li><a href="tuisong.html" title="推送">推送</a></li>
+						<li><a href="hangye.html" title="黄金外汇行业">行业</a></li>
+						<li><a href="city.html" title="外汇城市">城市</a></li>
+						<li><a href="pinglun.html" title="黄金外汇评论">评论</a></li>
+						<li class="sideline"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="moudle"></div>
+	</div>
+	<!-- tab end -->
+	<div id="con">
+		<div id="content">
+		</div>
+	</div>
+	<footer>
+		<div class="footer">
+
+
+			<span class="lia">
+            <a href="index.html" title="FX168财经首页">
+                <img src="img/img_h5_v.2.0/shouye1@2x.png"  alt="FX168财经首页"><br>
+                <a>首页</a>
+            </a>
+
+        </span>
+			<span class="lia">
+        <a href="news.html" title="财经新闻">
+            <img src="img/zixun1.png" data-src="img/zixun1.png" remove-src="img/zixun.png" alt="财经新闻"><br>
+            <a style="color: #3285ea;">资讯</a>
+        </a>
+
+        </span>
+			<span>
+        <a href="sudi.html" title="外汇黄金速递">
+            <img src="img/sudi.png" data-src="img/sudi1.png" remove-src="img/sudi.png"  alt="外汇黄金速递"><br>
+           <a>速递</a>
+
+        </a>
+        </span>
+			<span>
+        <a href="quote.html" title="外汇行情">
+            <img src="img/hangqing.png" data-src="img/hangqing1.png" remove-src="img/hangqing.png"  alt="外汇行情"><br>
+           <a>行情</a>
+            </a>
+        </span>
+			<span class="mycjrl">
+        <a href="calendar.html" title="财经日历">
+            <img src="img/cjrl.png" data-src="img/cjrl1.png" remove-src="img/cjrl.png"  alt="财经日历"><br>
+            <a>财经日历</a>
+            </a>
+
+        </span>
+
+		</div>
+		<div class="moudle_footer"></div>
+	</footer>
+
+	<script>
+		(function(i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function() {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-47403057-1', 'auto');
+		ga('require', 'displayfeatures');
+		ga('require', 'linkid', 'linkid.js');
+		ga('send', 'pageview');
+	</script>
+	<script type="text/javascript">
+		var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+		document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F779dfdbe4a000d1108b8a1daa23f17bd' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+</body>
+
+</html>
