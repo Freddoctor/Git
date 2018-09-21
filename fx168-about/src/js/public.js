@@ -23,13 +23,9 @@
  //        }
  //    }, false);
 
- 
-
- //阻止滚动事件 
+ //阻止滚动事件
     $(document).ready(function(){
-        $("body").on('touchmove',function(event) { 
-            event.preventDefault(); 
+        $("body").on('touchmove',function(event) {
+            event.preventDefault();
         }, false);
     })
-
-
