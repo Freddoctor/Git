@@ -9,16 +9,17 @@ var autoprefixer = require('autoprefixer');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    jQuery: "./src/js/jquery-3.1.1.min.js",
+    // jQuery: "./src/js/jquery-3.1.1.min.js",
+    // vendor: ["jquery"],
     plugin: ["./src/index.js", "./src/js/public.js"]
   },
-  //["./src/js/jquery-3.1.1.min.js", "./src/index.js", "./src/js/public.js"],
-  externals: {
-    jquery: 'window.jQuery'
-  },
+  // externals: {
+  //   jquery: 'window.jQuery' //src 第三方库
+  // },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
@@ -58,6 +59,7 @@ module.exports = {
         NODE_ENV: '"production"'
       }
     }),
+    new ScriptExtHtmlWebpackPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
@@ -136,14 +138,35 @@ module.exports = {
             limit: 10 * 1024, //小于10k就会转成base64
             outputPath: 'static/images/'
           }
+        }, {
+          loader: 'image-webpack-loader',
+          options: {
+            mozjpeg: { // 压缩 jpeg 的配置
+              progressive: true,
+              quality: 60
+            },
+            optipng: { // 使用 imagemin-optipng 压缩 png，enable: false 为关闭
+              enabled: false,
+            },
+            pngquant: { // 使用 imagemin-pngquant 压缩 png
+              quality: '60',
+              speed: 4
+            },
+            gifsicle: { // 压缩 gif 的配置
+              interlaced: false,
+            },
+            // webp: { // 开启 webp，会把 jpg 和 png 图片压缩为 webp 格式
+            //   quality: 60
+            // },
+          }
         }]
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader']
-      },
-      {
-        test: require.resolve('./src/js/jquery-3.1.1.min.js'),
+      }, {
+        // test: require.resolve('./src/js/jquery-3.1.1.min.js'),
+        test: require.resolve('jquery'),
         use: [{
           loader: 'expose-loader',
           options: 'jQuery'
@@ -156,29 +179,16 @@ module.exports = {
   },
   mode: (process.env.NODE_ENV == 'production' ? 'production' : "development"),
   optimization: {
-    splitChunks: {
-      minSize: 30000, // chunk只有超过这个大小才会被分割
-      chunks: 'async',
-      maxAsyncRequests: 5, // 按需加载最大的并行数
-      maxInitialRequests: 3, // 初始加载最大的并行数
-      cacheGroups: {
-        commons: {
-          // test: /[\\/]node_modules[\\/]/,
-          test: /[\\/]src[\\/]js[\\/]/,
-          chunks: 'initial',
-          name: 'commons',
-          minChunks: 2,
-          maxInitialRequests: 5,
-          minSize: 30000
-        },
-        vendor: { // 抽离第三插件
-          test: /src\\\/js\\\//,
-          chunks: 'initial',
-          name: 'vendor',
-          priority: 10
-        }
-      }
-    },
+    // splitChunks: {
+    //   cacheGroups: {
+    //     vendor: {
+    //       test: /[\\/]jquery[\\/]/,
+    //       name: 'common',
+    //       priority: 10,
+    //       chunks: 'all'
+    //     }
+    //   }
+    // },
     minimizer: [ // 用于配置 minimizers 和选项
       new UglifyJsPlugin({
         cache: true,
@@ -188,4 +198,4 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({}),
     ],
   },
-};
+}

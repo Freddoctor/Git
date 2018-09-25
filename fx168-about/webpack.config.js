@@ -12,13 +12,12 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   entry: {
-    jQuery: "./src/js/jquery-3.1.1.min.js",
     plugin: ["./src/index.js", "./src/js/public.js"]
   },
   //["./src/js/jquery-3.1.1.min.js", "./src/index.js", "./src/js/public.js"],
-  externals: {
-    jquery: 'window.jQuery'
-  },
+  // externals: {
+  //   jquery: 'window.jQuery'
+  // },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
@@ -134,6 +133,28 @@ module.exports = {
             limit: 10 * 1024, //小于10k就会转成base64
             outputPath: 'static/images/'
           }
+        },{
+          loader: 'image-webpack-loader',
+          options: {
+            mozjpeg: { // 压缩 jpeg 的配置
+              progressive: true,
+              quality: 60
+            },
+            optipng: { // 使用 imagemin-optipng 压缩 png，enable: false 为关闭
+              enabled: false,
+            },
+            pngquant: { // 使用 imagemin-pngquant 压缩 png
+              quality: '60',
+              speed: 4
+            },
+            gifsicle: { // 压缩 gif 的配置
+              interlaced: false,
+            },
+            //
+            // webp: { // 开启 webp，会把 jpg 和 png 图片压缩为 webp 格式
+            //   quality: 60
+            // },
+          }
         }]
       },
       {
@@ -141,7 +162,8 @@ module.exports = {
         use: ['file-loader']
       },
       {
-        test: require.resolve('./src/js/jquery-3.1.1.min.js'),
+        // test: require.resolve('./src/js/jquery-3.1.1.min.js'),
+        test:require.resolve('jquery'),
         use: [{
           loader: 'expose-loader',
           options: 'jQuery'
@@ -154,11 +176,21 @@ module.exports = {
   },
   mode: (process.env.NODE_ENV == 'production' ? 'production' : "development"),
   optimization: {
+    // splitChunks: {
+    //   cacheGroups: {
+    //     vendor: {
+    //       test: /[\\/]jquery[\\/]/,
+    //       name: 'common',
+    //       priority: 10,
+    //       chunks: 'all'
+    //     }
+    //   }
+    // },
     minimizer: [ // 用于配置 minimizers 和选项
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true // set to true if you want JS source maps
+        sourceMap: false, // set to true if you want JS source maps
       }),
       new OptimizeCSSAssetsPlugin({})
     ],

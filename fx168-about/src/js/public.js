@@ -22,10 +22,10 @@
  //            event.preventDefault(); //阻止触摸事件的默认行为，即阻止滚屏
  //        }
  //    }, false);
-
+ var $ = require('jquery');
  //阻止滚动事件
-    $(document).ready(function(){
-        $("body").on('touchmove',function(event) {
-            event.preventDefault();
-        }, false);
-    })
+ $(document).ready(function() {
+   $("body").on('touchmove', function(event) {
+     event.preventDefault();
+   }, false);
+ })

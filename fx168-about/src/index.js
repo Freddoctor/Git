@@ -1,6 +1,7 @@
 import './css/sass.scss';
 import './css/day.css';
 
+var $ = require("jquery");
 
 var phoneWidth = parseInt(window.screen.width);
 var phoneScale = phoneWidth / 750;
