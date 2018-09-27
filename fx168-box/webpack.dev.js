@@ -9,14 +9,14 @@ var autoprefixer = require('autoprefixer');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    plugin: ["./src/index.js", "./src/js/public.js"]
+    plugin: ["./src/boxnews.js"]
   },
-  //["./src/js/jquery-3.1.1.min.js", "./src/index.js", "./src/js/public.js"],
   // externals: {
-  //   jquery: 'window.jQuery'
+  //   jquery: 'window.jQuery' //src 第三方库
   // },
   devtool: 'inline-source-map',
   devServer: {
@@ -28,26 +28,16 @@ module.exports = {
     inline: true,
   },
   plugins: [
-    //new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
+    // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
       title: 'index',
-      filename: './index.html',
-      template: './src/index.html',
+      filename: './box_ipadNews.html',
+      template: './src/box_ipadNews.html',
       minify: {
-        removeComments: true,
-        // collapseWhitespace:true
+        // removeComments: true,
+        // collapseWhitespace: true
       }
     }),
-    // new HtmlWebpackPlugin({
-    //   title: 'night',
-    //   filename: './night.html',
-    //   template: './src/night.html',
-    // }),
-    // new CopyWebpackPlugin([{
-    //   from: path.resolve(__dirname, './src'),
-    //   to: path.resolve(__dirname, './dist'),
-    //   ignore: ['*.js', '*.css', '*.html']
-    // }]),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
       chunkFilename: "static/css/[name].[id].css"
@@ -56,7 +46,10 @@ module.exports = {
       'process.env': {
         NODE_ENV: '"production"'
       }
-    })
+    }),
+    new ScriptExtHtmlWebpackPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
   output: {
     publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "./"),
@@ -133,7 +126,7 @@ module.exports = {
             limit: 10 * 1024, //小于10k就会转成base64
             outputPath: 'static/images/'
           }
-        },{
+        }, {
           loader: 'image-webpack-loader',
           options: {
             mozjpeg: { // 压缩 jpeg 的配置
@@ -149,17 +142,16 @@ module.exports = {
             },
             gifsicle: { // 压缩 gif 的配置
               interlaced: false,
-            }
+            },
           }
         }]
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader']
-      },
-      {
+      }, {
         // test: require.resolve('./src/js/jquery-3.1.1.min.js'),
-        test:require.resolve('jquery'),
+        test: require.resolve('jquery'),
         use: [{
           loader: 'expose-loader',
           options: 'jQuery'
@@ -172,23 +164,13 @@ module.exports = {
   },
   mode: (process.env.NODE_ENV == 'production' ? 'production' : "development"),
   optimization: {
-    // splitChunks: {
-    //   cacheGroups: {
-    //     vendor: {
-    //       test: /[\\/]jquery[\\/]/,
-    //       name: 'common',
-    //       priority: 10,
-    //       chunks: 'all'
-    //     }
-    //   }
-    // },
     minimizer: [ // 用于配置 minimizers 和选项
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: false, // set to true if you want JS source maps
+        sourceMap: true // set to true if you want JS source maps
       }),
-      new OptimizeCSSAssetsPlugin({})
+      new OptimizeCSSAssetsPlugin({}),
     ],
   },
-};
+}

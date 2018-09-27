@@ -1,30 +1,28 @@
-*{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    
-    -webkit-tap-highlight-color:rgba(255,255,255,0);-webkit-overflow-scrolling:touch;overflow-scrolling:touch;
-}
-a{
-    text-decoration: none;
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
 }
 
-html{
-	font-family: HelveticaNeue,"\5FAE\8F6F\96C5\9ED1";
+a {
+  text-decoration: none;
+}
+
+html {
+  font-family: HelveticaNeue, "\5FAE\8F6F\96C5\9ED1";
   font-size: 625%;
 }
-body,html{
-  
-    height: 100%;
-   
+
+body, html {
+  height: 100%;
 }
 
-
-.hidden{
+.hidden {
   display: none;
 }
-
-
 
 /* ============================================================
    flex：定义布局为盒模型
@@ -35,6 +33,7 @@ body,html{
    flex-pack-justify：子元素两端对齐
    兼容性：ios 4+、android 2.3+、winphone8+
    ============================================================ */
+
 /*.flex{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}
 .flex-v{-webkit-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}
 .flex-1{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;}
@@ -44,7 +43,7 @@ body,html{
 
 */
 
-.flex_arround{
+.flex_arround {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59,7 +58,7 @@ body,html{
   justify-content: space-around;
 }
 
-.ipadTop_flexBetween{
+.ipadTop_flexBetween {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -69,7 +68,8 @@ body,html{
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
-.flex_between{
+
+.flex_between {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -83,7 +83,8 @@ body,html{
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
-.bar_chart_title{
+
+.bar_chart_title {
   font-size: 0.3rem;
   color: #fff;
   padding-top: 0.32rem;

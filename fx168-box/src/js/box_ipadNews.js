@@ -1,3 +1,14 @@
+var $ = require('jquery');
+import {
+  baseUrl,
+  boxUrl,
+  baseUrl2,
+  chartUrl,
+  headUrl,
+  isNull,
+  getQueryString
+} from '../js/js_app/common.js';
+
 $(function() {
 	newsRequest();
     dbClick();
@@ -34,19 +45,21 @@ function getUrlParam(name){
 function dbClick(){
      var lastClickTime = 0;
         var clickTimer;
-        document.addEventListener('click', (event) => {
+        document.addEventListener('click', function(){
             var nowTime = new Date().getTime();
             if (nowTime - lastClickTime < 400) {
                 /*双击*/
                 lastClickTime = 0;
                 clickTimer && clearTimeout(clickTimer);
-                alert('双击');
-                window.webkit.messageHandlers.doubleTapGesture.postMessage("");
-                
+                //alert('双击');
+								if(window.webkit && window.webkit.messageHandlers) {
+									  window.webkit.messageHandlers.doubleTapGesture.postMessage("");
+								}
+
             } else {
                 /*单击*/
                 lastClickTime = nowTime;
-                clickTimer = setTimeout(() => {
+                clickTimer = setTimeout(function(){
                     // alert('单击');
                 }, 400);
             }
