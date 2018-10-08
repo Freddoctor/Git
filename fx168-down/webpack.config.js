@@ -44,8 +44,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"production"',
-        PUB_JS:'"vendor"'
+        NODE_ENV: '"production"'
       }
     }),
     new ScriptExtHtmlWebpackPlugin(),
