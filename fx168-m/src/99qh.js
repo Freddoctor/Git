@@ -1,6 +1,5 @@
 import "./css/newsList.css"
 import "./css/home.css"
-import "./css/silde.css"
 import "./asset/24k99.scss";
 
 var $ = require("jquery");

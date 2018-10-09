@@ -1,67 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="applicable-device" content="mobile">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="format-detection" content="telephone=no">
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="css/newsList.css">
-    <link rel="stylesheet" href="css/home.css"/>
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/common.js"></script>
-    <script type="text/javascript" src="js/newsInner.js"></script>
-    <script src="js/home.js"></script>
-     <script type="text/javascript" src="js/dropload.min.js"></script>
-    <script type="text/javascript">
-        var phoneWidth =  parseInt(window.screen.width);
-        var phoneScale = phoneWidth/750;
-        var ua = navigator.userAgent;
-        if (/Android (\d+\.\d+)/.test(ua)){
-            var version = parseFloat(RegExp.$1);
-            if(version>2.3){
-                document.write('<meta name="viewport" content="width=0, minimum-scale = '+phoneScale+', maximum-scale = '+phoneScale+', target-densitydpi=device-dpi">');
-            }else{
-                document.write('<meta name="viewport" content="width=750, target-densitydpi=device-dpi">');
-            }
-        } else {
-            document.write('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
-        }
-    </script>
+  <meta charset="UTF-8" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="applicable-device" content="mobile">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="format-detection" content="telephone=no">
+  <title>Document</title>
 
 </head>
+
 <body>
-<!-- titele -->
-    <div class="wrap">
-        <nav class="titleBar">
-           相关新闻
-        </nav>
-        <a href="search.html" class="search" >
-            <img src="img/search/search.png">
-        </a>
-        
-    </div>
-  <div id="con" class="about_news">
-    <div id="content" >
+  <!-- titele -->
+  <div class="wrap">
+    <nav class="titleBar">
+      相关新闻
+    </nav>
+    <a href="search.html" class="search">
+        <img src="img/search/search.png">
+    </a>
   </div>
-</div>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <div id="con" class="about_news">
+    <div id="content">
+    </div>
+  </div>
 
-  ga('create', 'UA-47403057-1', 'auto');
-  ga('require', 'displayfeatures');
-  ga('require', 'linkid', 'linkid.js');
-  ga('send', 'pageview');
-
-</script>
-<script type="text/javascript">
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F779dfdbe4a000d1108b8a1daa23f17bd' type='text/javascript'%3E%3C/script%3E"));
-</script>
 </body>
+
 </html>

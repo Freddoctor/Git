@@ -14,7 +14,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 module.exports = {
   entry: {
     // vendor:["jquery"],
-    plugin: ["./src/hk.js"],
+    plugin: ["./src/oil.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -31,8 +31,8 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      filename: './hk.html',
-      template: './src/hk.html',
+      filename: './oil.html',
+      template: './src/oil.html',
       minify: {
         // removeComments: true,
         // collapseWhitespace: true

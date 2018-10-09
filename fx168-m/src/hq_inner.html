@@ -8,30 +8,8 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<meta name="format-detection" content="telephone=no">
-	<script src="js/jquery-3.1.1.min.js"></script>
-	<script src="js/common.js"></script>
-	<script type="text/javascript" src="js/echarts.js"></script>
-	<script type="text/javascript" src="js/hq_inner.js"></script>
-	<script type="text/javascript" src="js/newk_demo2.js"></script>
-	<script type="text/javascript" src="js/socket.io.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/hq_inner.css">
-
 	<title>行情内页</title>
-	<script type="text/javascript">
-		var phoneWidth = parseInt(window.screen.width);
-		var phoneScale = phoneWidth / 750;
-		var ua = navigator.userAgent;
-		if (/Android (\d+\.\d+)/.test(ua)) {
-			var version = parseFloat(RegExp.$1);
-			if (version > 2.3) {
-				document.write('<meta name="viewport" content="width=0, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
-			} else {
-				document.write('<meta name="viewport" content="width=750, target-densitydpi=device-dpi">');
-			}
-		} else {
-			document.write('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
-		}
-	</script>
+
 </head>
 
 <body>
@@ -45,10 +23,10 @@
 
 	<!-- content -->
 	<div class="hq_inner_content">
-		<ul class="hq_inner_con_Left" data-key="">
+		<ul class="hq_inner_con_Left" data-key="0">
 			<li class="hq_inner_tradeWrap">
 				<span class="hq_inner_trade"></span>
-				<img src="">
+				<img>
 			</li>
 			<li class="hq_inner_tradeWrap2">
 				<span class="hq_inner_range ">111</span>
@@ -95,7 +73,7 @@
 
 					</li>
 					<li class="sideline "></li>
-					<img class="hq_jb " src="img/ljb@2x.png ">
+					<img class="hq_jb " src="img/ljb@2x.png">
 				</ul>
 			</div>
 		</div>
@@ -121,31 +99,9 @@
 
 	</div>
 	<!-- 绘图——分时线 -->
-	<div id="container " style="min-width:100%;height:6.22rem "></div>
+	<div id="container" style="min-width:100%;height:6.22rem "></div>
 	<!-- <div id="report " style="height:100px;padding-top:25px; "></div> -->
-	<div id="container2 " style="min-width:100%;height:9.52rem "></div>
-	<script>
-		(function(i, s, o, g, r, a, m) {
-			i['GoogleAnalyticsObject'] = r;
-			i[r] = i[r] || function() {
-				(i[r].q = i[r].q || []).push(arguments)
-			}, i[r].l = 1 * new Date();
-			a = s.createElement(o),
-				m = s.getElementsByTagName(o)[0];
-			a.async = 1;
-			a.src = g;
-			m.parentNode.insertBefore(a, m)
-		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-		ga('create', 'UA-47403057-1', 'auto');
-		ga('require', 'displayfeatures');
-		ga('require', 'linkid', 'linkid.js');
-		ga('send', 'pageview');
-	</script>
-	<script type="text/javascript ">
-		var _bdhmProtocol = (("https: " == document.location.protocol) ? " https:// " : " http:// ");
-		document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F779dfdbe4a000d1108b8a1daa23f17bd' type='text/javascript' %3E%3C/script%3E "));
-	</script>
+	<div id="container2" style="min-width:100%;height:9.52rem "></div>
 </body>
 
 </html>
