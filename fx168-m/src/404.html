@@ -1,48 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
-    <meta name="applicable-device" content="mobile">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+	<meta name="applicable-device" content="mobile">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 	<title>404页面</title>
-	<link rel="stylesheet" href="css/404.css">
-    <script src="js/common.js"></script>
-	<script type="text/javascript">
-        var phoneWidth =  parseInt(window.screen.width);
-        var phoneScale = phoneWidth/750;
-        var ua = navigator.userAgent;
-        if (/Android (\d+\.\d+)/.test(ua)){
-            var version = parseFloat(RegExp.$1);
-            if(version>2.3){
-                document.write('<meta name="viewport" content="width=0, minimum-scale = '+phoneScale+', maximum-scale = '+phoneScale+', target-densitydpi=device-dpi">');
-            }else{
-                document.write('<meta name="viewport" content="width=750, target-densitydpi=device-dpi">');
-            }
-        } else {
-            document.write('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
-        }
-    </script>
 </head>
+
 <body>
 
-<div class="wrap">
-    <nav class="titleBar">
-        <img class="logo" src="img/logo.png">
-    </nav>
-        
-</div>
-<div class="noData_404">
-	<img class="img_404" src="img/@2x404.png" alt="">
-	<p class="sorry">抱歉，页面出现了错误</p>
-	<a href="index.html">
-		<div class="back_index">返回首页</div>
-	</a>
-	
-</div>
-	
+	<div class="wrap">
+		<nav class="titleBar">
+			<img class="logo" src="img/logo.png">
+		</nav>
+
+	</div>
+	<div class="noData_404">
+		<img class="img_404" src="img/@2x404.png" alt="">
+		<p class="sorry">抱歉，页面出现了错误</p>
+		<a href="/index.html">
+			<div class="back_index">返回首页</div>
+		</a>
+	</div>
+
 </body>
+
 </html>
