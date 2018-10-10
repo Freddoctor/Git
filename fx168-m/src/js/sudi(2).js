@@ -207,13 +207,13 @@ $(document).ready(function() {
               style_bgStar = "none_bg"
             } else if (dataArr[i].star == 1) {
               style_bgStar = "oneStar";
-              $('.datatitle img').eq(i).attr("src", "" + require("../img/sudi/1star@2x.png"));
+              $('.datatitle img').eq(i).attr("src", "img/sudi/1star@2x.png");
             } else if (dataArr[i].star == 2) {
               style_bgStar = "twoStar";
-              $('.datatitle img').eq(i).attr("src", "" + require("../img/sudi/2star@2x.png"));
+              $('.datatitle img').eq(i).attr("src", "img/sudi/2star@2x.png");
             } else if (dataArr[i].star == 3) {
               style_bgStar = "threeStar";
-              $('.datatitle img').eq(i).attr("src", "" + require("../img/sudi/3star@2x.png"));
+              $('.datatitle img').eq(i).attr("src", "img/sudi/3star@2x.png");
             }
 
             // 标红
@@ -250,9 +250,9 @@ $(document).ready(function() {
             }
             result += '<div data-zd=' + dataArr[i].zhiding + ' hxsdType=' + dataArr[i].hxsdType + ' isRed=' + dataArr[i].isRed + ' class="listWrap">' +
               '<div class="sd_tile">' +
-              '<img class="cock" src="'+ "" + require("../img/sudi/@_2x.png")+'"/>' +
+              '<img class="cock" src="img/sudi/@ 2x.png"/>' +
               '<span class="substr2">' + pTime[i] + '</span>' +
-              '<img class="zd ' + style_zd + '" src="'+ "" + require("../img/zhiding1@2x.png")  +'"/>' +
+              '<img class="zd ' + style_zd + '" src="img/zhiding1@2x.png"/>' +
               '</div>'
 
               +
@@ -300,7 +300,7 @@ $(document).ready(function() {
               '</li>' +
               '</div>' +
               '<div class="continer_video ' + isHideMedia + ' ' + isHideMedia2 + ' ' + isHideMedia3 + ' ' + isHideMedia4 + '">' +
-              '<video  class="video" preload="none" src=' + dataArr[i].vidio + ' poster="'+ "" + require("../img/default@2x.png")+'" controls="controls">' + '</video>'
+              '<video  class="video" preload="none" src=' + dataArr[i].vidio + ' poster="img/default@2x.png" controls="controls">' + '</video>'
               // +'<img data-id='+dataArr[i].id+' class="morenPic" onclick="initClickVideo(this)" src="img/shipintz@2x.png" />'
               +
               '</div>'
@@ -308,11 +308,11 @@ $(document).ready(function() {
               +
               '<div class="myWrap ' + isHideMedia + ' ' + isHideMedia2 + ' ' + isHideMedia3 + ' ' + isHideMedia5 + '" hxsdType=' + dataArr[i].hxsdType + '>' +
               '<div class="logoPeople">' +
-              '<img class="lazy" data-original="' + dataArr[i].imgPath + '" src="'+ "" + require("../img/sudi/toux@2x.png")+'" />' +
+              '<img class="lazy" data-original="' + dataArr[i].imgPath + '" src="img/sudi/toux@2x.png" />' +
               '</div>' +
               '<div class="myWrap1">' +
               '<div class="yinliang">' + '</div>' +
-              '<div class="btn-audio omyBtn" data-audio="' + dataArr[i].audio + '" data-id=' + dataArr[i].id + '  >'
+              '<div class="btn-audio" onclick="omyMp3(this)" data-audio="' + dataArr[i].audio + '" data-id=' + dataArr[i].id + '  >'
 
 
               +
@@ -332,7 +332,7 @@ $(document).ready(function() {
               +
               '<a class="moreLink ' + style_linkMore + '" href="' + addLinkUrl + '">' +
               '<span>' + "查看更多" + '</span>' +
-              '<img src="'+ "" + require("../img/sudi/tiaozhuan@2x.png")+'" />'
+              '<img src="img/sudi/tiaozhuan@2x.png" />'
 
               +
               '</a>'
@@ -441,14 +441,14 @@ $(document).ready(function() {
               if ($('.moreOrless2').eq(i).attr("data-mt") == 2) {
                 $('.moreOrless2').eq(i).css({
                   "color": "#399C31",
-                  "background-image": "url("+ ""+ require("../img/likong@2x.png")+")"
+                  "background-image": "url(img/likong@2x.png)"
 
                 })
               } else if ($('.moreOrless2').eq(i).attr("data-mt") == 1) {
                 $('.moreOrless2').eq(i).css({
                   "color": "#E45555",
                   // "border":"0.01rem solid #E45555"
-                  "background-image": "url(" + "" + require("../img/liduo@2x.png")+")"
+                  "background-image": "url(img/liduo@2x.png)"
 
                 })
               }
@@ -502,7 +502,7 @@ function omyMp3(cc) {
   $('.mp3Btn').on('ended', function() {
     $('.yinliang').css("-webkit-animation", "none")
     $('.btn-audio').css({
-      'background': 'url('+ "" + require("../img/tingzhi@2x.png")+') no-repeat center bottom',
+      'background': 'url(img/tingzhi@2x.png) no-repeat center bottom',
       'background-size': 'cover'
     });
   })
@@ -514,7 +514,7 @@ function omyMp3(cc) {
       $('.dianping').html("点击停止分析师点评");
       obj.prev().css("-webkit-animation", "myfirst 1s infinite");
       obj.css({
-        'background': 'url('+ "" + require("../img/bofangz@2x.png")+') no-repeat center bottom',
+        'background': 'url(img/bofangz@2x.png) no-repeat center bottom',
         'background-size': 'cover'
       });
       myaudio.play();
@@ -523,7 +523,7 @@ function omyMp3(cc) {
       $('.dianping').html("点击收听分析师点评");
       obj.prev().css("-webkit-animation", "none");
       obj.css({
-        'background': 'url('+ "" + require("../img/tingzhi@2x.png")+') no-repeat center bottom',
+        'background': 'url(img/tingzhi@2x.png) no-repeat center bottom',
         'background-size': 'cover'
       });
       myaudio.pause(); //暂停
@@ -536,7 +536,7 @@ function omyMp3(cc) {
       }
       obj.prev().css("-webkit-animation", "none");
       obj.css({
-        'background': 'url('+ "" + require("../img/tingzhi@2x.png")+') no-repeat center bottom',
+        'background': 'url(img/tingzhi@2x.png) no-repeat center bottom',
         'background-size': 'cover'
       });
     }
@@ -546,7 +546,7 @@ function omyMp3(cc) {
     myaudio.load(); //暂停 l
     obj.prev().css("-webkit-animation", "myload 2s infinite");
     obj.css({
-      'background': 'url('+ "" + require("../img/bofangz@2x.png")+') no-repeat center bottom',
+      'background': 'url(img/bofangz@2x.png) no-repeat center bottom',
       'background-size': 'cover'
     });
     myaudio.addEventListener("canplaythrough", function() {
@@ -554,7 +554,7 @@ function omyMp3(cc) {
       myaudio.play();
       obj.prev().css("-webkit-animation", "myfirst 1s infinite");
       obj.css({
-        'background': 'url('+ "" + require("../img/bofangz@2x.png")+') no-repeat center bottom',
+        'background': 'url(img/bofangz@2x.png) no-repeat center bottom',
         'background-size': 'cover'
       });
     }, false);
@@ -871,7 +871,6 @@ function initSudiSocket(sudiUrl) {
 
 
 function sudiSocList(data) {
-  var resultts ;
   if (data === undefined) return false;
   var omydataArr = JSON.parse(data);
   var dataArr = [];
@@ -1004,9 +1003,9 @@ function sudiSocList(data) {
     }
     resultts = '<div data-star=' + dataArr[i].star + ' data-zd=' + dataArr[i].zhiding + ' data-id=' + dataArr[i].id + ' operate=' + dataArr[i].operate + ' hxsdType=' + dataArr[i].hxsdType + ' class="listWrap listWrap2 ' + style_list + '">' +
       '<div class="sd_tile">' +
-      '<img class="cock" src="'+ "" + require("../img/sudi/@_2x.png")+'"/>' +
+      '<img class="cock" src="img/sudi/@ 2x.png"/>' +
       '<span class="substr2">' + pTime[i] + '</span>' +
-      '<img class="zd ' + style_zdIsShow + '" src="'+ "" + require("../img/zhiding1@2x.png")+'"/>' +
+      '<img class="zd ' + style_zdIsShow + '" src="img/zhiding1@2x.png"/>' +
       '</div>' +
       '<ul class="ulWrap">' +
       '<li class="listTime">'
@@ -1017,7 +1016,7 @@ function sudiSocList(data) {
       '</li>' +
       '<div class="boder">' +
       '<li class="datatitle">' +
-      '<img class="myStar" src="'+ ""+ require("../img/sudi/1star@2x.png")+ '">' + '</img>' +
+      '<img class="myStar" src="img/sudi/1star@2x.png">' + '</img>' +
       '<span class="myTs">' + dataArr[i].title + '</span>' +
       '</li>' +
       '<li class="qhz">' +
@@ -1038,7 +1037,7 @@ function sudiSocList(data) {
       '</li>' +
       '</div>' +
       '<div class="continer_video ' + isHideMedia + ' ' + isHideMedia2 + ' ' + isHideMedia3 + ' ' + isHideMedia4 + '">' +
-      '<video  class="video" preload="none" src=' + dataArr[i].vidio + ' poster="'+ "" + require("../img/default@2x.png")+'" controls="controls">' + '</video>'
+      '<video  class="video" preload="none" src=' + dataArr[i].vidio + ' poster="img/default@2x.png" controls="controls">' + '</video>'
       // +'<img data-id='+dataArr[i].id+' class="morenPic" onclick="initClickVideo(this)" src="img/shipintz@2x.png" />'
       +
       '</div>'
@@ -1050,7 +1049,7 @@ function sudiSocList(data) {
       '</div>' +
       '<div class="myWrap1">' +
       '<div class="yinliang">' + '</div>' +
-      '<div class="btn-audio omyBtn" data-audio="' + dataArr[i].audio + '" data-id=' + dataArr[i].id + '>'
+      '<div class="btn-audio" onclick="omyMp3(this)" data-audio="' + dataArr[i].audio + '" data-id=' + dataArr[i].id + '>'
 
 
       +
@@ -1074,7 +1073,7 @@ function sudiSocList(data) {
       +
       '<a class="moreLink ' + style_linkMore + '" href="' + addLinkUrl + '">' +
       '<span>' + "查看更多" + '</span>' +
-      '<img src="'+ ""+ require("../img/sudi/tiaozhuan@2x.png") + '" />'
+      '<img src="img/sudi/tiaozhuan@2x.png" />'
 
       +
       '</a>'
@@ -1163,7 +1162,7 @@ function sudiSocList(data) {
 
         }
       } else if (myZd == true) {
-        creatZd = '<img class="zd ' + style_zdIsShow + '" src="'+ "" + require("../img/zhiding1@2x.png")+'"/>'
+        creatZd = '<img class="zd ' + style_zdIsShow + '" src="img/zhiding1@2x.png"/>'
         for (var i = 0; i < $('.listWrap2').length; i++) {
 
           if ($('.listWrap2').eq(i).attr("data-id") == myId) {
@@ -1190,34 +1189,34 @@ function sudiSocList(data) {
       $('.moreOrless1').eq(i).css({
         "color": "#399C31",
         // "border":"0.01rem solid #399C31",
-        "background-image": "url("+ "" + require("../img/likong@2x.png")+")"
+        "background-image": "url(img/likong@2x.png)"
       })
     } else if ($('.moreOrless1').eq(i).attr("data-ml") == 1) {
       $('.moreOrless1').eq(i).css({
         "color": "#E45555",
         // "border":"0.01rem solid #E45555"
-        "background-image": "url("+"" + require("../img/liduo@2x.png")+")"
+        "background-image": "url(img/liduo@2x.png)"
 
       })
     } else {
       $('.moreOrless1').eq(i).css({
         "color": "#999",
         // "border":"0.01rem solid #999"
-        "background-image": "url("+ "" + require("../img/yxjx@2x.png")+")"
+        "background-image": "url(img/yxjx@2x.png)"
 
       })
     }
     if ($('.moreOrless2').eq(i).attr("data-mt") == 2) {
       $('.moreOrless2').eq(i).css({
         "color": "#399C31",
-        "background-image": "url(" + ""+ require("../img/likong@2x.png")+")"
+        "background-image": "url(img/likong@2x.png)"
 
       })
     } else if ($('.moreOrless2').eq(i).attr("data-mt") == 1) {
       $('.moreOrless2').eq(i).css({
         "color": "#E45555",
         // "border":"0.01rem solid #E45555"
-        "background-image": "url("+""+require("../img/liduo@2x.png")+")"
+        "background-image": "url(img/liduo@2x.png)"
 
       })
     }
@@ -1269,11 +1268,11 @@ function sudiSocList(data) {
       $('.listWrap2 .myStar').css("display", "none");
 
     } else if ($('.listWrap2').eq(i).attr("data-star") == 1) {
-      $('.listWrap2 .myStar').eq(i).attr("src", "" + require("../img/sudi/1star@2x.png"));
+      $('.listWrap2 .myStar').eq(i).attr("src", "img/sudi/1star@2x.png");
     } else if ($('.listWrap2').eq(i).attr("data-star") == 2) {
-      $('.listWrap2 .myStar').eq(i).attr("src", "" + require("../img/sudi/2star@2x.png"));
+      $('.listWrap2 .myStar').eq(i).attr("src", "img/sudi/2star@2x.png");
     } else if ($('.listWrap2').eq(i).attr("data-star") == 3) {
-      $('.listWrap2 .myStar').eq(i).attr("src", "" + require("../img/sudi/3star@2x.png"));
+      $('.listWrap2 .myStar').eq(i).attr("src", "img/sudi/3star@2x.png");
     }
 
 

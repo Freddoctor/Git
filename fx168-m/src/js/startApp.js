@@ -8,7 +8,7 @@ var queote="fx168://m.fx168.com/main?type=quotation&key="+sessionStorage.hq_inne
 import "jquery";
 
 $("#downApp").click(function(){
-  openApp(queote);
+  openApp(satrt_sudi);
 });
 
 //行情内页
