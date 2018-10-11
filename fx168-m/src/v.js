@@ -2,10 +2,10 @@ import "./css/newsList.css"
 import "./css/home.css"
 import "./asset/24k99.scss";
 
-import "jquery";
-import "./js/city_.js"
-import "./js/home.js"
+import "./js/newsList.js";
+import "./js/home.js";
 
+var $ = require("jquery");
 var phoneWidth = parseInt(window.screen.width);
 var phoneScale = phoneWidth / 750;
 var ua = navigator.userAgent;
@@ -20,6 +20,7 @@ if (/Android (\d+\.\d+)/.test(ua)) {
 } else {
   $(header).append('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
 }
+
 
 (function(i, s, o, g, r, a, m) {
   i['GoogleAnalyticsObject'] = r;

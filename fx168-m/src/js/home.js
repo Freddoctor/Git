@@ -19,7 +19,7 @@ $(function() {
   if (localStorage.tabUrlIndex == undefined) {
     localStorage.tabUrlIndex = 1;
   }
-  var x1,ty_left,y1,index
+  var x1,ty_left,y1;
   $('.lia').click(function() {
     localStorage.tabUrlIndex = 1;
     sessionStorage.left = 0;
@@ -35,7 +35,7 @@ $(function() {
   }
 
   $(".find_nav_list li").click(function() {
-    index = $(this).index();
+    var index = $(this).index();
     for (var i = 0; i < $(".find_nav_list li").length; i++) {
       if (index == 0) {
         localStorage.tabUrlIndex = 1; //要闻
@@ -78,7 +78,7 @@ $(function() {
   }
 
   $('.fg_top a').click(function() {
-    index2 = $(this).index();
+    var index2 = $(this).index();
     for (var i = 0; i < $('.fg_top a').length; i++) {
       if (index2 == 0) {
         sessionStorage.fgTile = "美元";
@@ -102,7 +102,7 @@ $(function() {
     $(".fg_bottom a").eq(i).attr("href", baseUrlHost + fg_bottom_href);
   }
   $('.fg_bottom a').click(function() {
-    index2 = $(this).index();
+    var index2 = $(this).index();
     for (var i = 0; i < $('.fg_bottom a').length; i++) {
       if (index2 == 0) {
         sessionStorage.fgTile = "澳纽";
@@ -126,7 +126,7 @@ $(function() {
     $(".city_a a").eq(i).attr("href", baseUrlHost + city_a_href);
   }
   $('.city_a a').click(function() {
-    index3 = $(this).index();
+    var index3 = $(this).index();
     for (var i = 0; i < $('.city_a a').length; i++) {
       if (index3 == 0) {
         sessionStorage.fgTile = "温哥华";

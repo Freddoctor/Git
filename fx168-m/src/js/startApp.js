@@ -5,14 +5,17 @@ var satrt_sudi="fx168://m.fx168.com/main?type=express";//速递
 var queote="fx168://m.fx168.com/main?type=quotation&key="+sessionStorage.hq_inner_key+"&keyWords="+sessionStorage.hq_inner_title+"&date="+sessionStorage.hq_inner_date+"&tradePrice="+sessionStorage.hq_inner_tradePrice
 +"&range="+sessionStorage.hq_inner_range+"&rangePercent="+sessionStorage.hq_inner_rangePercent+"&openPrice="+sessionStorage.hq_inner_openPrice+"&highPrice="+sessionStorage.hq_inner_highPrice+"&preClosePrice="+sessionStorage.hq_inner_preClosePrice+"&lowPrice="+sessionStorage.hq_inner_lowPrice+"&decimalDigits="+sessionStorage.decimalDigits
 
+var zhuanTiInner="fx168://m.fx168.com/special?zhuanTiId="+sessionStorage.zhuanTiId;//专题内页
+
 import "jquery";
 
 $("#downApp").click(function(){
-  openApp(satrt_sudi);
+  openApp(queote);
 });
-
+$("#zhuanTiInner").click(function(){
+  openApp(zhuanTiInner)
+})
 //行情内页
-var zhuanTiInner="fx168://m.fx168.com/special?zhuanTiId="+sessionStorage.zhuanTiId;//专题内页
 function openApp(el){
     var ua = window.navigator.userAgent.toLowerCase();
     //微信

@@ -14,7 +14,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 module.exports = {
   entry: {
     // vendor:["jquery"],
-    plugin: ["./src/sudi.js"],
+    plugin: ["./src/zhuanti.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -31,8 +31,8 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      filename: './sudi.html',
-      template: './src/sudi.html',
+      filename: './zhuanti.html',
+      template: './src/zhuanti.html',
       minify: {
         removeComments: true,
         collapseWhitespace: true

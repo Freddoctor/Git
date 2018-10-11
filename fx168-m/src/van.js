@@ -1,10 +1,10 @@
-import "./css/newsList.css"
-import "./css/home.css"
+import "./css/newsList.css";
+import "./css/home.css";
 import "./asset/24k99.scss";
 
-import "jquery";
 import "./js/city_.js"
 import "./js/home.js"
+import "jquery";
 
 var phoneWidth = parseInt(window.screen.width);
 var phoneScale = phoneWidth / 750;
@@ -37,7 +37,6 @@ ga('create', 'UA-47403057-1', 'auto');
 ga('require', 'displayfeatures');
 ga('require', 'linkid', 'linkid.js');
 ga('send', 'pageview');
-
 
 var _bdhmProtocol = (("https:" == document.location.protocol) ? "https://" : "http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F779dfdbe4a000d1108b8a1daa23f17bd' type='text/javascript'%3E%3C/script%3E"));
