@@ -13,9 +13,8 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    // jQuery: "./src/js/jquery-3.1.1.min.js",
-    // vendor: ["jquery"],
-    plugin: ["./src/index.js", "./src/js/public.js"]
+    day: ["./src/index.js"],
+    night:["./src/night.js"]
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -35,21 +34,14 @@ module.exports = {
       title: 'index',
       filename: './index.html',
       template: './src/index.html',
-      minify: {
-        removeComments: true,
-        // collapseWhitespace:true
-      }
+      chunks: ['day', 'vendor'],
     }),
-    // new HtmlWebpackPlugin({
-    //   title: 'night',
-    //   filename: './night.html',
-    //   template: './src/night.html',
-    // }),
-    // new CopyWebpackPlugin([{
-    //   from: path.resolve(__dirname, './src'),
-    //   to: path.resolve(__dirname, './dist'),
-    //   ignore: ['*.js', '*.css', '*.html']
-    // }]),
+    new HtmlWebpackPlugin({
+      title: 'night',
+      filename: './night.html',
+      template: './src/night.html',
+      chunks: ['night', 'vendor'],
+    }),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
       chunkFilename: "static/css/[name].[id].css"
@@ -179,23 +171,23 @@ module.exports = {
   },
   mode: (process.env.NODE_ENV == 'production' ? 'production' : "development"),
   optimization: {
-    // splitChunks: {
-    //   cacheGroups: {
-    //     vendor: {
-    //       test: /[\\/]jquery[\\/]/,
-    //       name: 'common',
-    //       priority: 10,
-    //       chunks: 'all'
-    //     }
-    //   }
-    // },
     minimizer: [ // 用于配置 minimizers 和选项
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true // set to true if you want JS source maps
+        sourceMap: false // set to true if you want JS source maps
       }),
       new OptimizeCSSAssetsPlugin({}),
     ],
+    splitChunks: {
+      cacheGroups: {
+            commons: {
+                test: /[\\/]node_modules[\\/]/,
+                name: "vendor",
+                chunks: "all",
+                // minChunks:2,
+            }
+        }
+    }
   },
 }

@@ -12,8 +12,11 @@ import {
   index_socket
 } from "./common.js";
 
-import io from 'socket.io-client';
-import echarts from "echarts";
+// import io from 'socket.io-client';
+import io from "./socket.io.js";
+// import echarts from "echarts";
+import echarts from "./echarts.js";
+
 var socket = null;
 $(function() {
 

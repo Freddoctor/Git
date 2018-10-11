@@ -13,7 +13,10 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    plugin: ["./src/boxnews.js"]
+    boxbigIpad: ["./src/boxbigIpad.js"],
+    boxipad: ["./src/boxipad.js"],
+    boxnews: ["./src/boxnews.js"],
+    data: ["./src/data.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -30,9 +33,36 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      title: 'index',
+      filename: './box_bigIpad.html',
+      template: './src/box_bigIpad.html',
+      chunks: ['boxbigIpad', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './box_ipad.html',
+      template: './src/box_ipad.html',
+      chunks: ['boxipad', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
       filename: './box_ipadNews.html',
       template: './src/box_ipadNews.html',
+      chunks: ['boxnews', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './data.html',
+      template: './src/data.html',
+      chunks: ['data', 'vendor'],
       minify: {
         removeComments: true,
         collapseWhitespace: true
@@ -48,8 +78,8 @@ module.exports = {
       }
     }),
     new ScriptExtHtmlWebpackPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    // new webpack.NamedModulesPlugin(),
+    // new webpack.HotModuleReplacementPlugin()
   ],
   output: {
     publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "./"),
@@ -172,5 +202,15 @@ module.exports = {
       }),
       new OptimizeCSSAssetsPlugin({}),
     ],
+    splitChunks: {
+      cacheGroups: {
+            commons: {
+                test: /[\\/]node_modules[\\/]/,
+                name: "vendor",
+                chunks: "all",
+                // minChunks:2,
+            }
+        }
+    }
   },
 }

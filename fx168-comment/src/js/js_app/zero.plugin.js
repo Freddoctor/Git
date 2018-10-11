@@ -10,7 +10,7 @@ import {
 
 var $ = require('jquery');
 
-// var Swiper = require("../swiper.min.js");
+var Swiper = require("../swiper.min.js");
 
 // 广告type
 var isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1; //android终端

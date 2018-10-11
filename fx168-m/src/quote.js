@@ -2,6 +2,7 @@ import "./css/hangqing.css"
 import "./asset/quote.scss"
 
 import "./js/quote.js"
+
 import "./js/quoteList.js"
 
 

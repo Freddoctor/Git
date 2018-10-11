@@ -12,9 +12,9 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   entry: {
-    plugin: ["./src/index.js", "./src/js/public.js"]
+    day: ["./src/index.js"],
+    night: ["./src/night.js"]
   },
-  //["./src/js/jquery-3.1.1.min.js", "./src/index.js", "./src/js/public.js"],
   // externals: {
   //   jquery: 'window.jQuery'
   // },
@@ -33,16 +33,22 @@ module.exports = {
       title: 'index',
       filename: './index.html',
       template: './src/index.html',
+      chunks: ['day', 'vendor'],
       minify: {
         removeComments: true,
-        // collapseWhitespace:true
+        collapseWhitespace: true
       }
     }),
-    // new HtmlWebpackPlugin({
-    //   title: 'night',
-    //   filename: './night.html',
-    //   template: './src/night.html',
-    // }),
+    new HtmlWebpackPlugin({
+      title: 'night',
+      filename: './night.html',
+      template: './src/night.html',
+      chunks: ['night', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
     // new CopyWebpackPlugin([{
     //   from: path.resolve(__dirname, './src'),
     //   to: path.resolve(__dirname, './dist'),
@@ -133,7 +139,7 @@ module.exports = {
             limit: 10 * 1024, //小于10k就会转成base64
             outputPath: 'static/images/'
           }
-        },{
+        }, {
           loader: 'image-webpack-loader',
           options: {
             mozjpeg: { // 压缩 jpeg 的配置
@@ -158,8 +164,7 @@ module.exports = {
         use: ['file-loader']
       },
       {
-        // test: require.resolve('./src/js/jquery-3.1.1.min.js'),
-        test:require.resolve('jquery'),
+        test: require.resolve('jquery'),
         use: [{
           loader: 'expose-loader',
           options: 'jQuery'
@@ -172,23 +177,23 @@ module.exports = {
   },
   mode: (process.env.NODE_ENV == 'production' ? 'production' : "development"),
   optimization: {
-    // splitChunks: {
-    //   cacheGroups: {
-    //     vendor: {
-    //       test: /[\\/]jquery[\\/]/,
-    //       name: 'common',
-    //       priority: 10,
-    //       chunks: 'all'
-    //     }
-    //   }
-    // },
     minimizer: [ // 用于配置 minimizers 和选项
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: false, // set to true if you want JS source maps
+        sourceMap: false // set to true if you want JS source maps
       }),
-      new OptimizeCSSAssetsPlugin({})
+      new OptimizeCSSAssetsPlugin({}),
     ],
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all",
+          // minChunks:2,
+        }
+      }
+    }
   },
 };

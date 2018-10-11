@@ -12,7 +12,8 @@ import {
 
 import "jquery";
 import "./jquery.lazyload.min.js";
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
+import io from "./socket.io.js";
 import "./dropload.min.js";
 import PhotoSwipe from "./photoswipe.js";
 import PhotoSwipeUI_Default from "./photoswipe-ui-default.min.js";

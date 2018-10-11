@@ -13,8 +13,8 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    vendor:"jquery",
-    webplugin: ["./src/web.js"],
+    web: ["./src/web.js"],
+    app: ["./src/app.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -33,6 +33,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: './web.html',
       template: './src/download/web.html',
+      chunks: ['web', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './app.html',
+      template: './src/download/app.html',
+      chunks: ['app', 'vendor'],
       minify: {
         removeComments: true,
         collapseWhitespace: true
@@ -176,7 +186,7 @@ module.exports = {
     splitChunks: {
       cacheGroups: {
             commons: {
-                test: /[\\/]node_modules[\\/]jquery[\\/]/,
+                test: /[\\/]node_modules[\\/]/,
                 name: "vendor",
                 chunks: "all"
             }

@@ -11,8 +11,12 @@ import {
 } from "./common.js";
 
 import "jquery";
-import io from 'socket.io-client';
-var echarts = require("echarts");
+// import io from 'socket.io-client';
+// var echarts = require("echarts");
+// import io from 'socket.io-client';
+import io from "./socket.io.js";
+// import echarts from "echarts";
+import echarts from "./echarts.js";
 
 // sessionStorage.hq_inner_key = sessionStorage.hq_inner_key?sessionStorage.hq_inner_key:"FESEUR";
 

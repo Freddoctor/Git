@@ -1,5 +1,5 @@
 import "jquery";
-import  Highcharts from 'highcharts/highstock';
+import Highcharts from './highstock.js';
 import "../js/jquery.lazyload.min.js";
 import {
   sckUrl1,

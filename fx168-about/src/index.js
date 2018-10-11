@@ -17,3 +17,5 @@ if (/Android (\d+\.\d+)/.test(ua)) {
 } else {
   $(header).append('<meta name="viewport" content="width=750, user-scalable=no, target-densitydpi=device-dpi">');
 }
+
+import "./js/public.js"

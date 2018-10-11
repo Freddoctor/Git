@@ -12,9 +12,38 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
-  entry: {
-    // vendor:["jquery"],
-    plugin: ["./src/forex.js"],
+  entry:  {
+    _24k99: ["./src/24k99.js"],
+    _99qh: ["./src/99qh.js"],
+    _404: ["./src/404.js"],
+    _bank: ["./src/bank.js"],
+    _bond: ["./src/bond.js"],
+    _calendar: ["./src/calendar.js"],
+    _city: ["./src/city.js"],
+    _forex: ["./src/forex.js"],
+    _hangye: ["./src/hangye.js"],
+    _hk: ["./src/hk.js"],
+    _hq_inner: ["./src/hq_inner.js"],
+    _hq_inner2: ["./src/hq_inner2.js"],
+    _index: ["./src/index.js"],
+    _london: ["./src/london.js"],
+    _newContent: ["./src/newContent.js"],
+    _news: ["./src/news.js"],
+    _newsInner: ["./src/newsInner.js"],
+    _ny: ["./src/ny.js"],
+    _oil: ["./src/oil.js"],
+    _pinglun: ["./src/pinglun.js"],
+    _politics: ["./src/politics.js"],
+    _quote: ["./src/quote.js"],
+    _rlzbny: ["./src/rlzbny.js"],
+    _sfo: ["./src/sfo.js"],
+    _stock: ["./src/stock.js"],
+    _sudi: ["./src/sudi.js"],
+    _tor: ["./src/tor.js"],
+    _tuisong: ["./src/tuisong.js"],
+    _v: ["./src/v.js"],
+    _van: ["./src/van.js"],
+    _zhuanti: ["./src/zhuanti.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -31,8 +60,279 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
+      filename: './24k99.html',
+      template: './src/24k99.html',
+      chunks: ['_24k99', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './99qh.html',
+      template: './src/99qh.html',
+      chunks: ['_99qh', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './404.html',
+      template: './src/404.html',
+      chunks: ['_404', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './bank.html',
+      template: './src/bank.html',
+      chunks: ['_bank', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './bond.html',
+      template: './src/bond.html',
+      chunks: ['_bond', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './calendar.html',
+      template: './src/calendar.html',
+      chunks: ['_calendar', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './city.html',
+      template: './src/city.html',
+      chunks: ['_city', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
       filename: './forex.html',
       template: './src/forex.html',
+      chunks: ['_forex', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './hangye.html',
+      template: './src/hangye.html',
+      chunks: ['_hangye', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './hk.html',
+      template: './src/hk.html',
+      chunks: ['_hk', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './hq_inner.html',
+      template: './src/hq_inner.html',
+      chunks: ['_hq_inner', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './hq_inner2.html',
+      template: './src/hq_inner2.html',
+      chunks: ['_hq_inner2', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './index.html',
+      template: './src/index.html',
+      chunks: ['_index', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './london.html',
+      template: './src/london.html',
+      chunks: ['_london', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './newContent.html',
+      template: './src/newContent.html',
+      chunks: ['_newContent', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './news.html',
+      template: './src/news.html',
+      chunks: ['_news', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './newsInner.html',
+      template: './src/newsInner.html',
+      chunks: ['_newsInner', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './ny.html',
+      template: './src/ny.html',
+      chunks: ['_ny', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './oil.html',
+      template: './src/oil.html',
+      chunks: ['_oil', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './pinglun.html',
+      template: './src/pinglun.html',
+      chunks: ['_pinglun', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './politics.html',
+      template: './src/politics.html',
+      chunks: ['_politics', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './quote.html',
+      template: './src/quote.html',
+      chunks: ['_quote', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './rlzbny.html',
+      template: './src/rlzbny.html',
+      chunks: ['_rlzbny', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './sfo.html',
+      template: './src/sfo.html',
+      chunks: ['_sfo', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './stock.html',
+      template: './src/stock.html',
+      chunks: ['_stock', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './sudi.html',
+      template: './src/sudi.html',
+      chunks: ['_sudi', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './tor.html',
+      template: './src/tor.html',
+      chunks: ['_tor', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './tuisong.html',
+      template: './src/tuisong.html',
+      chunks: ['_tuisong', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './v.html',
+      template: './src/v.html',
+      chunks: ['_v', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './van.html',
+      template: './src/van.html',
+      chunks: ['_van', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: './zhuanti.html',
+      template: './src/zhuanti.html',
+      chunks: ['_zhuanti', 'vendor'],
       minify: {
         removeComments: true,
         collapseWhitespace: true

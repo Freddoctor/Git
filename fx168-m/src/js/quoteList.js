@@ -10,7 +10,8 @@ import {
   index_socket
 } from "./common.js";
 import "jquery";
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
+import io from "./socket.io.js";
 var socket = null;
 
 $(function() {

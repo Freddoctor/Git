@@ -12,7 +12,8 @@ import {
 
 var $ = require("jquery");
 var swiper = require("./swiper.min.js");
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
+import io from "./socket.io.js";
 var socket = null;
 var lazyload = require("./jquery.lazyload.min.js");
 var dropLoad = require("./dropload.min.js");
