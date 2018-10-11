@@ -48,7 +48,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server  --inline --progress  --config  webpack.dev.js",
-    "build": "cross-env NODE_ENV=production  webpack --progress"
+    "build": "cross-env NODE_ENV=production  webpack --progress",
+    "innerdev": "webpack-dev-server  --inline --progress  --config  ./webpack.inner.dev.js",
+    "innerbuild": "cross-env NODE_ENV=production  webpack --config  ./webpack.inner.config.js  --progress"
   },
   "browserslist": [
     "> 1%",

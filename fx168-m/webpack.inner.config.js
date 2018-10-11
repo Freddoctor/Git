@@ -14,7 +14,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 module.exports = {
   entry: {
     // vendor:["jquery"],
-    plugin: ["./src/forex.js"],
+    plugin: ["./src/forexInner.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -23,7 +23,7 @@ module.exports = {
   devServer: {
     contentBase: './dist',
     hot: true,
-    host: '192.168.30.175',
+    host: 'localhost',
     port: 8080,
     compress: true,
     inline: true,
@@ -31,12 +31,76 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      filename: './forex.html',
-      template: './src/forex.html',
+      filename: './forex/audnzd.html',
+      template: './src/forex/audnzd.html',
+      chunks: ['plugin', 'vendor'],
       minify: {
-        // removeComments: true,
-        // collapseWhitespace: true
-      }
+        removeComments: true,
+        collapseWhitespace: true
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/cad.html',
+      template: './src/forex/cad.html',
+      chunks: ['plugin', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/chf.html',
+      template: './src/forex/chf.html',
+      chunks: ['plugin', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/eur.html',
+      template: './src/forex/eur.html',
+      chunks: ['plugin', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/gbp.html',
+      template: './src/forex/gbp.html',
+      chunks: ['plugin', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/jpy.html',
+      template: './src/forex/jpy.html',
+      chunks: ['plugin', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/rmb.html',
+      template: './src/forex/rmb.html',
+      chunks: ['plugin', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/usd.html',
+      template: './src/forex/usd.html',
+      chunks: ['plugin', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
     }),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
@@ -48,13 +112,13 @@ module.exports = {
       }
     }),
     new ScriptExtHtmlWebpackPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.NamedModulesPlugin(),
+    // new webpack.HotModuleReplacementPlugin()
   ],
   output: {
-    publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "./"),
+    publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "../"),
     path: path.resolve(__dirname, 'dist/'),
-    filename: 'static/js/[name].[hash].js',
+    filename:'static/js/[name].[hash].js',
   },
   module: {
     rules: [{
@@ -63,7 +127,7 @@ module.exports = {
           'style-loader' : {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../../'
+              publicPath: '../../../'
             }
           },
           {
@@ -151,7 +215,8 @@ module.exports = {
         use: ['file-loader']
       },
       {
-        test: require.resolve('jquery'), //全局配置暴露接口
+        // test: require.resolve('./src/js/jquery-3.1.1.min.js'),
+        test: require.resolve('jquery'),
         use: [{
           loader: 'expose-loader',
           options: 'jQuery'
@@ -168,7 +233,7 @@ module.exports = {
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true // set to true if you want JS source maps
+        sourceMap: false // set to true if you want JS source maps
       }),
       new OptimizeCSSAssetsPlugin({}),
     ],
@@ -179,7 +244,6 @@ module.exports = {
                 name: "vendor",
                 chunks: "all",
                 // minChunks:2,
-                // minSize:80
             }
         }
     }

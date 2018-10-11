@@ -14,7 +14,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 module.exports = {
   entry: {
     // vendor:["jquery"],
-    plugin: ["./src/forex.js"],
+    plugin: ["./src/forexInner.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -31,12 +31,44 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      filename: './forex.html',
-      template: './src/forex.html',
-      minify: {
-        // removeComments: true,
-        // collapseWhitespace: true
-      }
+      filename: './forex/audnzd.html',
+      template: './src/forex/audnzd.html',
+      chunks: ['plugin', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/cad.html',
+      template: './src/forex/cad.html',
+      chunks: ['plugin', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/chf.html',
+      template: './src/forex/chf.html',
+      chunks: ['plugin', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/eur.html',
+      template: './src/forex/eur.html',
+      chunks: ['plugin', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/gbp.html',
+      template: './src/forex/gbp.html',
+      chunks: ['plugin', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/jpy.html',
+      template: './src/forex/jpy.html',
+      chunks: ['plugin', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/rmb.html',
+      template: './src/forex/rmb.html',
+      chunks: ['plugin', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './forex/usd.html',
+      template: './src/forex/usd.html',
+      chunks: ['plugin', 'vendor'],
     }),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
@@ -174,14 +206,14 @@ module.exports = {
     ],
     splitChunks: {
       cacheGroups: {
-            commons: {
-                test: /[\\/]node_modules[\\/]/,
-                name: "vendor",
-                chunks: "all",
-                // minChunks:2,
-                // minSize:80
-            }
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all",
+          // minChunks:2,
+          // minSize:80
         }
+      }
     }
   },
 }
