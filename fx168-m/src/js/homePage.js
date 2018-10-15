@@ -376,7 +376,7 @@ function sudiAjax() {
           result += '<ul>' +
             '<li>' +
             '<p class="sudi_title">' +
-            '<img src="img/img_h5_v.2.0/time@2x.png" />' +
+            '<img src="'+ require("../img/img_h5_v.2.0/time@2x.png")+'" />' +
             '<span>' + arr[i].publishTime + '</span>'
 
             +
@@ -410,7 +410,7 @@ function newCon() {
       $.ajax({
         type: 'GET',
         // url: baseUrl+"news/getNewsByChannel.json",
-        url: baseUrl + "news/getMergeNewsByChannel.json",
+        url: baseUrl + "news/getNewsByChannel.json",
         data: {
           "minId": minId,
           "maxId": maxId,
@@ -454,7 +454,8 @@ function newCon() {
               var newsId = arr[i].id;
 
 
-              result += '<a class="oli2 ' + arr[i].newsTypeCode + '" href="/active/article/' + arr[i].id + '.html" data_newID="' + arr[i].id + '">' +
+              // result += '<a class="oli2 ' + arr[i].newsTypeCode + '" href="/active/article/' + arr[i].id + '.html" data_newID="' + arr[i].id + '">' +
+               result += '<a class="oli2" href="/active/article/' + arr[i].id + '.html" data_newID="' + arr[i].id + '">' +
                 '<img class="newImg lazy" data-original="' + arr[i].image + '" src="'+ require("../img/newPic@2x.png")+'" alt="">' +
                 '<div class="odiv">' +
                 '<div class="newsTitle">' +
@@ -470,24 +471,25 @@ function newCon() {
                 '</div>' +
                 '</div>' +
                 '</a>';
-            } else {
-              result += '<a class="zhuanti_wrap" href="zhuanti.html?thirdPartyId=' + arr[i].thirdPartyId + '" data_thirdPartyId="' + arr[i].thirdPartyId + '">' +
-                '<ul>' +
-                '<li class="news_tile_p">' + arr[i].newsTitle + '</li>' +
-                '<li class="zhuanti_img_wrap">' +
-                '<img class="zhuanti_img lazy" data-original="' + arr[i].newsImage + '" src="'+ require("../img/newPic@2x.png")+'"/>' +
-                '<span class="zhuanti_tag">' + arr[i].newsTypeName + '</span>' +
-                '</li>'
-
-
-
-                +
-                '</ul>'
-
-                +
-                '</a>'
-
             }
+            // else {
+            //   result += '<a class="zhuanti_wrap" href="zhuanti.html?thirdPartyId=' + arr[i].thirdPartyId + '" data_thirdPartyId="' + arr[i].thirdPartyId + '">' +
+            //     '<ul>' +
+            //     '<li class="news_tile_p">' + arr[i].newsTitle + '</li>' +
+            //     '<li class="zhuanti_img_wrap">' +
+            //     '<img class="zhuanti_img lazy" data-original="' + arr[i].newsImage + '" src="'+ require("../img/newPic@2x.png")+'"/>' +
+            //     '<span class="zhuanti_tag">' + arr[i].newsTypeName + '</span>' +
+            //     '</li>'
+            //
+            //
+            //
+            //     +
+            //     '</ul>'
+            //
+            //     +
+            //     '</a>'
+            //
+            // }
 
             // newsIdArrOli2.push(newsId);
             if (arr.length < 20) {
