@@ -111,7 +111,6 @@ a {
   border-bottom: 0.01rem solid #ddd;
   display: -moz-box;
   display: -webkit-box;
-  display: box;
 }
 
 .find_nav_left {
