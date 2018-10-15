@@ -9,6 +9,8 @@
     "cross-env": "^5.2.0",
     "echarts": "^4.2.0-rc.1",
     "expose-loader": "^0.7.5",
+    "handlebars": "^4.0.12",
+    "handlebars-loader": "^1.7.0",
     "highcharts": "^6.1.4",
     "html-loader": "^0.5.5",
     "html-withimg-loader": "^0.1.16",

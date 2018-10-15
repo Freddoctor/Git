@@ -211,6 +211,11 @@ a {
   color: #a6aebb;
 }
 
+.footer span em {
+  font-style: normal;
+  color: #fff;
+}
+
 .swiper-wrapper {
   /*border: 1px solid red;*/
   width: 100%;

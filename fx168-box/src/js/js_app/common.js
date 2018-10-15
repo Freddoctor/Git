@@ -1,7 +1,8 @@
 var baseUrl="http://m.fx168.com/";
 var baseUrl2="https://app5.fx168api.com/";
 
-var boxUrl="http://tradebox.t.fx168api.com:8082";
+// var boxUrl="http://tradebox.t.fx168api.com:8082";
+ var boxUrl="https://tradebox.t.fx168api.com";
 var chartUrl="http://fx168api.fx168.com/InterfaceCollect";
 var headUrl="http://t.fx168.com";
 

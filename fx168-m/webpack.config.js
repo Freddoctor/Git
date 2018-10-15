@@ -12,7 +12,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
-  entry:  {
+  entry: {
     _24k99: ["./src/24k99.js"],
     _99qh: ["./src/99qh.js"],
     _404: ["./src/404.js"],
@@ -44,6 +44,7 @@ module.exports = {
     _v: ["./src/v.js"],
     _van: ["./src/van.js"],
     _zhuanti: ["./src/zhuanti.js"],
+    handlebars: ["./src/handlebars.js"]
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -338,6 +339,12 @@ module.exports = {
         collapseWhitespace: true
       }
     }),
+    new HtmlWebpackPlugin({
+      filename: './handlebars.html',
+      template: './src/handlebars.html',
+      chunks: ['vendor', 'handlebars'],
+      title: "Cut it down!"
+    }),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
       chunkFilename: "static/css/[name].[id].css"
@@ -354,7 +361,7 @@ module.exports = {
   output: {
     publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "./"),
     path: path.resolve(__dirname, 'dist/'),
-    filename:'static/js/[name].[hash].js',
+    filename: 'static/js/[name].[hash].js',
   },
   module: {
     rules: [{
@@ -410,6 +417,9 @@ module.exports = {
         use: {
           loader: 'html-loader'
         }
+      }, {
+        test: /\.hbs$/,
+        loader: "handlebars-loader"
       }, {
         test: /\.(png|jpg|jpeg|gif)$/,
         // use: [{
@@ -475,13 +485,13 @@ module.exports = {
     ],
     splitChunks: {
       cacheGroups: {
-            commons: {
-                test: /[\\/]node_modules[\\/]/,
-                name: "vendor",
-                chunks: "all",
-                // minChunks:2,
-            }
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all",
+          // minChunks:2,
         }
+      }
     }
   },
 }

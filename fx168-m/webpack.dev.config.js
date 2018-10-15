@@ -44,6 +44,7 @@ module.exports = {
     _v: ["./src/v.js"],
     _van: ["./src/van.js"],
     _zhuanti: ["./src/zhuanti.js"],
+    handlebars:["./src/handlebars.js"]
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -214,6 +215,12 @@ module.exports = {
       template: './src/zhuanti.html',
       chunks: ['_zhuanti', 'vendor'],
     }),
+    new HtmlWebpackPlugin({
+      filename: './handlebars.html',
+      template: './src/handlebars.html',
+      chunks: ['vendor','handlebars'],
+      title:"Cut it down!"
+    }),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
       chunkFilename: "static/css/[name].[id].css"
@@ -287,15 +294,11 @@ module.exports = {
           loader: 'html-loader'
         }
       }, {
+        test: /\.hbs$/,
+        loader: "handlebars-loader"
+      },
+      {
         test: /\.(png|jpg|jpeg|gif)$/,
-        // use: [{
-        //   loader: 'file-loader',
-        //   options: {
-        //     name: '[name].[hash].[ext]',
-        //     publicPath: "../img/",
-        //     outputPath: 'images/'
-        //   }
-        // }]
         use: [{
           loader: "url-loader",
           options: {
@@ -350,14 +353,14 @@ module.exports = {
     ],
     splitChunks: {
       cacheGroups: {
-            commons: {
-                test: /[\\/]node_modules[\\/]/,
-                name: "vendor",
-                chunks: "all",
-                // minChunks:2,
-                // minSize:80
-            }
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all",
+          // minChunks:2,
+          // minSize:80
         }
+      }
     }
   },
 }
