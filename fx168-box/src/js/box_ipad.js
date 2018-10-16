@@ -86,6 +86,36 @@ $(function() {
 
 })
 
+///与app交互window暴露接口
+window.p = p;
+window.initTabInfo = initTabInfo;
+window.initTabInfo2 = initTabInfo2;
+window.charts = charts;
+window.chartAjax = chartAjax;
+window.dataList = dataList;
+window.getDataList = getDataList;
+window.tableAjax = tableAjax;
+window.cliclTableTabAjax = cliclTableTabAjax;
+window.duoDaNAjax = duoDaNAjax;
+window.transaction = transaction;
+window.dcChartAjax = dcChartAjax;
+window.articleAjax = articleAjax;
+window.organizationViewpoint = organizationViewpoint;
+window.brokenLineChart = brokenLineChart;
+window.drawBrokenLine = drawBrokenLine;
+window.headportrait = headportrait;
+window.Androidnews = Androidnews;
+window.Iosnews = Iosnews;
+window.clickNews = clickNews;
+window.getDateDiff = getDateDiff;
+window.getByteLen = getByteLen;
+window.getUrlParam = getUrlParam;
+window.getSymbol = getSymbol;
+window.getScreen = getScreen;
+window.backNews = backNews;
+window.changeURLArg = changeURLArg;
+window.dbClick = dbClick;
+
 // 品种
 var symbol = "EURUSD";
 //var symbol=getUrlParam('code');

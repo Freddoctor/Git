@@ -9,6 +9,11 @@ import {
   getQueryString
 } from '../js/js_app/common.js';
 
+///与app交互window暴露接口
+window.newsRequest = newsRequest;
+window.getUrlParam = getUrlParam;
+window.dbClick = dbClick;
+
 $(function() {
 	newsRequest();
     dbClick();

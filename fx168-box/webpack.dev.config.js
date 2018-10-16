@@ -182,7 +182,18 @@ module.exports = {
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: false // set to true if you want JS source maps
+        sourceMap: false ,// set to true if you want JS source maps
+        uglifyOptions: {
+          warnings: false,
+          parse: {},
+          compress: {},
+          mangle: false, // Note `mangle.properties` is `false` by default.
+          output: null,
+          toplevel: false,
+          nameCache: null,
+          ie8: false,
+          keep_fnames: false,
+        }
       }),
       new OptimizeCSSAssetsPlugin({}),
     ],

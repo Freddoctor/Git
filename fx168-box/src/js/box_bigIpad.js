@@ -48,6 +48,8 @@ import bigIpadrs from '../img/box_bigIpad/rs.png';
 import bigIpadxxl from '../img/box_bigIpad/xxl.png'
 import bigIpadtw from '../img/box_bigIpad/tw.png'
 
+
+
 $(function() {
   dbClick();
   // 独家资金面三角定位
@@ -74,6 +76,42 @@ $(function() {
 
 
 })
+
+
+///与app交互暴露接口
+window.p = p;
+window.wajueshujumian = wajueshujumian;
+window.chartAjax = chartAjax;
+window.dcInfo = dcInfo;
+window.dcChartAjax = dcChartAjax;
+window.articleAjax = articleAjax;
+window.dujiazijinmian = dujiazijinmian;
+window.duoDaNAjax = duoDaNAjax;
+window.charts = charts;
+window.chartAjaxChild = chartAjaxChild;
+window.dataList = dataList;
+window.getDataList  = getDataList;
+window.initTabInfo2 = initTabInfo2;
+window.cliclTableTabAjax = cliclTableTabAjax;
+window.tableAjax = tableAjax;
+window.brokenLineChart = brokenLineChart;
+window.drawBrokenLine = drawBrokenLine;
+window.organizationViewpoint = organizationViewpoint;
+window.transaction = transaction;
+window.headportrait = headportrait;
+window.Androidnews = Androidnews;
+window.Iosnews = Iosnews;
+window.clickNews = clickNews;
+window.getDateDiff = getDateDiff;
+window.getByteLen = getByteLen;
+window.getUrlParam = getUrlParam;
+window.getSymbol = getSymbol;
+window.getScreen = getScreen;
+window.backNews = backNews;
+window.checkScreenFrame = checkScreenFrame;
+window.changeURLArg = changeURLArg;
+window.dbClick = dbClick;
+
 // 品种
 var symbol = "EURUSD";
 // var symbol=getUrlParam('code');
