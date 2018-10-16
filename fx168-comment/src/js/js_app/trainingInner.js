@@ -1129,7 +1129,7 @@ $(function() {
       scrollArea: window,
       domDown: {
         domClass: 'dropload-down2',
-        domRefresh: '<div class="dropload-refresh">↑上拉加载更多</div>',
+        domRefresh: '<div class="dropload-refresh"> </div>',
         domLoad: '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
         domNoData: '<div class="dropload-noData">暂无更多评论</div>'
       },
