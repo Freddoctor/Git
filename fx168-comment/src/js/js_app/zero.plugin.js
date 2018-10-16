@@ -40,6 +40,12 @@ var sortIndex = window.localStorage ? localStorage.getItem("sortIndex") : 0;
  *
  **/
 var brokerUserId = typeof getQueryString == 'function' ? getQueryString("brokerUserId") : null;
+window.intoAdvDetail = intoAdvDetail;
+window.showTitle = showTitle;
+window.intoDetail = intoDetail;
+window.isShowDianPingButton = isShowDianPingButton;
+window.shareJs = shareJs;
+window.getDetail = getDetail;
 
 function zeroAjaxGetBasicData() {
   $.ajax({

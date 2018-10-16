@@ -14,6 +14,39 @@ var lazyload = require("./jquery.lazyload.min.js");
 var loginToken = ""; //登陆状态token
 var brokerUserId = typeof getQueryString == 'function' ? getQueryString("brokerUserId") : null;
 
+///与app交互暴露window
+window.showMore = showMore;
+window.getTrainingSchoolInfo = getTrainingSchoolInfo;
+window.getBasicData = getBasicData;
+window.scrollWindow = scrollWindow;
+window.clickList = clickList;
+window.likePlClick = likePlClick;
+window.clickNewsData = clickNewsData;
+window.Androidtest = Androidtest;
+window.IosbtnClick2 = IosbtnClick2;
+window.Androidtest2 = Androidtest2;
+window.IosbtnClick3 = IosbtnClick3;
+window.Androidnews = Androidnews;
+window.Iosnews = Iosnews;
+window.getTokenUserId = getTokenUserId;
+window.initCreatloading = initCreatloading;
+window.initCloseloading = initCloseloading;
+window.initmessageloading = initmessageloading;
+window.login = login;
+window.returnTokenUserId = returnTokenUserId;
+window.getTeacherList2 = getTeacherList2;
+window.acceptToken = acceptToken;
+window.transforNewsData = transforNewsData;
+window.initShare = initShare;
+window.androidShare= androidShare;
+window.iosShare= iosShare;
+window.callJsConfirm = callJsConfirm;
+window.click_pl_box = click_pl_box;
+window.androidReport = androidReport;
+window.iosReport = iosReport;
+window.clickReport = clickReport;
+window.importAjax = importAjax;
+
 function showMore(obj) {
   var this2 = $(obj).parent().children(".descInfos");
   if (this2.css("overflow") == 'hidden') {
@@ -1755,7 +1788,9 @@ function Androidtest(e) {
 
 // js调用ios点评
 function IosbtnClick2(e) {
-  window.webkit.messageHandlers.commentDetail.postMessage(e);
+  if(window.webkit && window.webkit.messageHandlers) {
+    window.webkit.messageHandlers.commentDetail.postMessage(e);
+  }
 }
 
 // js调安卓评论
@@ -1765,7 +1800,9 @@ function Androidtest2(e) {
 
 // js调用ios评论
 function IosbtnClick3(e) {
-  window.webkit.messageHandlers.dptDetailJson.postMessage(e);
+  if(window.webkit && window.webkit.messageHandlers) {
+    window.webkit.messageHandlers.dptDetailJson.postMessage(e);
+  }
 }
 
 // js调安卓新闻
@@ -1775,7 +1812,9 @@ function Androidnews(e) {
 
 // js调用ios新闻
 function Iosnews(e) {
-  window.webkit.messageHandlers.newsDetail.postMessage(e);
+  if(window.webkit&&   window.webkit.messageHandlers) {
+    window.webkit.messageHandlers.newsDetail.postMessage(e);
+  }
 }
 
 
@@ -1820,8 +1859,6 @@ function login() {
   } else if (isAndroid && window.SysClientJs) {
     window.SysClientJs.needToLogin();
   }
-
-
 }
 
 
@@ -1929,11 +1966,6 @@ function getTeacherList2() {
 
 }
 
-
-
-
-
-
 // 获取安卓ios返回参数USERID
 function acceptToken(token) {
   loginToken = token;
@@ -1966,7 +1998,9 @@ function androidShare(shareJson) {
 
 
 function iosShare(shareJson) {
-  window.webkit.messageHandlers.shareJs.postMessage(shareJson);
+  if(window.webkit &&  window.webkit.messageHandlers ) {
+    window.webkit.messageHandlers.shareJs.postMessage(shareJson);
+  }
 }
 
 // 删除评论 弹出框
@@ -2064,7 +2098,9 @@ function androidReport(ReportData) {
 
 
 function iosReport(ReportData) {
-  window.webkit.messageHandlers.report.postMessage(ReportData);
+  if(window.webkit && window.webkit.messageHandlers) {
+    window.webkit.messageHandlers.report.postMessage(ReportData);
+  }
 }
 
 var targetId = "";

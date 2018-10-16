@@ -14,7 +14,19 @@ import {
 
 var brokerUserId = typeof getQueryString == 'function' ? getQueryString("brokerUserId") : null;
 
+//app交互暴露window外部接口
+window.initAd = initAd;
+window.testClick = testClick;
+window.myDropLoad = myDropLoad;
+window.getSearchData = getSearchData;
+window.getDetail = getDetail;
+window.clickTab = clickTab;
+window.clickSelects =clickSelects;
+window.traderSq = traderSq;
+window.selectTradeList_suc = selectTradeList_suc;
 $(function() {
+
+
   var conFontHeight = $('.con-font').outerHeight();
   $(".con-font").css({
     height: "0.62rem"

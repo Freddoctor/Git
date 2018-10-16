@@ -14,6 +14,30 @@ var lazyload = require("./jquery.lazyload.min.js");
 
 var loginToken = ""; //登陆状态token
 var brokerUserId = typeof getQueryString == 'function' ? getQueryString("brokerUserId") : null;
+
+///app 交互暴露方法
+window.initTabInfo = initTabInfo;
+window.initDefaultTabShow = initDefaultTabShow;
+window.initClickTabCommentNav = initClickTabCommentNav;
+window.initDefaultComment = initDefaultComment;
+window.initCommentTabContent = initCommentTabContent;
+window.initDetailInfoTabContent = initDetailInfoTabContent;
+window.initChildCommentGood= initChildCommentGood;
+window.initChildCommentBad = initChildCommentBad;
+window.ajaxGetDataList = ajaxGetDataList;
+window.ajaxGetBasicData = ajaxGetBasicData;
+window.getBasicData = getBasicData;
+window.tabAnimate = tabAnimate;
+window.scrollWindow = scrollWindow;
+window.clickList = clickList;
+window.clk = clk;
+window.Androidtest = Androidtest;
+window.test2 = test2;
+window.IosbtnClick2 = IosbtnClick2;
+window.loadBaiduAd = loadBaiduAd;
+window.acceptToken = acceptToken;
+window.getTokenUserId = getTokenUserId;
+
 $(function() {
   // returnTokenUserId();
   // jquery tab动效

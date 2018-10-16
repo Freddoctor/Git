@@ -19,7 +19,49 @@ var brokerUserId = typeof getQueryString == 'function' ? getQueryString("brokerU
 
 $(function() {
   // returnTokenUserId("","1455557578655");
-  //returnTokenUserId();
+  ///app交互暴露window外部接口
+  window.getTokenUserId = getTokenUserId;
+  window.scrollWindow = scrollWindow;
+  window.initTabInfo = initTabInfo;
+  window.importAjax = importAjax;
+  window.initDefaultTabShow = initDefaultTabShow;
+  window.initDetailInfoTabContent = initDetailInfoTabContent;
+  window.initNewsTabContent = initNewsTabContent;
+  window.initClickTabCommentNav = initClickTabCommentNav;
+  window.initDefaultComment = initDefaultComment;
+  window.initCommentTabContent= initCommentTabContent;
+  window.initChildCommentGood = initChildCommentGood;
+  window.initChildCommentBad= initChildCommentBad;
+  window.baidu_adv = baidu_adv;
+  window.ajaxGetBasicData = ajaxGetBasicData;
+  window.getBasicData = getBasicData;
+  window.clickList = clickList;
+  window.likePlClick = likePlClick;
+  window.clickNewsData = clickNewsData;
+  window.Androidtest = Androidtest;
+  window.IosbtnClick2 = IosbtnClick2;
+  window.Androidtest2 = Androidtest2;
+  window.IosbtnClick3 = IosbtnClick3;
+  window.Androidnews = Androidnews;
+  window.Iosnews = Iosnews;
+  window.getTokenUserId = getTokenUserId;
+  window.initCreatloading = initCreatloading;
+  window.initCloseloading = initCloseloading;
+  window.initmessageloading = initmessageloading;
+  window.login = login;
+  window.returnTokenUserId = returnTokenUserId;
+  window.acceptToken = acceptToken;
+  window.transforNewsData = transforNewsData;
+  window.initShare = initShare;
+  window.androidShare = androidShare;
+  window.iosShare = iosShare;
+  window.callJsConfirm = callJsConfirm;
+  window.click_pl_box = click_pl_box;
+  window.androidReport = androidReport;
+  window.iosReport = iosReport;
+  window.clickReport = clickReport;
+  window.importAjax = importAjax;
+
   getTokenUserId();
 
   // jquery tab动效
@@ -1388,7 +1430,7 @@ function getBasicData(data) {
     for (var i = 0; i < keyWords.length; i++) {
       result += '<span>' + keyWords[i] + '</span>'
     }
-    $('.content_top').append(result);
+    $('.content_top').html(result);
     // 如果keyWords为空 去掉父级容器
     if (keyWords.length == 0) {
       $('.content_top').remove();

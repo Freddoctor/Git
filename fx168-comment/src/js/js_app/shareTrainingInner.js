@@ -14,6 +14,15 @@ var lazyload = require("./jquery.lazyload.min.js");
 var loginToken = "";//登陆状态token
 var brokerUserId = typeof getQueryString == 'function' ? getQueryString("brokerUserId") : null;
 
+///app交互window暴露接口
+window.showMore = showMore;
+window.getTrainingSchoolInfo = getTrainingSchoolInfo;
+window.getBasicData = getBasicData;
+window.scrollWindow =scrollWindow;
+window.returnTokenUserId = returnTokenUserId;
+window.callJsConfirm = callJsConfirm;
+window.click_pl_box = click_pl_box;
+
 
 function showMore(obj) {
     var this2 = $(obj).parent().children(".descInfos");
@@ -247,6 +256,21 @@ var targetContent = ""
 
 $(function () {
 
+    ////与app交互 window暴露接口
+    window.initDefaultTabShow =initDefaultTabShow;
+    window.initDefaultTabShow = initDefaultTabShow;
+    window.getTeacherList = getTeacherList;
+    window.getTrainingSchoolNewsList = getTrainingSchoolNewsList;
+    window.getVedioList = getVedioList;
+    window.initClickTabCommentNav = initClickTabCommentNav;
+    window.changeTabCommentNav = changeTabCommentNav;
+    window.initDefaultComment = initDefaultComment;
+    window.initDefaultNews = initDefaultNews;
+    window.initCommentTabContent = initCommentTabContent;
+    window.initChangeTabContent = initChangeTabContent;
+    window.initChildCommentGood = initChildCommentGood;
+    window.initChildCommentBad = initChildCommentBad;
+    window.baidu_adv = baidu_adv;
     //window.brokerUserId = '1918508987381';
     //window.brokerUserId = getQueryString("brokerUserId");
     returnTokenUserId("", brokerUserId);

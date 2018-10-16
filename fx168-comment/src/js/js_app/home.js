@@ -17,7 +17,41 @@ var swiperCom = require("../swiper.min.js");
 var droploadCom = require("../dropload.min.js");
 
 $(function() {
-
+  ///app交互暴露window外部接口
+  window.jumpToIndustry = jumpToIndustry;
+  window.getSearchUrl = getSearchUrl;
+  window.clickMore = clickMore;
+  window.ajaxThisStar = ajaxThisStar;
+  window.scrollWindow = scrollWindow;
+  window.initAd = initAd;
+  window.getDeviceInfo = getDeviceInfo;
+  window.initDropLoad = initDropLoad;
+  window.selectBox = selectBox;
+  window.acceptToken = acceptToken;
+  window.Advertisementajax = Advertisementajax;
+  window.clickAdvAjax = clickAdvAjax;
+  window.showAdvAjax = showAdvAjax;
+  window.scrollWindow = scrollWindow;
+  window.initDropLoad = initDropLoad;
+  window.clickAdv = clickAdv;
+  window.Advertisement = Advertisement;
+  window.thisStar =thisStar;
+  window.ajaxcommission = ajaxcommission;
+  window.selectBox = selectBox;
+  window.getAdvDetail =getAdvDetail;
+  window.selectTradeList = selectTradeList;
+  window.getTrainingSchoolList = getTrainingSchoolList;
+  window.trainingSchoolList_suc = trainingSchoolList_suc;
+  window.selectTradeList_suc = selectTradeList_suc;
+  window.getSearchData = getSearchData;
+  window.getSortScreenData = getSortScreenData;
+  window.getScreenData = getScreenData;
+  window.getDeviceInfo = getDeviceInfo;
+  window.getDeviceInformation = getDeviceInformation;
+  window.getDetail= getDetail;
+  window.getSortComplex =getSortComplex;
+  window.getScreen = getScreen;
+  window.getSampleAdData = getSampleAdData;
   function jumpToIndustry(jumpToIndustry) {
     if (isiOS && window.webkit) {
       window.webkit.messageHandlers.jumpToIndustry.postMessage(jumpToIndustry);
@@ -33,6 +67,7 @@ $(function() {
 
   // 搜索地址传输给app
   getSearchUrl();
+
   window.sc = 0;
   //  $(".con-font").css({height:"0.60rem"});
   //点击展开
@@ -80,11 +115,6 @@ $(function() {
   selectBox();
 
 })
-
-
-
-
-
 
 var materialId = null;
 var sortIndex = 0;
@@ -140,12 +170,6 @@ function acceptToken(t) {
   t = t;
 
 }
-
-
-
-
-
-
 
 // 广告ajax
 function Advertisementajax() {
