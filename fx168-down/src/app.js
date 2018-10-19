@@ -7,6 +7,16 @@ var header = document.getElementsByTagName("head")[0];
 var meta = document.createElement("meta");
 meta.setAttribute("name", "viewport");
 
+
+//////////////   ---------------------------   //////////////////////////
+require(["./exportFunction.js"],function(res){
+  var funStr = res.toString();
+  console.log(JSON.stringify(funStr))
+});
+// import("./exportFunction.js").then(module=>{
+//    console.log(module)
+// })
+
 if (/Android (\d+\.\d+)/.test(ua)) {
   var version = parseFloat(RegExp.$1);
   if (version > 2.3) {

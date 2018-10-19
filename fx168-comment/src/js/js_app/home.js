@@ -550,12 +550,11 @@ function initDropLoad() {
               id: id,
               type: 1,
               // url: "http://192.168.30.175:8080/h5_v2.0" + "/app/newinner.html",  ///////////////////**测试数据**//////////
-              url: baseUrl + "/app/newinner.html", //////////////
+              url: baseUrl + "/app/newinner.html?brokerUserId="+id, //////////////
             };
-
+            console.log(jsonObj)
             var jsonStr = JSON.stringify(jsonObj);
             getDetail(jsonStr);
-
           })
 
           me.resetload();

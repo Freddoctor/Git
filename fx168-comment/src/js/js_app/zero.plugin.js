@@ -144,8 +144,9 @@ function recommendTo() {
       id: $(this).data("userid"),
       type: 1,
       // url: "http://192.168.30.175:8080/h5_v2.0/app/newinner.html"
-      url: baseUrl + "/app/newinner.html"
+      url: baseUrl + "/app/newinner.html?brokerUserId=" + $(this).data("userid")
     };
+    console.log(thisObj)
     getDetail(JSON.stringify(thisObj));
   })
 }
