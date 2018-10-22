@@ -13,8 +13,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    web: ["./src/web.js"],
-    app: ["./src/app.js"],
+    web: ["./src/js/entry.js"],
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -31,18 +30,9 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      filename: './web.html',
-      template: './src/download/web.html',
+      filename: './index.html',
+      template: './src/view/index.html',
       chunks: ['web', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './app.html',
-      template: './src/download/app.html',
-      chunks: ['app', 'vendor'],
       minify: {
         removeComments: true,
         collapseWhitespace: true
@@ -64,7 +54,7 @@ module.exports = {
   output: {
     publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "./"),
     path: path.resolve(__dirname, 'dist/'),
-    filename:'static/js/[name].js',
+    filename:'static/js/[name].[hash].js',
   },
   module: {
     rules: [{
@@ -160,17 +150,16 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader']
       },
-      // {
-      //   // test: require.resolve('./src/js/jquery-3.1.1.min.js'),
-      //   test: require.resolve('jquery'),
-      //   use: [{
-      //     loader: 'expose-loader',
-      //     options: 'jQuery'
-      //   }, {
-      //     loader: 'expose-loader',
-      //     options: '$'
-      //   }]
-      // }
+      {
+        test: require.resolve('jquery'),
+        use: [{
+          loader: 'expose-loader',
+          options: 'jQuery'
+        }, {
+          loader: 'expose-loader',
+          options: '$'
+        }]
+      }
     ]
   },
   mode: (process.env.NODE_ENV == 'production' ? 'production' : "development"),

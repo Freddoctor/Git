@@ -13,12 +13,12 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    web: ["./src/web.js"],
-    app: ["./src/app.js"],
+    web: ["./src/js/entry.js"],
   },
-  // externals: {
-  //   jquery: 'window.jQuery' //src 第三方库
-  // },
+  externals: {
+    jquery: 'window.jQuery', //src 第三方库
+    ace: 'window.ace',
+  },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
@@ -31,18 +31,9 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      filename: './web.html',
-      template: './src/download/web.html',
+      filename: './index.html',
+      template: './src/view/index.html',
       chunks: ['web', 'vendor'],
-    }),
-    new HtmlWebpackPlugin({
-      filename: './app.html',
-      template: './src/download/app.html',
-      chunks: ['app', 'vendor'],
-    }),
-    new MiniCssExtractPlugin({
-      filename: "static/css/[name].[chunkhash].css",
-      chunkFilename: "static/css/[name].[id].css"
     }),
     new webpack.DefinePlugin({
       'process.env': {
@@ -152,16 +143,16 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader']
       },
-      // {
-      //   test: require.resolve('jquery'), //配置暴露接口
-      //   use: [{
-      //     loader: 'expose-loader',
-      //     options: 'jQuery'
-      //   }, {
-      //     loader: 'expose-loader',
-      //     options: '$'
-      //   }]
-      // }
+      {
+        test: require.resolve('jquery'), //配置暴露接口
+        use: [{
+          loader: 'expose-loader',
+          options: 'jQuery'
+        }, {
+          loader: 'expose-loader',
+          options: '$'
+        }]
+      }
     ]
   },
   mode: (process.env.NODE_ENV == 'production' ? 'production' : "development"),
