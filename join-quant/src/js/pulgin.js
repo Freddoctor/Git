@@ -1,12 +1,11 @@
 (function defineMustache(global, factory) {
   if (typeof exports === "object" && exports && typeof exports.nodeName !== "string") {
-    // factory(exports)
     module.exports = factory(global);
   } else if (typeof define === "function" && define.amd) {
     define(factory(global))
   } else {
-    global.Mustache = {};
-    factory(global.Mustache)
+    global.Appsupport = {};
+    factory(global.Appsupport)
   }
 })(this, function mustacheFactory(mustache) {
   mustache.name = "mustache.js";

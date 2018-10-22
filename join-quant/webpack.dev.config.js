@@ -23,7 +23,7 @@ module.exports = {
   devServer: {
     contentBase: './dist',
     hot: true,
-    host: 'localhost',
+    host: '192.168.30.175',
     port: 8080,
     compress: true,
     inline: true,
