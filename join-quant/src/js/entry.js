@@ -1,36 +1,32 @@
-import plugin from "../plugin/common.js";
 import "../css/bootstrap-markdown-editor.css"
 import "../css/b.scss"
 import moment from 'moment';
 import pulgin from "./pulgin.js";
-var langTools = ace.require("ace/ext/language_tools");
-var editor = ace.edit("editor");
+import marked from "./markdown.js";
 
-console.log(pulgin)
+var editor = ace.edit("editor");
 var editorValue = "";
 var data = [{
-  meta: "描述文字",
-  caption: "zero",
-  value: "zero",
-  score: 1,
-  token: "identifier",
-  regex: "settings|options|global|user"
+  key:"test",
+  meta: "function test(a,b)",
+  value: "test(a,b)",
+  score: 100
+},
+{
+  key:"after_code_changed",
+  meta: "function after_code_changed(context)",
+  value: "after_code_changed(context)",
+  score: 101
 }];
 
-editor.setOptions({
-  enableBasicAutocompletion: true,
-  enableSnippets: false,
-  enableLiveAutocompletion: true, //补全代码
-});
 editor.setTheme("ace/theme/monokai"); //monokai 主题
-editor.getSession().setMode("ace/mode/javascript"); //程序语言
+// editor.getSession().setMode("ace/mode/javascript"); //程序语言
 editor.setFontSize(16);
-editor.setValue(editorValue);
+editor.setValue(editorValue, 1);
 editor.setShowPrintMargin(true);
-editor.session.on('change', function(delta) {
-  console.log(editor.getValue())
-})
-langTools.addCompleter({ ///插入函数库
+
+var langTools = ace.require("ace/ext/language_tools"); //扩展语言包
+langTools.addCompleter({
   getCompletions: function(editor, session, pos, prefix, callback) {
     if (prefix.length === 0) {
       return callback(null, []);
@@ -39,6 +35,19 @@ langTools.addCompleter({ ///插入函数库
     }
   }
 });
+
+import python_default from "./python_default.js";
+editor.getSession().setMode("ace/mode/drools"); //自定义语法高亮
+console.log(ace)
+editor.setOptions({
+  enableBasicAutocompletion: true,
+  enableSnippets: false,
+  enableLiveAutocompletion: true, //补全代码
+});
+
+editor.session.on('change', function(delta) {
+  // console.log(editor.getValue())
+})
 
 document.addEventListener('keydown', function(event) {
   var e = window.event || event;

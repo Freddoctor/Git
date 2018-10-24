@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-var autoprefixer = require('autoprefixer');
+const autoprefixer = require('autoprefixer');
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -65,7 +65,6 @@ module.exports = {
               autoprefixer: true
             }
           },
-          //'postcss-loader'
           {
             loader: 'postcss-loader',
             options: {
@@ -83,7 +82,6 @@ module.exports = {
               publicPath: '../../'
             }
           },
-          // 'css-loader',
           {
             loader: 'css-loader',
             options: {
@@ -105,14 +103,6 @@ module.exports = {
         }
       }, {
         test: /\.(png|jpg|jpeg|gif)$/,
-        // use: [{
-        //   loader: 'file-loader',
-        //   options: {
-        //     name: '[name].[hash].[ext]',
-        //     publicPath: "../img/",
-        //     outputPath: 'images/'
-        //   }
-        // }]
         use: [{
           loader: "url-loader",
           options: {
