@@ -53,8 +53,9 @@ ace.define("ace/mode/python_highlight_rules", function(require, exports, module)
       "buffer|dict|hex|object|slice|coerce|dir|id|oct|sorted|intern|" +
       "ascii|breakpoint|bytes"
     );
-
-    builtinFunctions += "|" + regexFunctions.join("|");
+    if (typeof regexFunctions && regexFunctions instanceof Array) {
+      builtinFunctions += "|" + regexFunctions.join("|");
+    }
     var keywordMapper = this.createKeywordMapper({
       "invalid.deprecated": "debugger",
       "support.function": builtinFunctions,
