@@ -1,6 +1,6 @@
 import "../css/bootstrap-markdown-editor.css"
 import "../css/b.scss"
-import moment from 'moment';
+
 import pulgin from "./pulgin.js";
 import marked from "./markdown.js";
 
@@ -20,7 +20,6 @@ var data = [{
 }];
 
 editor.setTheme("ace/theme/monokai"); //monokai 主题
-// editor.getSession().setMode("ace/mode/javascript"); //程序语言
 editor.setFontSize(16);
 editor.setValue(editorValue, 1);
 editor.setShowPrintMargin(true);
@@ -36,9 +35,12 @@ langTools.addCompleter({
   }
 });
 
-import python_default from "./python_default.js";
-editor.getSession().setMode("ace/mode/drools"); //自定义语法高亮
-console.log(ace)
+import python from "./python-ace.js";
+editor.getSession().setMode("ace/mode/pythonace"); //自定义语法高亮
+
+editor.getSession().setUseWrapMode(true);
+editor.getSession().setUseWorker(false);
+
 editor.setOptions({
   enableBasicAutocompletion: true,
   enableSnippets: false,
@@ -49,17 +51,23 @@ editor.session.on('change', function(delta) {
   // console.log(editor.getValue())
 })
 
+/*
+ * TODO: ctrl + s屏蔽
+ */
 document.addEventListener('keydown', function(event) {
   var e = window.event || event;
   var keycode = e.keyCode || e.which;
   if (e.ctrlKey && keycode == 83) {
-    //Ctrl + S
     e.preventDefault();
     window.event.returnValue = false;
   }
 })
 
-var timeElement = $("#time time");
-setInterval(function() {
-  timeElement.html(moment().format('YYYY-MM-DD HH:mm:ss'));
-}, 1000)
+/*
+ * TODO: 时间展示
+ */
+// import moment from 'moment';
+// var timeElement = $("#time time");
+// setInterval(function() {
+//   timeElement.html(moment().format('YYYY-MM-DD HH:mm:ss'));
+// }, 1000)

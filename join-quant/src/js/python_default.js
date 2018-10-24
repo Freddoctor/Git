@@ -39,17 +39,70 @@ ace.define("ace/mode/drools_highlight_rules", function(require, exports, module)
   exports.DroolsHighlightRules = DroolsHighlightRules;
 });
 
+//折叠
+ace.define("ace/mode/folding/drools_fold", function(require, exports, module) {
+  "use strict";
+  var Range = require("../../range").Range;
+  var FoldMode = exports.FoldMode = function() {};
+  (function() {
+    var _this = this;
+    this.endRow = 0;
+    this.startColumn = 0;
+    this.foldingStartMarker = /(\{|\[)[^\}\]]*$|^\s*(\/\*)/;
+    this.foldingStopMarker = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
+    this.getFoldWidget = function(session, foldStyle, row) {
+      var line = session.getLine(row);
+      if (line.match(_this.foldingStartMarker)) {
+        _this.startColumn = line.length
+        return "start";
+      }
+      if (line.match(_this.foldingStopMarker)) {
+        _this.endRow = row;
+      }
+      return "";
+    };
+    this.getFoldWidgetRange = function(session, foldStyle, row) {
+      console.warn(session, foldStyle, row);
+      var startRow = row,
+        startColumn = 4;
+      var endRow = row + 1,
+        endColumn = 3;
+      var line = session.getLine(endRow);
+      //new Range(Number startRow, Number startColumn, Number endRow, Number endColumn)
+      while (!session.getLine(endRow).match(_this.foldingStopMarker)) {
+        endRow += 1;
+        if (endRow > _this.endRow) break;
+      }
+      return new Range(startRow, startColumn, endRow, endColumn);
+    };
+  }).call(FoldMode.prototype);
+});
+
 ace.define("ace/mode/drools", function(require, exports, module) {
   "use strict";
   var oop = require("../lib/oop");
   var TextMode = require("./text").Mode;
   var DroolsHighlightRules = require("./drools_highlight_rules").DroolsHighlightRules;
+  var DroolsFoldMode = require("ace/mode/folding/drools_fold").FoldMode;
   var DroolsMode = function() {
     this.HighlightRules = DroolsHighlightRules;
+    this.foldingRules = new DroolsFoldMode();
   };
   oop.inherits(DroolsMode, TextMode);
   (function() {
     this.$id = "ace/mode/drools"
-  }).call(DroolsMode.prototype),
-    exports.Mode = DroolsMode;
+  }).call(DroolsMode.prototype);
+  (function() {
+    this.getNextLineIndent = function(state, line, tab) {
+      var indent = this.$getIndent(line);
+      if (state == "start") {
+        var match = line.match(/^.*[\{\(\[]\s*$/); // 如果是{[(结尾的，那么下一行的缩进加一
+        if (match) {
+          indent += tab;
+        }
+      }
+      return indent;
+    };
+  }).call(DroolsMode.prototype);
+  exports.Mode = DroolsMode;
 });
