@@ -1,4 +1,22 @@
-body {}
+@font-face {
+  font-family: 'iconfont';
+  src: url("../font/iconfont.eot");
+  src: url("../font/iconfont.eot?#iefix") format('embedded-opentype'), url("../font/iconfont.woff") format('woff'), url("../font/iconfont.ttf") format('truetype'),;
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
 
 #editor {
   width: 100%;
@@ -37,4 +55,75 @@ body {}
 .ace_marker-layer .ace_line-hover {
   background: #333!important;
   border: none !important;
+}
+
+.right {
+  float: right;
+}
+
+ins {
+  font-style: normal;
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+.toolbar-inner {
+  position: relative;
+
+  ul {
+    z-index: 99999;
+    position: absolute;
+    right: 60px;
+    top: 40px;
+    background: #fff;
+    width: 180px;
+    li {
+      height: 30px;
+      padding: 0 20px;
+      line-height: 30px;
+      cursor: pointer;
+      color: #333;
+
+      &:hover {
+        background: #006dcc;
+        color: #fff;
+      }
+
+      &.active {
+        position: relative;
+
+        &:before {
+          font-family: "iconfont" !important;
+          position: absolute;
+          left: 4px;
+          top: 0;
+          font-size: 12px;
+          content: "\e614";
+        }
+      }
+    }
+  }
+}
+
+.pull-options {
+  background: #fff;
+  display: flex;
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    margin: 0 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+
+    .small {
+      font-size: 8px;
+    }
+  }
 }

@@ -20,8 +20,9 @@ var data = [{
 }];
 
 editor.setTheme("ace/theme/monokai"); //monokai 主题
-editor.setFontSize(16);
-editor.setValue(editorValue, 1);
+editor.setFontSize(16); //设置字体
+editor.setValue(editorValue, 1); //设置初始化内容
+editor.setKeyboardHandler("");//设置移动焦点光标 主题
 editor.setShowPrintMargin(true);
 
 var langTools = ace.require("ace/ext/language_tools"); //扩展语言包
@@ -78,3 +79,8 @@ document.addEventListener('keydown', function(event) {
  */
 
 import "./ace-placeholder.js";
+
+/*
+ * TODO: 用户自定义 ui
+ */
+ import "./ui-setting.js"
