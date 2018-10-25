@@ -71,3 +71,10 @@ document.addEventListener('keydown', function(event) {
 // setInterval(function() {
 //   timeElement.html(moment().format('YYYY-MM-DD HH:mm:ss'));
 // }, 1000)
+
+
+/*
+ * TODO: placeholder 文字
+ */
+
+import "./ace-placeholder.js";
