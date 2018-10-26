@@ -24,7 +24,7 @@ module.exports = {
     contentBase: './dist',
     hot: true,
     host: '192.168.30.175',
-    port: 8080,
+    port: 8888,
     compress: true,
     inline: true,
   },

@@ -72,9 +72,9 @@ ul li {
 
 .toolbar-inner {
   position: relative;
-
   ul {
-    z-index: 99999;
+    display: none;
+    z-index: 9;
     position: absolute;
     right: 60px;
     top: 40px;

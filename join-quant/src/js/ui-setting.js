@@ -1,7 +1,7 @@
 var editor = ace.edit("editor");
 
 var config = {
-  small:12,
+  small: 12,
   middle: 16,
   big: 20,
   eclipse: "ace/theme/eclipse",
@@ -10,6 +10,15 @@ var config = {
   default: "",
   emacs: "ace/keyboard/emacs"
 }
+
+$(".pull-options").on("click", ".setting-btn", function() {
+  $("#setting-theme").toggle();
+  return false;
+})
+
+$("body").on("click", function(e) {
+  $("#setting-theme").toggle();
+})
 
 $("#setting-theme li").each(function(i) {
   $(this).click(settingTheme.bind($(this)))
