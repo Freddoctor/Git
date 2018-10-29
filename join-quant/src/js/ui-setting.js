@@ -24,6 +24,10 @@ $("#setting-theme li").each(function(i) {
   $(this).click(settingTheme.bind($(this)))
 })
 
+$("input").on("input propertychange", function() {
+
+});
+
 function settingTheme() {
   var fontsize, theme, keybinding;
   fontsize = $(this).data("fontsize");

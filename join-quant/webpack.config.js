@@ -48,8 +48,6 @@ module.exports = {
       }
     }),
     new ScriptExtHtmlWebpackPlugin(),
-    // new webpack.NamedModulesPlugin(),
-    // new webpack.HotModuleReplacementPlugin()
   ],
   output: {
     publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "./"),
@@ -72,7 +70,6 @@ module.exports = {
               autoprefixer: true
             }
           },
-          //'postcss-loader'
           {
             loader: 'postcss-loader',
             options: {
@@ -90,7 +87,6 @@ module.exports = {
               publicPath: '../../'
             }
           },
-          // 'css-loader',
           {
             loader: 'css-loader',
             options: {
@@ -141,6 +137,10 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader']
+      },
+      {
+        test: /\.hbs$/,
+        loader: "handlebars-loader"
       },
       {
         test: require.resolve('jquery'),

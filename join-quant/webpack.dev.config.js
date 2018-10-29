@@ -134,6 +134,10 @@ module.exports = {
         use: ['file-loader']
       },
       {
+        test: /\.hbs$/,
+        loader: "handlebars-loader"
+      },
+      {
         test: require.resolve('jquery'), //配置暴露接口
         use: [{
           loader: 'expose-loader',
