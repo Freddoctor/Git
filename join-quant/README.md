@@ -4,6 +4,7 @@
     bootstrap-markdown
     bootstrap-markdown-editor
   ````
+  webpack构建(原采用gulp)
   jquery
   ace
   highcharts highstock
