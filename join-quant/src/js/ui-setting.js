@@ -17,7 +17,7 @@ $(".pull-options").on("click", ".setting-btn", function() {
 })
 
 $("body").on("click", function(e) {
-  $("#setting-theme").toggle();
+  $("#setting-theme").hide();
 })
 
 $("#setting-theme li").each(function(i) {

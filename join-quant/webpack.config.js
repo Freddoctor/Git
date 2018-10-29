@@ -112,14 +112,6 @@ module.exports = {
         }
       }, {
         test: /\.(png|jpg|jpeg|gif)$/,
-        // use: [{
-        //   loader: 'file-loader',
-        //   options: {
-        //     name: '[name].[hash].[ext]',
-        //     publicPath: "../img/",
-        //     outputPath: 'images/'
-        //   }
-        // }]
         use: [{
           loader: "url-loader",
           options: {
