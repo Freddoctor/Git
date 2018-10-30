@@ -29,20 +29,56 @@ $("input").on("input propertychange", function() {
 });
 
 function settingTheme() {
-  var fontsize, theme, keybinding;
-  fontsize = $(this).data("fontsize");
-  theme = $(this).data("theme");
-  keybinding = $(this).data("keybinding");
-  if (fontsize) {
-    editor.setFontSize(config[fontsize]);
-    $(this).addClass("active").siblings(".fontsize").removeClass("active");
-  }
-  if (theme) {
-    editor.setTheme(config[theme]);
-    $(this).addClass("active").siblings(".theme").removeClass("active");
-  }
-  if (keybinding) {
-    editor.setKeyboardHandler(config[keybinding]);
-    $(this).addClass("active").siblings(".keybinding").removeClass("active");
+  var fontsize = $(this).data("fontsize"),
+    theme = $(this).data("theme"),
+    keybinding = $(this).data("keybinding"),
+    fullscreen = $(this).data("fullscreen");
+  fontsize && setFont($(this), fontsize);
+  theme && setThemes($(this), theme);
+  keybinding && setKeybind($(this), keybinding);
+  fullscreen && toggleScreen();
+}
+
+function setKeybind(elem, keybinding) {
+  editor.setKeyboardHandler(config[keybinding]);
+  elem.addClass("active").siblings(".keybinding").removeClass("active");
+}
+
+function setThemes(elem, theme) {
+  editor.setTheme(config[theme]);
+  elem.addClass("active").siblings(".theme").removeClass("active");
+}
+
+function setFont(elem, fontsize) {
+  editor.setFontSize(config[fontsize]);
+  elem.addClass("active").siblings(".fontsize").removeClass("active");
+}
+
+function toggleScreen() {
+  if (document.fullscreenElement || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement) {
+    ExitScreen();
+  } else {
+    FullScreen();
   }
 }
+
+function FullScreen() {
+  var docElm = document.documentElement;
+  var api = ["requestFullscreen", "mozRequestFullScreen", "webkitRequestFullScreen", "msRequestFullscreen"];
+  for (var i = 0; i < api.length; i++) {
+    if (docElm[api[i]] && docElm[api[i]]()) break;
+  }
+}
+
+function ExitScreen() {
+  var api = ["exitFullscreen", "mozCancelFullScreen", "webkitCancelFullScreen", "msExitFullscreen"];
+  for (var i = 0; i < api.length; i++) {
+    if (document[api[i]] && document[api[i]]()) break;
+  }
+}
+
+/*
+ * 微信端引入
+ */
+import wx from "../plugin/weixin-plugin.js";
+wx.wxShare("微信测试", "试试", "https://m.fx168.com", "https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png")

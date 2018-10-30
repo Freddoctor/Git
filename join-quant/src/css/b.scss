@@ -57,10 +57,6 @@
   border: none !important;
 }
 
-.right {
-  float: right;
-}
-
 ins {
   font-style: normal;
   text-decoration: none;
@@ -72,6 +68,7 @@ ul li {
 
 .toolbar-inner {
   position: relative;
+
   ul {
     display: none;
     z-index: 9;
@@ -80,6 +77,7 @@ ul li {
     top: 40px;
     background: #fff;
     width: 180px;
+
     li {
       height: 30px;
       padding: 0 20px;
@@ -126,4 +124,29 @@ ul li {
       font-size: 8px;
     }
   }
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+.clearfix:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.code-area {
+  width: 49%;
+}
+.result-iframe {
+  width:49%;
 }

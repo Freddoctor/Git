@@ -12,62 +12,65 @@
 
 <body>
   <h2 id="time"><time></time></h2>
-  <section class="toolbar-inner">
-    <div class="right pull-options">
-      <span>API</span>
-      <span><ins class="iconfont">&#xf0a8;</ins></span>
-      <span class="setting-btn"><ins class="iconfont">&#xe608;</ins> <ins class="iconfont small">&#xe615;</ins></span>
-      <span><ins class="iconfont">&#xe620;</ins></span>
+  <section class="left code-area">
+    <div class="toolbar-inner">
+      <div class="right pull-options">
+        <span>API</span>
+        <span><ins class="iconfont">&#xf0a8;</ins></span>
+        <span class="setting-btn"><ins class="iconfont">&#xe608;</ins> <ins class="iconfont small">&#xe615;</ins></span>
+        <span><ins class="iconfont">&#xe620;</ins></span>
+      </div>
+      <ul id="setting-theme">
+        <li class=" fontsize" data-fontsize="small">
+          小号字体
+        </li>
+        <li class="active fontsize" data-fontsize="middle">
+          中号字体
+        </li>
+        <li class="fontsize" data-fontsize="big">
+          大号字体
+        </li>
+        <li class="theme" data-theme="eclipse">
+          浅色背景
+        </li>
+        <li class="active theme" data-theme="monokai">
+          深色背景A
+        </li>
+        <li class="theme" data-theme="github">
+          深色背景B
+        </li>
+        <li class="active keybinding" data-keybinding="default">
+          默认
+        </li>
+        <li class="keybinding" data-keybinding="emacs">
+          Emacs
+        </li>
+        <li class="fullscreen" data-fullscreen="fullscreen">全屏</li>
+      </ul>
     </div>
-    <ul id="setting-theme">
-      <li class=" fontsize" data-fontsize="small">
-        小号字体
-      </li>
-      <li class="active fontsize" data-fontsize="middle">
-        中号字体
-      </li>
-      <li class="fontsize" data-fontsize="big">
-        大号字体
-      </li>
-      <li class="theme" data-theme="eclipse">
-        浅色背景
-      </li>
-      <li class="active theme" data-theme="monokai">
-        深色背景A
-      </li>
-      <li class="theme" data-theme="github">
-        深色背景B
-      </li>
-      <li class="active keybinding" data-keybinding="default">
-        默认
-      </li>
-      <li class="keybinding" data-keybinding="emacs">
-        Emacs
-      </li>
-      <li>全屏</li>
-    </ul>
-  </section>
-  <div class="wrap">
     <div class="code-iframe">
       <form>
         <div name="text" id="editor"></div>
       </form>
     </div>
-    <div class="result-iframe">
-      <div class="chater">
-        插件 highchat
-      </div>
-      <div class="logger">
-        <pre>
-          <code class="python"></code>
-        </pre>
-      </div>
+  </section>
+  <div class="result-iframe right">
+    <div class="chater"  id="container">
+      插件 highchat
+    </div>
+    <div class="logger">
+      <pre>
+        <code class="python"></code>
+      </pre>
     </div>
   </div>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ext-language_tools.js"></script>
+  <script src="https://img.hcharts.cn/highstock/highstock.js"></script>
+  <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+  <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 </body>
 
 </html>
