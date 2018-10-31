@@ -5,16 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" rel="stylesheet"> -->
+  <title>检测策略</title>
 </head>
 
 <body>
-  <h2 id="time"><time></time></h2>
   <section class="left code-area">
-    <div class="toolbar-inner">
+    <div class="toolbar-inner clearfix">
       <div class="right pull-options">
+        <span id="time"><time>运行代码</time></span>
         <span>API</span>
         <span><ins class="iconfont">&#xf0a8;</ins></span>
         <span class="setting-btn"><ins class="iconfont">&#xe608;</ins> <ins class="iconfont small">&#xe615;</ins></span>
@@ -49,28 +47,51 @@
       </ul>
     </div>
     <div class="code-iframe">
-      <form>
         <div name="text" id="editor"></div>
-      </form>
     </div>
   </section>
   <div class="result-iframe right">
-    <div class="chater"  id="container">
-      插件 highchat
+    <div class="chater" id="container">
+      请运行代码......
     </div>
-    <div class="logger">
-      <pre>
-        <code class="python"></code>
-      </pre>
+    <div class="logger-container">
+      <ul id="logger" class="clearfix">
+        <li class="left active">日志</li>
+        <li class="left">错误</li>
+      </ul>
+      <aside class="logger-article">
+        <div class="logs-details start-details">
+          <span class="message">正在加载日志...</span>
+        </div>
+        <div class="logs-details end-details hidden">
+          <pre>
+            <p class="python">
+              <span class="log-date">2016-06-01 09:30:00</span> - <span class="log-warning">WARNING</span> -
+              开仓数量必须是100的整数倍，调整为 9500: Order(security=000001.XSHE mode=OrderValue: _value=100000.0
+              style=MarketOrderStyle side=long margin=False entrust_time=None)
+            </p>
+            <p class="python">
+              <span class="log-date">2016-06-01 09:30:00</span> - <span class="log-info">INFO</span> -
+              开仓数量必须是100的整数倍，调整为 9500: Order(security=000001.XSHE mode=OrderValue: _value=100000.0
+              style=MarketOrderStyle side=long margin=False entrust_time=None)
+            </p>
+          </pre>
+        </div>
+        <div class="logs-details error-details hidden">
+          <pre>
+            <p class="python">
+              <span class="log-date">2016-06-01 09:30:00</span> - <span class="log-error">WARNING</span> -
+              开仓数量必须是100的整数倍，调整为 9500: Order(security=000001.XSHE mode=OrderValue: _value=100000.0
+              style=MarketOrderStyle side=long margin=False entrust_time=None)
+            </p>
+          </pre>
+        </div>
+      </aside>
     </div>
   </div>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ext-language_tools.js"></script>
-  <script src="https://img.hcharts.cn/highstock/highstock.js"></script>
-  <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
-  <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 </body>
 
 </html>
