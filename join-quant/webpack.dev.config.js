@@ -14,7 +14,8 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 module.exports = {
   entry: {
     web: ["./src/js/entry.js"],
-    api: ["./src/js/api.js"]
+    api: ["./src/js/api.js"],
+    shoplist:["./src/js/shoplist.js"]
   },
   externals: {
     jquery: 'window.jQuery', //src 第三方库
@@ -39,6 +40,11 @@ module.exports = {
       filename: './api.html',
       template: './src/view/api.html',
       chunks: ['api', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './shoplist.html',
+      template: './src/view/shoplist.html',
+      chunks: ['shoplist', 'vendor'],
     }),
     new webpack.DefinePlugin({
       'process.env': {

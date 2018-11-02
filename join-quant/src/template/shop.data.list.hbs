@@ -1,0 +1,49 @@
+{{# data}}
+{{#if type}}
+  <section class="content-item" data-type="{{type}}">
+    <div class="item-head">
+      <aside class="head-title">
+        <a href="javascript:;">{{name}}</a>
+      </aside>
+      <aside class="head-autor">
+        <span>策略作者:</span>
+        <a href="javascript:;">
+        <img src="{{headImg}}">
+        <em>{{alias}}</em>
+      </a>
+      </aside>
+    </div>
+    <div class="item-body ">
+      <aside class="body-images ">
+        <img src="{{backtestThumbnailUrl}}" alt="">
+      </aside>
+      <aside class="body-right-data ">
+        <p>累计收益</p>
+        <h3>{{algorithmReturn}}</h3>
+        <ul class="list-price clearfix">
+          <li>
+            <p class="kisa">最近一个月</p>
+            <p class="redan">{{month30Return}}%</p>
+          </li>
+          <li>
+            <p class="kisa">最近三个月</p>
+            <p class="redan">{{month30ReturnThree}}%</p>
+          </li>
+          <li>
+            <p class="kisa">最近六个月</p>
+            <p class="redan">{{month30ReturnSix}}%</p>
+          </li>
+          <li>
+            <p class="kisa">适合资金</p>
+            <p class="redan">{{fitCash}}以下</p>
+          </li>
+        </ul>
+        <div class="data-price">
+          <span><i>{{price}}元/月</i></span>
+          <span><ins>剩余数量：</ins><em>{{maxSubscribeCount}}</em></span>
+        </div>
+      </aside>
+    </div>
+  </section>
+{{/if}}
+{{/data}}
