@@ -1,0 +1,171 @@
+@import "public.scss";
+
+.left-nav {
+  float: left;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 20%;
+  background: #fff;
+
+  .nav-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    padding: 12px;
+    border-right: 2px solid #ebeef5;
+
+    li {
+      a {
+        text-align: left;
+        display: block;
+        color: #337ab7;
+        line-height: 1.5em;
+        padding: 5px 0;
+
+        &.first-label {
+          font-weight: bolder;
+          font-size: 14px;
+        }
+
+        &.tree-label {
+          text-indent: 1em;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.right-article {
+  float: right;
+  position: relative;
+  right: 0;
+  top: 0;
+  width: 80%;
+  height: 100%;
+  background: #fff;
+
+  #jq-api-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    padding: 12px;
+  }
+}
+
+h2 {
+  font-size: 28px;
+  margin: 1.5em 0;
+  font-weight: normal;
+  color: #333;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 0;
+  color: #333;
+}
+
+h4 {
+  font-size: 18px;
+  margin: 1.5em 0;
+  font-weight: 500;
+}
+
+a {
+  color: #0e90d2;
+}
+
+pre {
+  border: 0;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+code {
+  font-size: 14px;
+  padding: 2px 4px;
+  color: #c7254e;
+  background-color: #f8f8f8;
+  border-radius: 0;
+}
+
+p {
+  font-size: 14px;
+  margin: 0 0 1.1em;
+  color: #333;
+}
+
+#jq-api-content {
+  color: #333;
+
+  ol,
+  ul {
+    padding-left: 2em;
+    margin-bottom: 1.1em;
+
+    li {
+      font-size: 14px;
+      line-height: 1.5em;
+    }
+  }
+
+  ol {
+    list-style: decimal;
+
+    li {
+      list-style: decimal;
+    }
+  }
+
+  ul {
+    list-style: initial;
+
+    li {
+      list-style: initial;
+    }
+  }
+}
+
+#jq-api-content section {
+  margin: 10px 0;
+
+  div.header {
+    background: #eff6ff;
+    border-bottom: 1px solid #e1e1e3;
+  }
+
+  label {
+    display: inline-block;
+    min-width: 20%;
+    padding: 10px;
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  label:nth-child(2) {
+    width: 70%;
+  }
+
+  div.body div.group {
+    position: relative;
+    border-bottom: 1px solid #e1e1e3;
+  }
+
+  article {
+    display: none;
+    padding: 10px;
+    background: #f0f0f2;
+  }
+}

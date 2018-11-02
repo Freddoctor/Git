@@ -14,10 +14,12 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 module.exports = {
   entry: {
     web: ["./src/js/entry.js"],
+    api: ["./src/js/api.js"]
   },
-  // externals: {
-  //   jquery: 'window.jQuery' //src 第三方库
-  // },
+  externals: {
+    jquery: 'window.jQuery', //src 第三方库
+    ace: 'window.ace',
+  },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
@@ -38,6 +40,15 @@ module.exports = {
         collapseWhitespace: true
       }
     }),
+    new HtmlWebpackPlugin({
+      filename: './api.html',
+      template: './src/view/api.html',
+      chunks: ['api', 'vendor'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
       chunkFilename: "static/css/[name].[id].css"
@@ -52,7 +63,7 @@ module.exports = {
   output: {
     publicPath: (process.env.NODE_ENV !== 'production' ? '/' : "./"),
     path: path.resolve(__dirname, 'dist/'),
-    filename:'static/js/[name].[hash].js',
+    filename: 'static/js/[name].[hash].js',
   },
   module: {
     rules: [{
@@ -136,7 +147,12 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader']
+        use: [{
+          loader: "file-loader",
+          options: {
+            outputPath: 'static/font/'
+          }
+        }]
       },
       {
         test: /\.hbs$/,
@@ -166,12 +182,12 @@ module.exports = {
     ],
     splitChunks: {
       cacheGroups: {
-            commons: {
-                test: /[\\/]node_modules[\\/]/,
-                name: "vendor",
-                chunks: "all"
-            }
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all"
         }
+      }
     }
   },
 }

@@ -14,6 +14,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 module.exports = {
   entry: {
     web: ["./src/js/entry.js"],
+    api: ["./src/js/api.js"]
   },
   externals: {
     jquery: 'window.jQuery', //src 第三方库
@@ -29,11 +30,15 @@ module.exports = {
     inline: true,
   },
   plugins: [
-    // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
       filename: './index.html',
       template: './src/view/index.html',
       chunks: ['web', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './api.html',
+      template: './src/view/api.html',
+      chunks: ['api', 'vendor'],
     }),
     new webpack.DefinePlugin({
       'process.env': {
@@ -131,7 +136,12 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader']
+        use: [{
+          loader: "file-loader",
+          options: {
+            outputPath: 'static/font/'
+          }
+        }]
       },
       {
         test: /\.hbs$/,

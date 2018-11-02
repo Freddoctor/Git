@@ -1,0 +1,18 @@
+{{#if data}}
+  <ul>
+    {{#data}}
+      <li>
+        <a href="#{{title}}" class="first-label">{{title}}</a>
+        {{#if children }}
+          <ul>
+            {{#this.children}}
+              <li>
+                <a href="#{{this.title}}" class="tree-label">{{this.title}}</a>
+              </li>
+            {{/this.children}}
+          </ul>
+        {{/if}}
+      </li>
+    {{/data}}
+  </ul>
+{{/if}}
