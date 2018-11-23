@@ -7,6 +7,7 @@
     "autoprefixer-loader": "^3.2.0",
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
+    "crypto-js": "^3.1.9-1",
     "expose-loader": "^0.7.5",
     "handlebars": "^4.0.12",
     "handlebars-loader": "^1.7.0",

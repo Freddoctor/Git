@@ -1,0 +1,52 @@
+{{#if postArr}}
+<article class="template-wrap">
+  <ul>
+    {{#postArr}}
+    <li>
+      <div class="dataInfo ">
+        <aside class="istop ">
+          {{#if isTop}}
+            <ins>置顶</ins>
+          {{/if}}
+          <a href="javascript:;">{{title}}</a>
+        </aside>
+        <aside class="lastReplyDate ">
+          <a href="javascript:;">{{lastReplyUser.alias}}</a> 
+          · {{lastReplyTime}}
+        </aside>
+      </div>
+      <div class="summary-backtest">
+        <p>
+          {{content}}
+        </p>
+      </div>
+      <div class="userInfo">
+        <aside class="userImage">
+          {{#if user.headImgKey}}
+            <img src="https://joinquant-image.b0.upaiyun.com/{{user.headImgKey}}" alt="">
+          {{/if}}
+          <span>{{user.alias}}</span>
+        </aside>
+        <aside class="useraddtime">
+          发布于 {{addTime}}
+        </aside>
+        <aside class="countGroup">
+          <span>
+            <ins class="iconfont icon-view">&#xe7d8;</ins>
+            <i>{{viewCount}}</i>
+          </span>
+          <span>
+            <ins class="iconfont icon-reply">&#xe643;</ins>
+            <i>{{replyCount}}</i>
+          </span>
+          <span>
+            <ins class="iconfont icon-collect">&#xe501;</ins>
+            <i>{{collectionCount}}</i>
+          </span>
+        </aside>
+      </div>
+    </li>
+    {{/postArr}}
+  </ul>
+</article>
+{{/if}}

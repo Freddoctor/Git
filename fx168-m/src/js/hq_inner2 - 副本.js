@@ -16,18 +16,17 @@ import {
 import io from "./socket.io.js";
 // import echarts from "echarts";
 import echarts from "./echarts.js";
-import Highcharts from "./highstock.js"
 
 var socket = null;
 $(function() {
 
-  //initinnerSocket();
-  // socket.on('disconnect', function() {
-  //   var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
-  //   var index_socket = Math.floor((Math.random() * socketUrlArr.length));
-  //   socketUrl = socketUrlArr[index_socket];
-  //   initinnerSocket();
-  // });
+  initinnerSocket();
+  socket.on('disconnect', function() {
+    var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
+    var index_socket = Math.floor((Math.random() * socketUrlArr.length));
+    socketUrl = socketUrlArr[index_socket];
+    initinnerSocket();
+  });
   var selected = 1;
   sessionStorage.hq_inner_left == 0;
   sessionStorage.clickType = "Min01";
@@ -275,7 +274,7 @@ $(function() {
       success: initData
     })
   }
-  // var chart= $('#container').highcharts();
+  // var chart=$('#container').highcharts();
   // chart.showLoading();
   // 分时图回调函数
   function fillZero(value) { //补零
@@ -318,10 +317,10 @@ $(function() {
       hqMinDate.push(MinDataData[i].date);
       var dateStr = MinDataData[i].date;
       var dateArrss = dateStr.split(" ");
-      dataSort.unshift((dateStr));
+      dataSort.unshift(dateStr);
       dateArr.unshift(dateArrss[1]);
       var iosTime = MinDataData[i].date.replace(/\-/g, "/");
-      closeArr.unshift([new Date(iosTime),parseFloat(MinDataData[i].closePrice)]);
+      closeArr.unshift([new Date(iosTime).getTime(),MinDataData[i].closePrice]);
       timeRange.unshift(MinDataData[i].closePrice);
       newClose.unshift(MinDataData[i].closePrice);
     }
@@ -336,69 +335,280 @@ $(function() {
     // 开始画图
     var version = '3.2.2';
     var dom = document.getElementById("container");
-    var day = Highcharts.dateFormat('%Y/%m/%d', 1542931200000)
-    , breaks = [{
-        from: new Date(day + ' 11:30').getTime(),
-        to: new Date(day + ' 13:00').getTime(),
-        breakSize:3600000
-    }], minX = Number(new Date("2018-11-23 09:30:00").getTime())
-      , maxX = Number(new Date("2018-11-23 15:00:00").getTime())
-      , height = $('#container').height()
-      , width = $('#container').width();
-      console.log(day,minX,maxX)
-      var options = {
-        chart: {
-            // type: 'line'
-            spacing: 1,
-            borderRadius: 0,
-            animation: false,
+    var myChart = echarts.init(dom);
+    console.log(dataSort)
+    var option = {
+      title: {
+        left: 0,
+        text: '',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            triggerOn:"none",
+            crossStyle: {
+              color: "#3285ea",
+              type:"solid"
+            },
+            snap:true,
         },
-        title: {
-            text: ''
-        },
-        xAxis: {
-            // categories: dataSort,
-            // type:"datetime",
-            max:maxX,
-            min:minX,
-            lineWidth: 0,
-            gridLineWidth: 1,
-            // tickLength: 0,
-            // labels: {
-            //     autoRotation: false,
-            //     autoRotationLimit: 120,
-            //     formatter: function() {
-            //         if (this.value === new Date(day + ' 11:30').getTime()) {
-            //             return '11:30/13:00';
-            //         }
-            //         return Highcharts.dateFormat('%H:%M', this.value);
-            //     }
-            // },
-            breaks: breaks,
-            tickPositioner: function() {
-                return [
-                  Highcharts.dateFormat('%H:%M', new Date(day + ' 09:30')),
-                  Highcharts.dateFormat('%H:%M', new Date(day + ' 10:30')),
-                   Highcharts.dateFormat('%H:%M', new Date(day + ' 11:30')),
-                    Highcharts.dateFormat('%H:%M', new Date(day + ' 14:00')),
-                    Highcharts.dateFormat('%H:%M', new Date(day + ' 15:00'))
-                ]
+        formatter:function(params){
+          return  params[0].marker+ params[0].seriesName + " " + params[0].data[1];
+        }
+      },
+      axisPointer: {
+          show:true,
+          type:'line',
+          triggerOn:"mousemove",
+          lineStyle:{
+            color: "#3285ea",
+          },
+          snap:true,
+      },
+      grid: [{
+        left: '2%',
+        right: '7%',
+      }],
+      xAxis: {
+        type:"time",
+        left: 0,
+        min:new Date("2018/11/23 09:25:00").getTime(),
+        max:new Date("2018/11/23 15:00:00").getTime(),
+        splitNumber:4,
+        boundaryGap: false,
+        data:dateArr,
+        axisPointer:{
+          label:{
+            formatter:function(params){
+              return fillZero(new Date(params.value).getHours()) + " : " + fillZero(new Date(params.value).getMinutes()) ;
             }
+          }
         },
-        yAxis: {
-            title: {
-                text: ''
+        axisLabel: { //调整x轴的lable
+          textStyle: {
+            fontSize: 20, // 让字体变大
+            color: '#3E454D'
+          },
+          formatter:function(params){
+             if (new Date(params).getTime() === new Date("2018/11/23" + ' 11:30').getTime()) {
+                  return '11:30/13:00';
+              }
+              return fillZero(new Date(params).getHours()) + " : " + fillZero(new Date(params).getMinutes()) 
+          }
+        },
+      },
+      yAxis: {
+        position: 'right',
+        name:"分时",
+        axisLabel: { //调整x轴的lable
+          textStyle: {
+            fontSize: 20, // 让字体变大
+            color: '#3E454D'
+          }
+        },
+        splitLine: {
+          lineStyle: {
+            color: '#1a1e24',
+            width: 2
+          }
+        },
+        splitNumber: 3,
+        type: 'value',
+        boundaryGap: [0, '100%'],
+        min: min,
+        max: max
+      },
+      series: [{
+          name: '分时',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          sampling: 'average',
+          itemStyle: {
+            normal: {
+              color: '#84b3ff'
             }
-        },
-        credits: {
-            enabled: false
-        },
-        series: [{
-            data: closeArr
-        }]
+          },
+          areaStyle: {
+            normal: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: '#2b3c59',
+                opacity: 0.2
+              }, {
+                offset: 1,
+                color: '#2b3c59',
+                opacity: 0.2
+              }])
+            }
+          },
+          data: closeArr
+        }
+      ]
     };
-    var chart = Highcharts.chart('container', options);
-    // chart.setDate()
+    // document.write(JSON.stringify(option))
+    // var option = {
+    //   title: {
+    //     left: 0,
+    //     text: '',
+    //   },
+    //   tooltip: {
+    //     trigger: 'axis',
+    //     axisPointer: {
+    //         type: 'cross',
+    //         triggerOn:"none",
+    //         crossStyle: {
+    //           color: "#3285ea",
+    //           type:"solid"
+    //         },
+    //         snap:true,
+    //     },
+    //     // formatter:function(params){
+    //     //   return  params[0].marker+ params[0].seriesName + " " + params[0].data[1];
+    //     // }
+    //   },
+    //   axisPointer: {
+    //       show:true,
+    //       type:'line',
+    //       triggerOn:"mousemove",
+    //       lineStyle:{
+    //         color: "#3285ea",
+    //       },
+    //       snap:true,
+    //   },
+    //   grid: [{
+    //     left: '2%',
+    //     right: '7%',
+    //   }],
+    //   xAxis: {
+    //     type: 'category',
+    //     boundaryGap: true,
+    //     left: 0,
+    //     data:dataSort,
+    //     axisLabel: { //调整x轴的lable
+    //       textStyle: {
+    //         fontSize: 20, // 让字体变大
+    //         color: '#3E454D'
+    //       },
+    //       // interval:function(index,value){
+    //       //     console.log(index,value);
+    //       //     if(value)
+    //       //     return true;
+    //       // },
+    //       // formatter:function(value, index){
+    //       //   console.log(value,index);
+    //       // },
+    //     },
+    //     splitNumber:5,
+    //     splitLine:{
+    //       show:true
+    //     },
+    //     axisTick:{
+    //       length:50
+    //     },
+    //     min:function(value) {
+    //         console.warn(value);
+    //         return value.min;
+    //     },
+    //     max:function(value) {
+    //         console.warn(value);
+    //         return value.max;
+    //     },
+    //   },
+    //   yAxis: {
+    //     position: 'right',
+    //     name:"分时",
+    //     axisLabel: { //调整x轴的lable
+    //       textStyle: {
+    //         fontSize: 20, // 让字体变大
+    //         color: '#3E454D'
+    //       }
+    //     },
+    //     splitLine: {
+    //       lineStyle: {
+    //         color: '#1a1e24',
+    //         width: 2
+    //       }
+    //     },
+    //     splitNumber: 3,
+    //     type: 'value',
+    //     boundaryGap: [0, '100%'],
+    //     min: min,
+    //     max: max
+    //   },
+    //   series: [{
+    //       name: '分时',
+    //       type: 'line',
+    //       smooth: true,
+    //       symbol: 'none',
+    //       sampling: 'average',
+    //       itemStyle: {
+    //         normal: {
+    //           color: '#84b3ff'
+    //         }
+    //       },
+    //       areaStyle: {
+    //         normal: {
+    //           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+    //             offset: 0,
+    //             color: '#2b3c59',
+    //             opacity: 0.2
+    //           }, {
+    //             offset: 1,
+    //             color: '#2b3c59',
+    //             opacity: 0.2
+    //           }])
+    //         }
+    //       },
+    //       // data: timeRange
+    //       data:timeRange
+    //     }
+    //   ]
+    // };
+    if (option && typeof option === "object") {
+      var startTime = +new Date();
+      myChart.setOption(option, true); //显示
+      console.log(myChart)
+      var itemLayout = myChart._chartsViews[0]._data._itemLayouts;
+      console.log(myChart._chartsViews[0]._data._itemLayouts)
+      //console.log(myChart.getModel().getSeriesByIndex(0)._data._itemLayouts)
+      option.series[1] = {
+          name: '邮件营销',
+          type: 'lines',
+          stack: '总量',
+          polyline: true,
+          markLine: {
+            animation:false,
+            data: [
+              [{
+                  x: itemLayout[0][0],
+                  y:itemLayout[itemLayout.length-1][1],
+                  symbol: "none",
+                  lineStyle: {
+                    normal: {
+                      type: "solid"
+                    }
+                  },
+                },
+                {
+                  name: '1.141014',
+                  x: "90%",
+                  y:itemLayout[itemLayout.length-1][1],
+                  symbol: "none",
+                  lineStyle: {
+                    normal: {
+                      type: "solid"
+                    }
+                  },
+                }
+              ]
+            ]
+          }
+      }
+      myChart.setOption(option, true); //显示
+    }
+
   }
 
   var myStart = 70;

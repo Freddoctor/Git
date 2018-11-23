@@ -23,3 +23,12 @@
 #### https://www.mathjax.org/
 #### 微信接口:http://203.195.235.76/jssdk/
 https://mathjax-chinese-doc.readthedocs.io/en/latest/start.html
+
+#### 前端h5 加密方案
+```
+1.AES 参考:https://www.jianshu.com/p/a47477e8126a (AES + BASE64)
+2.SHA 参考:https://blog.csdn.net/k21325/article/details/54379709
+3.MD5 参考:https://blog.csdn.net/k21325/article/details/54379635
+4.Base64加密 参考:https://blog.csdn.net/qq_41485414/article/details/80323023
+
+```

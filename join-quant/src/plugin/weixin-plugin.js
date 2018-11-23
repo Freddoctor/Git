@@ -1,8 +1,8 @@
 import wx from "./jweixin-1.4.0.js";
 wx.config({
   debug: true,
-  appId: 'wxf8b4f85f3a794e77',
-  timestamp: 1540865833,
+  appId: 'wx901ab71440d3e1f7',
+  timestamp: new Date().getTime(),
   nonceStr: 'iRxIYzUK1rv6xNJ9',
   signature: 'fc5b5b788a1b3a4827d461406dd97a43f7d8d608',
   jsApiList: [

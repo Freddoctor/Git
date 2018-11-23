@@ -15,7 +15,8 @@ module.exports = {
   entry: {
     web: ["./src/js/entry.js"],
     api: ["./src/js/api.js"],
-    shoplist:["./src/js/shoplist.js"]
+    shoplist:["./src/js/shoplist.js"],
+    community:["./src/js/community.js"]
   },
   externals: {
     jquery: 'window.jQuery', //src 第三方库
@@ -45,6 +46,11 @@ module.exports = {
       filename: './shoplist.html',
       template: './src/view/shoplist.html',
       chunks: ['shoplist', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './community.html',
+      template: './src/view/community.html',
+      chunks: ['community', 'vendor'],
     }),
     new webpack.DefinePlugin({
       'process.env': {
