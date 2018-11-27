@@ -17,7 +17,30 @@ import io from "./socket.io.js";
 // import echarts from "echarts";
 import echarts from "./echarts.js";
 import Highcharts from "./highstock.js"
-
+Highcharts.setOptions({
+  global: {
+    useUTC: false //取消默认格林威治时间
+  },
+  lang: {
+    contextButtonTitle: "图表导出菜单",
+    decimalPoint: ".",
+    downloadJPEG: "下载JPEG图片",
+    downloadPDF: "下载PDF文件",
+    downloadPNG: "下载PNG文件",
+    downloadSVG: "下载SVG文件",
+    drillUpText: "返回 {series.name}",
+    loading: "加载中",
+    months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+    noData: "没有数据",
+    numericSymbols: ["千", "兆", "G", "T", "P", "E"],
+    printChart: "打印图表",
+    resetZoom: "恢复缩放",
+    resetZoomTitle: "恢复图表",
+    shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    thousandsSep: ",",
+    weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六", "星期天"]
+  }
+});
 var socket = null;
 $(function() {
 
@@ -280,13 +303,13 @@ $(function() {
   // 分时图回调函数
   function fillZero(value) { //补零
     var data = parseInt(value);
-    if( data < 10 ) {
-      data  = "0" + data;
+    if (data < 10) {
+      data = "0" + data;
     }
     return data;
   }
 
-  function timeFormatter(time){ //ios时间戳
+  function timeFormatter(time) { //ios时间戳
     var date = time;
     date = date.replace(/\-/g, "/");
     return date;
@@ -297,13 +320,18 @@ $(function() {
     var min = range[0];
     var max = range[1];
     return {
-      min:timeFormatter(min),
-      max:timeFormatter(max)
+      min: timeFormatter(min),
+      max: timeFormatter(max)
     }
+  }
+
+  function dateFormat(str) { //highchart 分时时间
+    return Highcharts.dateFormat('%H:%M', new Date(str));
   }
 
   function getMinDataData(data) {
     // console.log(data);
+    if (data.data == null) return false;
     var MinDataData = data.data.totalList;
     var MinDataDataArr = []; //收盘价
     var hqMinDate = []; //日期
@@ -312,17 +340,39 @@ $(function() {
     var dateArr = [];
     var closeArr = [];
     var newClose = [];
-    var dataSort = [];///时间轴
-    var timeRange = [];
+    var dataSort = []; ///时间轴
+    var timeRange = data.data.timeRange.split("~");
+    timeRange.forEach(function(item, index) {
+      return timeRange[index] = item.replace(/\-/g, "/")
+    })
+    var popList = new Array(); //时间区间
+    var breaksList = new Array(); //breaks区间
+    var breakArr = new Array();
+    for (var i = 0; i < timeRange.length; i++) {
+      if (2 * i >= timeRange.length) break;
+      popList.push([timeRange[2 * i], timeRange[2 * i + 1]])
+    }
+    if (timeRange.length > 3) {
+      for (var i = 0; i < timeRange.length; i++) {
+        if (2 * (i + 1) >= timeRange.length) break;
+        breaksList.push({
+          from: new Date(timeRange[2 * i + 1]).getTime(),
+          to: new Date(timeRange[2 * (i + 1)]).getTime()
+        })
+        breakArr.push([new Date(timeRange[2 * i + 1]).getTime(), new Date(timeRange[2 * (i + 1)]).getTime()])
+      }
+    }
     for (var i = 0; i < MinDataData.length; i++) {
       hqMinDate.push(MinDataData[i].date);
       var dateStr = MinDataData[i].date;
       var dateArrss = dateStr.split(" ");
       dataSort.unshift((dateStr));
       dateArr.unshift(dateArrss[1]);
-      var iosTime = MinDataData[i].date.replace(/\-/g, "/");
-      closeArr.unshift([new Date(iosTime),parseFloat(MinDataData[i].closePrice)]);
-      timeRange.unshift(MinDataData[i].closePrice);
+      var iosTime = dateStr.replace(/\-/g, "/");
+      closeArr.unshift({
+        x: new Date(iosTime).getTime(),
+        y: parseFloat(MinDataData[i].closePrice)
+      });
       newClose.unshift(MinDataData[i].closePrice);
     }
 
@@ -330,75 +380,211 @@ $(function() {
     var max = "";
     var min = "";
     for (var i = 0; i < sortArr.length; i++) {
-      min = sortArr[0];
-      max = sortArr[i];
+      min = parseFloat(sortArr[0]);
+      max = parseFloat(sortArr[i]);
     }
     // 开始画图
     var version = '3.2.2';
     var dom = document.getElementById("container");
-    var day = Highcharts.dateFormat('%Y/%m/%d', 1542931200000)
-    , breaks = [{
-        from: new Date(day + ' 11:30').getTime(),
-        to: new Date(day + ' 13:00').getTime(),
-        breakSize:3600000
-    }], minX = Number(new Date("2018-11-23 09:30:00").getTime())
-      , maxX = Number(new Date("2018-11-23 15:00:00").getTime())
-      , height = $('#container').height()
-      , width = $('#container').width();
-      console.log(day,minX,maxX)
-      var options = {
-        chart: {
-            // type: 'line'
-            spacing: 1,
-            borderRadius: 0,
-            animation: false,
+    var breaks = breaksList,
+      minQuote = Number(new Date(timeRange[0]).getTime()),
+      maxQuote = Number(new Date(timeRange[timeRange.length - 1]).getTime()),
+      height = $('#container').height(),
+      width = $('#container').width();
+    var pointersX = new Array(); //展示x轴坐标数字
+    var breakWords = new Array(); // 中断合并数字
+    timeRange.forEach(function(item, index) {
+      if (index == 0 || (index % 2 != 0)) {
+        pointersX.push(new Date(item).getTime());
+      }
+      if (index == 0) {
+        breakWords.push(dateFormat(item));
+      } else if (index != 0 && (index % 2 != 0) && (index != (timeRange.length - 1))) {
+        breakWords.push(dateFormat(item) + "/" + dateFormat(timeRange[index + 1]));
+      } else if (index == (timeRange.length - 1)) {
+        breakWords.push(dateFormat(item));
+      }
+    })
+    var options = {
+      chart: {
+        borderRadius: 0,
+        animation: false,
+        backgroundColor: "#0D1219",
+        plotBorderColor: '#515151',
+        plotBorderWidth: 1,
+        spacingTop: 18,
+        spacingRight: 18,
+        spacingLeft: 5,
+      },
+      pointersX: pointersX,
+      breakArr: breakArr,
+      breakWords: breakWords,
+      plotOptions: {
+        series: {
+          lineWidth: 1,
+          dataLabels: {
+            allowOverlap: true
+          },
+          getExtremesFromAll: true
+        }
+      },
+      title: {
+        text: ''
+      },
+      legend: {
+        enabled: false,
+        title: " "
+      },
+      noData: {
+        useHTML: true,
+      },
+      tooltip: {
+        // pointFormat: '<span style="color:{point.color};font-size:18px;display:block;">\u25CF</span><span style="font-size:18px;"> 时分:</span>' +
+        //   '<span style="font-size:18px;">{point.y}</span>',
+        // split: true,
+        borderRadius: 0,
+        followTouchMove: true,
+        shadow: false,
+        borderWidth: 0,
+        backgroundColor: 'rgba(10, 162, 13,0.6)',
+        shape: "square",
+        xDateFormat: '%H:%M',
+        useHTML: true,
+        headerFormat:'<span style="font-size: 18px">{point.key}</span><br/>',
+        pointFormatter:function(){
+          var str = '<span style="font-size:18px;">\u25CF</span><span style="font-size:18px;"> 分时:</span>';
+          return str + '<span class="concect">'+ this.options.y+'</span>'
         },
-        title: {
-            text: ''
+        style: {
+          "color": "#fff",
+          "cursor": "default",
+          "fontSize": "18px",
+          "pointerEvents": "none",
+          "whiteSpace": "nowrap"
+        }
+      },
+      xAxis: {
+        type: "datetime",
+        offset: 0,
+        ordinal: false,
+        showLastLabel: true,
+        tickLength: 0,
+        tickPosition: "inside",
+        min: minQuote,
+        max: maxQuote,
+        lineWidth: 0,
+        lineColor: "#515151",
+        tickWidth: 0,
+        tickColor: "#515151",
+        gridLineWidth: 0.5,
+        gridLineColor: "#515151",
+        crosshair: {
+          dashStyle: "Solid",
+          snap: true,
+          color: "#ff5c01"
         },
-        xAxis: {
-            // categories: dataSort,
-            // type:"datetime",
-            max:maxX,
-            min:minX,
-            lineWidth: 0,
-            gridLineWidth: 1,
-            // tickLength: 0,
-            // labels: {
-            //     autoRotation: false,
-            //     autoRotationLimit: 120,
-            //     formatter: function() {
-            //         if (this.value === new Date(day + ' 11:30').getTime()) {
-            //             return '11:30/13:00';
-            //         }
-            //         return Highcharts.dateFormat('%H:%M', this.value);
-            //     }
-            // },
-            breaks: breaks,
-            tickPositioner: function() {
-                return [
-                  Highcharts.dateFormat('%H:%M', new Date(day + ' 09:30')),
-                  Highcharts.dateFormat('%H:%M', new Date(day + ' 10:30')),
-                   Highcharts.dateFormat('%H:%M', new Date(day + ' 11:30')),
-                    Highcharts.dateFormat('%H:%M', new Date(day + ' 14:00')),
-                    Highcharts.dateFormat('%H:%M', new Date(day + ' 15:00'))
-                ]
+        endOnTick: true,
+        labels: {
+          useHTML: false,
+          autoRotation: false,
+          autoRotationLimit: 0,
+          style: {
+            'color': '#858585',
+            'fontSize': '18px'
+          },
+          formatter: function(e) {
+            var This = options;
+            var len = This.pointersX.length;
+            if (len == 3) {
+              if (this.value == This.pointersX[1]) {
+                return This.breakWords[1]
+              }
             }
+            return Highcharts.dateFormat('%H:%M', this.value)
+          }
         },
-        yAxis: {
-            title: {
-                text: ''
-            }
+        breaks: breaks,
+        tickPositioner: function() { //显示x轴最终展示的series
+          return options.pointersX;
+        }
+      },
+      yAxis: {
+        height: '100%',
+        title: "",
+        offset: 0,
+        crosshair: {
+          dashStyle: "Solid",
+          snap: true,
+          color: "#ff5c01"
         },
-        credits: {
-            enabled: false
+        lineWidth: 0,
+        lineColor: "#515151",
+        tickWidth: 0,
+        tickColor: "#515151",
+        gridLineWidth: 0.5,
+        gridLineColor: "#515151",
+        labels: {
+          y: 0,
+          style: {
+            'color': '#858585',
+            'fontSize': '18px'
+          },
         },
-        series: [{
-            data: closeArr
-        }]
+        plotLines: [{
+          color: "#7cb5ec",
+          width: 2,
+          value: 3133,
+          label: {
+            text: '分时',
+            align: 'right',
+            x: 0
+          }
+        }],
+        startOnTick: true,
+        tickPosition: "inside",
+        endOnTick: true,
+        softMin: min,
+        softMax: max,
+        tickPositioner: function() {
+          var minval = parseFloat(min.toFixed(1));
+          var maxval = parseFloat(max.toFixed(1));
+          var average = parseFloat(((minval + maxval) / 2).toFixed(1));
+          return [minval, average, maxval]
+        },
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        data: closeArr
+      }]
     };
     var chart = Highcharts.chart('container', options);
-    // chart.setDate()
+    //绘制参考线:
+    var points = chart.series[0].points;
+    var lastLine = points[points.length - 1];
+    console.log(chart.yAxis[0].options)
+    // console.log(points[points.length - 1].plotY)
+    setTimeout(() => {
+      chart.update({
+        yAxis: {
+          plotLines: [{
+            value: lastLine.y,
+            color: '#0aa20d',
+            width: 1,
+            label: {
+              text: '分时 ' + lastLine.y,
+              align: 'right',
+              x: 0,
+              style: {
+                color: '#ff5c01',
+                fontWeight: 'bold'
+              }
+            }
+          }]
+        }
+      })
+    }, 2000)
   }
 
   var myStart = 70;

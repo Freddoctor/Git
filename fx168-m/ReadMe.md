@@ -17,4 +17,4 @@ https://xueqiu.com/S/SZ002024
 Andro http://www.itdaan.com/blog/2015/10/21/3be3b12c3f883acf158640af54f44102.html
 
 可查阅参考 ：http://www.chinaipo.com/stock/830899
-http://www.chinaipo.com/stock/830899
+可查阅参考 ：http://demo.rabifoo.com/stock/
