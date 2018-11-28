@@ -17,6 +17,12 @@ import io from "./socket.io.js";
 // import echarts from "echarts";
 import echarts from "./echarts.js";
 import Highcharts from "./highstock.js"
+
+// 高精度计算
+const math = require('mathjs');
+var chart = null;
+var socket = null;
+
 Highcharts.setOptions({
   global: {
     useUTC: false //取消默认格林威治时间
@@ -41,22 +47,48 @@ Highcharts.setOptions({
     weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六", "星期天"]
   }
 });
-var socket = null;
+
+function timeFormatter(time) { //ios时间戳
+  var date = time;
+  date = date.replace(/\-/g, "/");
+  return date;
+}
+
+
+function updateChart(res) { //更新分时chart
+  if (chart) {
+    var series = chart.series[0];
+    var time = timeFormatter(res[res.length - 1]);
+    var value = res[0];
+    //一分钟定时回执
+    var titledata = $(".title_date").attr("data-time");
+    var titleTime = new Date(timeFormatter(titledata)).getTime();
+    if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
+      chart.series[0].addPoint({
+        x: new Date(time).getTime(),
+        y: Number(value)
+      });
+      $(".title_date").attr("data-time", time);
+    }
+    // chart.series[0].removePoint(series.yData.length-1);
+  }
+}
+
 $(function() {
 
-  //initinnerSocket();
-  // socket.on('disconnect', function() {
-  //   var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
-  //   var index_socket = Math.floor((Math.random() * socketUrlArr.length));
-  //   socketUrl = socketUrlArr[index_socket];
-  //   initinnerSocket();
-  // });
+  initinnerSocket();
+  socket.on('disconnect', function() {
+    var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
+    var index_socket = Math.floor((Math.random() * socketUrlArr.length));
+    socketUrl = socketUrlArr[index_socket];
+    initinnerSocket();
+  });
   var selected = 1;
   sessionStorage.hq_inner_left == 0;
   sessionStorage.clickType = "Min01";
   opsetQuoteData();
 
-  // sessionStorage.quateJson=1
+  sessionStorage.quateJson = 1
 
   // 判断价格的颜色
   if (sessionStorage.hq_inner_range > 0) {
@@ -298,8 +330,6 @@ $(function() {
       success: initData
     })
   }
-  // var chart= $('#container').highcharts();
-  // chart.showLoading();
   // 分时图回调函数
   function fillZero(value) { //补零
     var data = parseInt(value);
@@ -307,22 +337,6 @@ $(function() {
       data = "0" + data;
     }
     return data;
-  }
-
-  function timeFormatter(time) { //ios时间戳
-    var date = time;
-    date = date.replace(/\-/g, "/");
-    return date;
-  }
-
-  function xAxisRange(value) { //x轴区间
-    var range = value.split("~");
-    var min = range[0];
-    var max = range[1];
-    return {
-      min: timeFormatter(min),
-      max: timeFormatter(max)
-    }
   }
 
   function dateFormat(str) { //highchart 分时时间
@@ -405,6 +419,8 @@ $(function() {
         breakWords.push(dateFormat(item));
       }
     })
+
+    var rangePercent = sessionStorage.getItem("rangePercent") ? sessionStorage.getItem("rangePercent") : "0.05%"
     var options = {
       chart: {
         borderRadius: 0,
@@ -414,7 +430,7 @@ $(function() {
         plotBorderWidth: 1,
         spacingTop: 18,
         spacingRight: 18,
-        spacingLeft: 5,
+        spacingLeft: 18,
       },
       pointersX: pointersX,
       breakArr: breakArr,
@@ -450,10 +466,10 @@ $(function() {
         shape: "square",
         xDateFormat: '%H:%M',
         useHTML: true,
-        headerFormat:'<span style="font-size: 18px">{point.key}</span><br/>',
-        pointFormatter:function(){
+        headerFormat: '<span style="font-size: 18px">{point.key}</span><br/>',
+        pointFormatter: function() {
           var str = '<span style="font-size:18px;">\u25CF</span><span style="font-size:18px;"> 分时:</span>';
-          return str + '<span class="concect">'+ this.options.y+'</span>'
+          return str + '<span class="concect">' + this.options.y + '</span>'
         },
         style: {
           "color": "#fff",
@@ -525,6 +541,8 @@ $(function() {
         gridLineColor: "#515151",
         labels: {
           y: 0,
+          x: 0,
+          align: "left",
           style: {
             'color': '#858585',
             'fontSize': '18px'
@@ -532,7 +550,7 @@ $(function() {
         },
         plotLines: [{
           color: "#7cb5ec",
-          width: 2,
+          width: 0,
           value: 3133,
           label: {
             text: '分时',
@@ -541,51 +559,55 @@ $(function() {
           }
         }],
         startOnTick: true,
-        tickPosition: "inside",
+        tickPosition: "outside",
+        tickmarkPlacement: "on",
         endOnTick: true,
         softMin: min,
         softMax: max,
         tickPositioner: function() {
-          var minval = parseFloat(min.toFixed(1));
-          var maxval = parseFloat(max.toFixed(1));
-          var average = parseFloat(((minval + maxval) / 2).toFixed(1));
-          return [minval, average, maxval]
+          var range = Number(math.eval((max - min) / 8).toFixed(5));
+          var minval = parseFloat(min.toFixed(2)) < 10 ? parseFloat(min) : parseFloat(min.toFixed(2));
+          var maxval = parseFloat(max.toFixed(2)) < 10 ? parseFloat(max) : parseFloat(max.toFixed(2));
+          var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
+          return [math.eval(minval - range), math.eval(average.toFixed(5)), math.eval(maxval + range)]
         },
       },
       credits: {
         enabled: false
       },
       series: [{
+        name: sessionStorage.getItem("series_title"),
         data: closeArr
       }]
     };
-    var chart = Highcharts.chart('container', options);
+    chart = Highcharts.chart('container', options);
     //绘制参考线:
-    var points = chart.series[0].points;
-    var lastLine = points[points.length - 1];
-    console.log(chart.yAxis[0].options)
-    // console.log(points[points.length - 1].plotY)
-    setTimeout(() => {
-      chart.update({
-        yAxis: {
-          plotLines: [{
-            value: lastLine.y,
-            color: '#0aa20d',
-            width: 1,
-            label: {
-              text: '分时 ' + lastLine.y,
-              align: 'right',
-              x: 0,
-              style: {
-                color: '#ff5c01',
-                fontWeight: 'bold'
-              }
-            }
-          }]
-        }
-      })
-    }, 2000)
+    // var points = chart.series[0].points;
+    // var lastLine = points[points.length - 1];
+    // console.log(chart.yAxis[0].options)
+    // setTimeout(() => {
+    //   chart.update({
+    //     yAxis: {
+    //       plotLines: [{
+    //         value: lastLine.y,
+    //         color: '#0aa20d',
+    //         width: 1,
+    //         label: {
+    //           text: '分时 ' + lastLine.y,
+    //           align: 'right',
+    //           x: 0,
+    //           style: {
+    //             color: '#ff5c01',
+    //             fontWeight: 'bold'
+    //           }
+    //         }
+    //       }]
+    //     }
+    //   })
+    // }, 2000)
   }
+
+
 
   var myStart = 70;
   $('.add').click(function() {
@@ -834,9 +856,9 @@ function getTabListData(data) {
   var arr = data.data;
   newKey = arr.name;
   // console.log(newKey)
-
+  sessionStorage.setItem("series_title", arr.keyWord);
   $('.hqIn_title').html(arr.keyWord);
-  $('.title_date').html(arr.date);
+  $('.title_date').html(arr.date).attr("data-time", arr.date);
   $('.hq_inner_trade').html(arr.tradePrice);
   $('.hq_inner_range').html(arr.range);
   $('.hq_inner_rangePercent').html(arr.rangePercent);
@@ -845,7 +867,7 @@ function getTabListData(data) {
   $('.hq_data_preClose').html(arr.preClosePrice);
   $('.hq_data_low').html(arr.lowPrice);
   quateAboutNews();
-
+  sessionStorage.setItem("rangePercent", arr.rangePercent) //range范围
 }
 
 function initinnerSocket() {
@@ -857,14 +879,10 @@ function initinnerSocket() {
     'reconnect': true
   });
 
-  socket.on('connect', function(data) {
-    socket.emit('quotationH5', {
-      "secret": "h5Socket",
-      "appType": "h5"
-    });
-
+  socket.emit('quotationH5', {
+    "secret": "h5Socket",
+    "appType": "h5"
   });
-
 
   socket.on('quotationPushH5', function(data) {
     var resArr = JSON.parse(data);
@@ -888,14 +906,13 @@ function initinnerSocket() {
       timestamp2 = timestamp2 / 1000; //推送的时间
       if (timestamp2 >= timestamp3) {
         $('.title_date').html(data[7]);
-
+        /////////分时实施划线
+        updateChart(data);
       }
       sessionStorage.hq_inner_date = data[7];
       sessionStorage.hq_inner_tradePrice = data[0];
       sessionStorage.hq_inner_range = data[5];
       sessionStorage.hq_inner_rangePercent = data[6];
-
-
     }
 
 
