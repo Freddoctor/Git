@@ -56,26 +56,112 @@ function timeFormatter(time) { //ios时间戳
 
 
 function updateChart(res) { //更新分时chart
-  if (chart) {
+  var timeRange = sessionStorage.getItem("timeRange");
+  if (timeRange) {
+    timeRange = JSON.parse(timeRange)
+  }
+  if (chart && timeRange) {
     var series = chart.series[0];
     var time = timeFormatter(res[res.length - 1]);
     var value = res[0];
     //一分钟定时回执
     var titledata = $(".title_date").attr("data-time");
+    var titleMin = Number($(".title_data").attr("data-min"));
     var titleTime = new Date(timeFormatter(titledata)).getTime();
-    if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
-      chart.series[0].addPoint({
-        x: new Date(time).getTime(),
-        y: Number(value)
-      });
-      $(".title_date").attr("data-time", time);
+    if (new Date(time) >= new Date(timeRange[0]) && new Date(time) <= new Date(timeRange[1])) {
+      drawLine();
+      if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
+        chart.series[0].addPoint({
+          x: new Date(time).getTime(),
+          y: Number(value)
+        });
+        var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(time));
+        $(".title_date").attr("data-time", dateFirst);
+        // 更新最大值 最小值
+        updateTickPosition();
+      } else {
+        var seriesData = chart.series[0].options.data;
+        seriesData[seriesData.length - 1] = {
+          x: new Date(time).getTime(),
+          y: Number(value)
+        };
+        chart.update({
+          series: [{
+            name: sessionStorage.getItem("series_title"),
+            data: seriesData
+          }]
+        })
+      }
     }
     // chart.series[0].removePoint(series.yData.length-1);
   }
 }
 
-$(function() {
+function yAxisMinMax() {
+  // 最大值最小值实时更新
+  var yData = chart.series[0].yData;
+  yData.sort();
+  var min = yData[0];
+  var max = yData[yData.length - 1];
+  return {
+    max: Number(max),
+    min: Number(min)
+  }
+}
 
+function yAxisRange() {
+  // yAxisRange实时运算
+  var This = yAxisMinMax();
+  var range = Number(math.eval((This.max - This.min) / 8).toFixed(5));
+  var minval = parseFloat(This.min.toFixed(2)) < 10 ? parseFloat(This.min) : parseFloat(This.min.toFixed(2));
+  var maxval = parseFloat(This.max.toFixed(2)) < 10 ? parseFloat(This.max) : parseFloat(This.max.toFixed(2));
+  var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
+  // 保留小数点
+  var averageMin = math.eval(minval - range);
+  var averageCenter = math.eval(average.toFixed(5));
+  var averageMax = math.eval(maxval + range);
+  averageMin = averageMin > 10 ? averageMin.toFixed(2) : averageMin.toFixed(5);
+  averageCenter = averageCenter > 10 ? averageCenter.toFixed(2) : averageCenter.toFixed(5);
+  averageMax = averageMax > 10 ? averageMax.toFixed(2) : averageMax.toFixed(5);
+  return [Number(averageMin), Number(averageCenter), Number(averageMax)];
+}
+
+function updateTickPosition() {
+  chart.update({
+    yAxis:{
+      tickPositioner: function() {
+        return yAxisRange.call(this);
+      }
+    }
+  })
+  console.log(chart)
+}
+
+function drawLine() {
+  // 绘制参考线:
+  var points = chart.series[0].points;
+  var lastLine = points[points.length - 1];
+  chart.update({
+    yAxis: {
+      plotLines: [{
+        value: lastLine.y,
+        color: '#0aa20d',
+        width: 1,
+        label: {
+          text: '分时 ' + lastLine.y,
+          align: 'right',
+          x: 0,
+          style: {
+            color: '#ff5c01',
+            fontWeight: 'bold'
+          }
+        }
+      }]
+    }
+  })
+}
+
+$(function() {
   initinnerSocket();
   socket.on('disconnect', function() {
     var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
@@ -359,6 +445,7 @@ $(function() {
     timeRange.forEach(function(item, index) {
       return timeRange[index] = item.replace(/\-/g, "/")
     })
+    sessionStorage.setItem("timeRange", JSON.stringify([timeRange[0], timeRange[timeRange.length - 1]]));
     var popList = new Array(); //时间区间
     var breaksList = new Array(); //breaks区间
     var breakArr = new Array();
@@ -565,11 +652,18 @@ $(function() {
         softMin: min,
         softMax: max,
         tickPositioner: function() {
-          var range = Number(math.eval((max - min) / 8).toFixed(5));
-          var minval = parseFloat(min.toFixed(2)) < 10 ? parseFloat(min) : parseFloat(min.toFixed(2));
-          var maxval = parseFloat(max.toFixed(2)) < 10 ? parseFloat(max) : parseFloat(max.toFixed(2));
-          var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
-          return [math.eval(minval - range), math.eval(average.toFixed(5)), math.eval(maxval + range)]
+          // var range = Number(math.eval((max - min) / 8).toFixed(5));
+          // var minval = parseFloat(min.toFixed(2)) < 10 ? parseFloat(min) : parseFloat(min.toFixed(2));
+          // var maxval = parseFloat(max.toFixed(2)) < 10 ? parseFloat(max) : parseFloat(max.toFixed(2));
+          // var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
+          // // 保留小数点
+          // var averageMin = math.eval(minval - range);
+          // var averageCenter = math.eval(average.toFixed(5));
+          // var averageMax = math.eval(maxval + range);
+          // averageMin = averageMin > 10 ? averageMin.toFixed(2) : averageMin.toFixed(5);
+          // averageCenter = averageCenter > 10 ? averageCenter.toFixed(2) : averageCenter.toFixed(5);
+          // averageMax = averageMax > 10 ? averageMax.toFixed(2) : averageMax.toFixed(5);
+          // return [Number(averageMin), Number(averageCenter),Number(averageMax)]
         },
       },
       credits: {
@@ -581,33 +675,10 @@ $(function() {
       }]
     };
     chart = Highcharts.chart('container', options);
-    //绘制参考线:
-    // var points = chart.series[0].points;
-    // var lastLine = points[points.length - 1];
-    // console.log(chart.yAxis[0].options)
-    // setTimeout(() => {
-    //   chart.update({
-    //     yAxis: {
-    //       plotLines: [{
-    //         value: lastLine.y,
-    //         color: '#0aa20d',
-    //         width: 1,
-    //         label: {
-    //           text: '分时 ' + lastLine.y,
-    //           align: 'right',
-    //           x: 0,
-    //           style: {
-    //             color: '#ff5c01',
-    //             fontWeight: 'bold'
-    //           }
-    //         }
-    //       }]
-    //     }
-    //   })
-    // }, 2000)
+    ////绘制实时线
+    drawLine();
+    updateTickPosition();
   }
-
-
 
   var myStart = 70;
   $('.add').click(function() {
@@ -858,7 +929,13 @@ function getTabListData(data) {
   // console.log(newKey)
   sessionStorage.setItem("series_title", arr.keyWord);
   $('.hqIn_title').html(arr.keyWord);
-  $('.title_date').html(arr.date).attr("data-time", arr.date);
+  var Minutes = timeFormatter(arr.date);
+  var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(Minutes));
+  console.log(dateFirst)
+  $('.title_date').html(arr.date).attr({
+    "data-time": dateFirst,
+    "data-min": new Date(dateFirst).getMinutes()
+  });
   $('.hq_inner_trade').html(arr.tradePrice);
   $('.hq_inner_range').html(arr.range);
   $('.hq_inner_rangePercent').html(arr.rangePercent);
@@ -899,9 +976,9 @@ function initinnerSocket() {
       $('.hq_inner_rangePercent').html(data[6]);
       // 当时间大于等于上一个时间时再赋值
       var stringTime2 = $('.title_date').html();
-      var timestamp3 = Date.parse(new Date(stringTime2));
+      var timestamp3 = Date.parse(new Date(stringTime2.replace(/\-/g, "/")));
       timestamp3 = timestamp3 / 1000; //上一个时间
-      var stringTime = data[7];
+      var stringTime = data[7].replace(/\-/g, "/");
       var timestamp2 = Date.parse(new Date(stringTime));
       timestamp2 = timestamp2 / 1000; //推送的时间
       if (timestamp2 >= timestamp3) {
