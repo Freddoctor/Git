@@ -22,7 +22,11 @@ import Highcharts from "./highstock.js"
 const math = require('mathjs');
 var chart = null;
 var socket = null;
-
+var max = "";
+var min = "";
+var LocationElement = {
+  timeRange: null,
+}
 Highcharts.setOptions({
   global: {
     useUTC: false //取消默认格林威治时间
@@ -45,7 +49,14 @@ Highcharts.setOptions({
     shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     thousandsSep: ",",
     weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六", "星期天"]
-  }
+  },
+  chart: {
+    events: {
+      redraw: function() { //重绘回调
+
+      }
+    }
+  },
 });
 
 function timeFormatter(time) { //ios时间戳
@@ -69,7 +80,6 @@ function updateChart(res) { //更新分时chart
     var titleMin = Number($(".title_data").attr("data-min"));
     var titleTime = new Date(timeFormatter(titledata)).getTime();
     if (new Date(time) >= new Date(timeRange[0]) && new Date(time) <= new Date(timeRange[1])) {
-      drawLine();
       if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
         chart.series[0].addPoint({
           x: new Date(time).getTime(),
@@ -77,44 +87,37 @@ function updateChart(res) { //更新分时chart
         });
         var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(time));
         $(".title_date").attr("data-time", dateFirst);
-        // 更新最大值 最小值
-        updateTickPosition();
       } else {
         var seriesData = chart.series[0].options.data;
-        seriesData[seriesData.length - 1] = {
+        chart.series[0].data[seriesData.length - 1].update({
           x: new Date(time).getTime(),
           y: Number(value)
-        };
-        chart.update({
-          series: [{
-            name: sessionStorage.getItem("series_title"),
-            data: seriesData
-          }]
         })
       }
+      drawLine();
+      chart.redraw();
     }
-    // chart.series[0].removePoint(series.yData.length-1);
   }
 }
 
-function yAxisMinMax() {
-  // 最大值最小值实时更新
-  var yData = chart.series[0].yData;
-  yData.sort();
-  var min = yData[0];
-  var max = yData[yData.length - 1];
-  return {
-    max: Number(max),
-    min: Number(min)
+function sortyAxisdata() {
+  var data = chart.series[0].options.data;
+  var sortArr = new Array();
+  for (var i = 0; i < data.length; i++) {
+    sortArr.push(data[i].y)
   }
+  sortArr.sort(function(a, b) {
+    return a - b
+  });
+  min = sortArr[0];
+  max = sortArr[sortArr.length - 1];
+  return changetickPositions();
 }
 
-function yAxisRange() {
-  // yAxisRange实时运算
-  var This = yAxisMinMax();
-  var range = Number(math.eval((This.max - This.min) / 8).toFixed(5));
-  var minval = parseFloat(This.min.toFixed(2)) < 10 ? parseFloat(This.min) : parseFloat(This.min.toFixed(2));
-  var maxval = parseFloat(This.max.toFixed(2)) < 10 ? parseFloat(This.max) : parseFloat(This.max.toFixed(2));
+function changetickPositions() {
+  var range = Number(math.eval((max - min) / 8).toFixed(5));
+  var minval = parseFloat(min.toFixed(2)) < 10 ? parseFloat(min) : parseFloat(min.toFixed(2));
+  var maxval = parseFloat(max.toFixed(2)) < 10 ? parseFloat(max) : parseFloat(max.toFixed(2));
   var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
   // 保留小数点
   var averageMin = math.eval(minval - range);
@@ -124,17 +127,6 @@ function yAxisRange() {
   averageCenter = averageCenter > 10 ? averageCenter.toFixed(2) : averageCenter.toFixed(5);
   averageMax = averageMax > 10 ? averageMax.toFixed(2) : averageMax.toFixed(5);
   return [Number(averageMin), Number(averageCenter), Number(averageMax)];
-}
-
-function updateTickPosition() {
-  chart.update({
-    yAxis:{
-      tickPositioner: function() {
-        return yAxisRange.call(this);
-      }
-    }
-  })
-  console.log(chart)
 }
 
 function drawLine() {
@@ -156,9 +148,30 @@ function drawLine() {
             fontWeight: 'bold'
           }
         }
-      }]
+      }],
+      tickPositions: sortyAxisdata()
     }
   })
+
+  ///绘制SVG文字部分;
+  var render = chart.renderer.label("<div>自定义SVG</div>",
+      lastLine.plotX + chart.plotLeft - 20,
+      lastLine.plotY + chart.plotTop - 45,
+      'callout',
+      lastLine.plotX + chart.plotLeft,
+      lastLine.plotY + chart.plotTop)
+    .css({
+      color: '#FFFFFF',
+      align: 'center',
+    })
+    .attr({
+      fill: 'rgba(250, 0, 0, 0.75)',
+      padding: 8,
+      r: 5,
+      zIndex: 6
+    })
+    .add();
+  render.destroy();
 }
 
 $(function() {
@@ -445,6 +458,7 @@ $(function() {
     timeRange.forEach(function(item, index) {
       return timeRange[index] = item.replace(/\-/g, "/")
     })
+    LocationElement.timeRange = JSON.stringify(timeRange);
     sessionStorage.setItem("timeRange", JSON.stringify([timeRange[0], timeRange[timeRange.length - 1]]));
     var popList = new Array(); //时间区间
     var breaksList = new Array(); //breaks区间
@@ -477,9 +491,9 @@ $(function() {
       newClose.unshift(MinDataData[i].closePrice);
     }
 
-    var sortArr = newClose.sort();
-    var max = "";
-    var min = "";
+    var sortArr = newClose.sort(function(a, b) {
+      return a - b
+    });
     for (var i = 0; i < sortArr.length; i++) {
       min = parseFloat(sortArr[0]);
       max = parseFloat(sortArr[i]);
@@ -518,6 +532,7 @@ $(function() {
         spacingTop: 18,
         spacingRight: 18,
         spacingLeft: 18,
+        type: 'area',
       },
       pointersX: pointersX,
       breakArr: breakArr,
@@ -528,6 +543,7 @@ $(function() {
           dataLabels: {
             allowOverlap: true
           },
+          fillColor: "rgba(33,47,69,0.89)",
           getExtremesFromAll: true
         }
       },
@@ -651,19 +667,8 @@ $(function() {
         endOnTick: true,
         softMin: min,
         softMax: max,
-        tickPositioner: function() {
-          // var range = Number(math.eval((max - min) / 8).toFixed(5));
-          // var minval = parseFloat(min.toFixed(2)) < 10 ? parseFloat(min) : parseFloat(min.toFixed(2));
-          // var maxval = parseFloat(max.toFixed(2)) < 10 ? parseFloat(max) : parseFloat(max.toFixed(2));
-          // var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
-          // // 保留小数点
-          // var averageMin = math.eval(minval - range);
-          // var averageCenter = math.eval(average.toFixed(5));
-          // var averageMax = math.eval(maxval + range);
-          // averageMin = averageMin > 10 ? averageMin.toFixed(2) : averageMin.toFixed(5);
-          // averageCenter = averageCenter > 10 ? averageCenter.toFixed(2) : averageCenter.toFixed(5);
-          // averageMax = averageMax > 10 ? averageMax.toFixed(2) : averageMax.toFixed(5);
-          // return [Number(averageMin), Number(averageCenter),Number(averageMax)]
+        tickPositioner: function() { //实时注册ticpositioner区间 (每绘一次执行一次)
+          return changetickPositions();
         },
       },
       credits: {
@@ -677,7 +682,7 @@ $(function() {
     chart = Highcharts.chart('container', options);
     ////绘制实时线
     drawLine();
-    updateTickPosition();
+    // updateTickPosition();
   }
 
   var myStart = 70;
