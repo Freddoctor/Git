@@ -27,6 +27,7 @@ var min = "";
 var LocationElement = {
   timeRange: null,
 }
+
 Highcharts.setOptions({
   global: {
     useUTC: false //取消默认格林威治时间
@@ -65,42 +66,45 @@ function timeFormatter(time) { //ios时间戳
   return date;
 }
 
+function timeDraw(res, timeRange) { //更新点及线操作
+  var series = chart.series[0];
+  var time = timeFormatter(res[res.length - 1]);
+  var value = res[0];
+  var titledata = $(".title_date").attr("data-time");
+  var titleTime = new Date(timeFormatter(titledata)).getTime();
+  console.log(res);
+  if (new Date(time) >= new Date(timeRange[0]) && new Date(time) < new Date(new Date(timeRange[1]).getTime() + 1000 * 60)) {
+    if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
+      chart.series[0].addPoint({
+        x: new Date(time).getTime(),
+        y: Number(value)
+      });
+      var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(time));
+      $(".title_date").attr("data-time", dateFirst);
+    } else {
+      var seriesData = chart.series[0].options.data;
+      chart.series[0].data[seriesData.length - 1].update({
+        x: new Date(time).getTime(),
+        y: Number(value)
+      })
+    }
+    drawLine();
+    chart.redraw();
+  }
+}
 
 function updateChart(res) { //更新分时chart
-  var timeRange = sessionStorage.getItem("timeRange");
+  // var timeRange = sessionStorage.getItem("timeRange");
+  var timeRange = LocationElement.timeRange;
   if (timeRange) {
     timeRange = JSON.parse(timeRange)
   }
   if (chart && timeRange) {
-    var series = chart.series[0];
-    var time = timeFormatter(res[res.length - 1]);
-    var value = res[0];
-    //一分钟定时回执
-    var titledata = $(".title_date").attr("data-time");
-    var titleMin = Number($(".title_data").attr("data-min"));
-    var titleTime = new Date(timeFormatter(titledata)).getTime();
-    if (new Date(time) >= new Date(timeRange[0]) && new Date(time) <= new Date(timeRange[1])) {
-      if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
-        chart.series[0].addPoint({
-          x: new Date(time).getTime(),
-          y: Number(value)
-        });
-        var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(time));
-        $(".title_date").attr("data-time", dateFirst);
-      } else {
-        var seriesData = chart.series[0].options.data;
-        chart.series[0].data[seriesData.length - 1].update({
-          x: new Date(time).getTime(),
-          y: Number(value)
-        })
-      }
-      drawLine();
-      chart.redraw();
-    }
+    timeDraw(res, timeRange);
   }
 }
 
-function sortyAxisdata() {
+function sortyAxisdata() { //实时排序区间分组
   var data = chart.series[0].options.data;
   var sortArr = new Array();
   for (var i = 0; i < data.length; i++) {
@@ -136,17 +140,17 @@ function drawLine() {
   chart.update({
     yAxis: {
       plotLines: [{
+        zIndex: 99,
         value: lastLine.y,
+        id: "draw-plotLine",
+        className: "draw-plotline",
         color: '#0aa20d',
         width: 1,
         label: {
-          text: '分时 ' + lastLine.y,
+          text: '<div class="label-draw-plotline">分时 ' + lastLine.y + '</div>',
           align: 'right',
           x: 0,
-          style: {
-            color: '#ff5c01',
-            fontWeight: 'bold'
-          }
+          useHTML:true,
         }
       }],
       tickPositions: sortyAxisdata()
@@ -174,7 +178,17 @@ function drawLine() {
   render.destroy();
 }
 
+TouchDefault();
+
+function TouchDefault() {
+
+}
+
 $(function() {
+  var selected = 1;
+  sessionStorage.hq_inner_left == 0;
+  sessionStorage.clickType = "Min01";
+  opsetQuoteData();
   initinnerSocket();
   socket.on('disconnect', function() {
     var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
@@ -182,11 +196,6 @@ $(function() {
     socketUrl = socketUrlArr[index_socket];
     initinnerSocket();
   });
-  var selected = 1;
-  sessionStorage.hq_inner_left == 0;
-  sessionStorage.clickType = "Min01";
-  opsetQuoteData();
-
   sessionStorage.quateJson = 1
 
   // 判断价格的颜色
@@ -286,8 +295,6 @@ $(function() {
       e.preventDefault();
     }
   });
-
-
 
   function navName(c_nav) {
     switch (c_nav) {
@@ -458,7 +465,6 @@ $(function() {
     timeRange.forEach(function(item, index) {
       return timeRange[index] = item.replace(/\-/g, "/")
     })
-    LocationElement.timeRange = JSON.stringify(timeRange);
     sessionStorage.setItem("timeRange", JSON.stringify([timeRange[0], timeRange[timeRange.length - 1]]));
     var popList = new Array(); //时间区间
     var breaksList = new Array(); //breaks区间
@@ -467,6 +473,8 @@ $(function() {
       if (2 * i >= timeRange.length) break;
       popList.push([timeRange[2 * i], timeRange[2 * i + 1]])
     }
+    LocationElement.timeRange = JSON.stringify([timeRange[0], timeRange[timeRange.length - 1]]);
+    console.log(LocationElement.timeRange);
     if (timeRange.length > 3) {
       for (var i = 0; i < timeRange.length; i++) {
         if (2 * (i + 1) >= timeRange.length) break;
@@ -521,6 +529,7 @@ $(function() {
       }
     })
 
+    $(".title_date").attr("data-time", MinDataData[0].date.replace(/\-/g, "/"));
     var rangePercent = sessionStorage.getItem("rangePercent") ? sessionStorage.getItem("rangePercent") : "0.05%"
     var options = {
       chart: {
@@ -544,7 +553,26 @@ $(function() {
             allowOverlap: true
           },
           fillColor: "rgba(33,47,69,0.89)",
-          getExtremesFromAll: true
+          getExtremesFromAll: true,
+          symbol: "none"
+        },
+        marker: {
+          radius: 3,
+          symbol: 'circle',
+          fillColor: 'white',
+          lineColor: '#001dbc',
+          lineWidth: 2,
+          symbol: "none",
+          border: 1,
+          states: {
+            hover: {
+              radius: 5,
+              fillColor: 'red',
+              lineColor: 'black', // 黑圈 试试修改为空值 或者将states整个注释掉
+              lineWidth: 4,
+              border: 1
+            }
+          }
         }
       },
       title: {
@@ -569,6 +597,7 @@ $(function() {
         shape: "square",
         xDateFormat: '%H:%M',
         useHTML: true,
+        enabled: true,
         headerFormat: '<span style="font-size: 18px">{point.key}</span><br/>',
         pointFormatter: function() {
           var str = '<span style="font-size:18px;">\u25CF</span><span style="font-size:18px;"> 分时:</span>';
@@ -652,13 +681,18 @@ $(function() {
           },
         },
         plotLines: [{
+          id: "draw-plotLine",
           color: "#7cb5ec",
           width: 0,
           value: 3133,
+          className: "draw-plotline",
           label: {
             text: '分时',
             align: 'right',
             x: 0
+          },
+          style: {
+            "transtion": "all 0.5s"
           }
         }],
         startOnTick: true,
@@ -682,7 +716,6 @@ $(function() {
     chart = Highcharts.chart('container', options);
     ////绘制实时线
     drawLine();
-    // updateTickPosition();
   }
 
   var myStart = 70;
@@ -988,7 +1021,7 @@ function initinnerSocket() {
       timestamp2 = timestamp2 / 1000; //推送的时间
       if (timestamp2 >= timestamp3) {
         $('.title_date').html(data[7]);
-        /////////分时实施划线
+        /////////分时实时划线
         updateChart(data);
       }
       sessionStorage.hq_inner_date = data[7];
@@ -996,11 +1029,7 @@ function initinnerSocket() {
       sessionStorage.hq_inner_range = data[5];
       sessionStorage.hq_inner_rangePercent = data[6];
     }
-
-
     // $('.hq_List').eq(i).attr("data-key")==hq_key[i]
-
-
   });
 }
 

@@ -458,3 +458,14 @@ tspan {
   display: inline-block;
   line-height: 0.76rem;
 }
+
+.label-draw-plotline {
+  border:1px solid #ff5c01;
+  font-size: 14px;
+  margin-right:0;
+  background: #ff5c01;
+  color:#fff;
+  padding:2px 4px;
+  font-weight:normal;
+  border-radius: 10px;
+}

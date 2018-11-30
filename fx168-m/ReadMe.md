@@ -18,3 +18,5 @@ Andro http://www.itdaan.com/blog/2015/10/21/3be3b12c3f883acf158640af54f44102.htm
 
 可查阅参考 ：http://www.chinaipo.com/stock/830899
 可查阅参考 ：http://demo.rabifoo.com/stock/
+tradingview : https://github.com/zlq4863947/tradingViewWikiCn
+https://cn.tradingview.com/symbols/ETHUSD/
