@@ -137,6 +137,7 @@ function drawLine() {
   // 绘制参考线:
   var points = chart.series[0].points;
   var lastLine = points[points.length - 1];
+  var align = (lastLine.plotX < chart.plotWidth / 2) ? "right" : "left";
   chart.update({
     yAxis: {
       plotLines: [{
@@ -148,13 +149,14 @@ function drawLine() {
         width: 1,
         label: {
           text: '<div class="label-draw-plotline">分时 ' + lastLine.y + '</div>',
-          align: 'right',
+          align: align,
           x: 0,
-          useHTML:true,
+          useHTML: true,
         }
       }],
       tickPositions: sortyAxisdata()
     }
+
   })
 
   ///绘制SVG文字部分;
@@ -178,10 +180,23 @@ function drawLine() {
   render.destroy();
 }
 
-TouchDefault();
-
 function TouchDefault() {
-
+  $("body").on("touchmove", function(e) {
+    var target = $(e.target).parents("#container");
+    if (target.length) {
+      $(".highcharts-tooltip").show();
+      $(".highcharts-markers").show();
+      $(".Crosshair-Music").show();
+    }
+  })
+  $("body").on("touchend", function(e) {
+    var target = $(e.target).parents("#container");
+    if (target.length) {
+      $(".highcharts-tooltip").hide();
+      $(".highcharts-markers").hide();
+      $(".Crosshair-Music").hide();
+    }
+  })
 }
 
 $(function() {
@@ -603,6 +618,7 @@ $(function() {
           var str = '<span style="font-size:18px;">\u25CF</span><span style="font-size:18px;"> 分时:</span>';
           return str + '<span class="concect">' + this.options.y + '</span>'
         },
+        crosshairs: [true, true],
         style: {
           "color": "#fff",
           "cursor": "default",
@@ -628,6 +644,7 @@ $(function() {
         gridLineColor: "#515151",
         crosshair: {
           dashStyle: "Solid",
+          className:"Crosshair-Music",
           snap: true,
           color: "#ff5c01"
         },
@@ -663,7 +680,8 @@ $(function() {
         crosshair: {
           dashStyle: "Solid",
           snap: true,
-          color: "#ff5c01"
+          color: "#ff5c01",
+          className:"Crosshair-Music",
         },
         lineWidth: 0,
         lineColor: "#515151",
@@ -690,9 +708,6 @@ $(function() {
             text: '分时',
             align: 'right',
             x: 0
-          },
-          style: {
-            "transtion": "all 0.5s"
           }
         }],
         startOnTick: true,
@@ -716,6 +731,7 @@ $(function() {
     chart = Highcharts.chart('container', options);
     ////绘制实时线
     drawLine();
+    console.log(chart)
   }
 
   var myStart = 70;
