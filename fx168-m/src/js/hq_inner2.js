@@ -28,178 +28,179 @@ var LocationElement = {
   timeRange: null,
 }
 
-Highcharts.setOptions({
-  global: {
-    useUTC: false //取消默认格林威治时间
-  },
-  lang: {
-    contextButtonTitle: "图表导出菜单",
-    decimalPoint: ".",
-    downloadJPEG: "下载JPEG图片",
-    downloadPDF: "下载PDF文件",
-    downloadPNG: "下载PNG文件",
-    downloadSVG: "下载SVG文件",
-    drillUpText: "返回 {series.name}",
-    loading: "加载中",
-    months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    noData: "没有数据",
-    numericSymbols: ["千", "兆", "G", "T", "P", "E"],
-    printChart: "打印图表",
-    resetZoom: "恢复缩放",
-    resetZoomTitle: "恢复图表",
-    shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    thousandsSep: ",",
-    weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六", "星期天"]
-  },
-  chart: {
-    events: {
-      redraw: function() { //重绘回调
-
-      }
-    }
-  },
-});
-
-function timeFormatter(time) { //ios时间戳
-  var date = time;
-  date = date.replace(/\-/g, "/");
-  return date;
-}
-
-function timeDraw(res, timeRange) { //更新点及线操作
-  var series = chart.series[0];
-  var time = timeFormatter(res[res.length - 1]);
-  var value = res[0];
-  var titledata = $(".title_date").attr("data-time");
-  var titleTime = new Date(timeFormatter(titledata)).getTime();
-  console.log(res);
-  if (new Date(time) >= new Date(timeRange[0]) && new Date(time) < new Date(new Date(timeRange[1]).getTime() + 1000 * 60)) {
-    if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
-      chart.series[0].addPoint({
-        x: new Date(time).getTime(),
-        y: Number(value)
-      });
-      var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(time));
-      $(".title_date").attr("data-time", dateFirst);
-    } else {
-      var seriesData = chart.series[0].options.data;
-      chart.series[0].data[seriesData.length - 1].update({
-        x: new Date(time).getTime(),
-        y: Number(value)
-      })
-    }
-    drawLine();
-    chart.redraw();
-  }
-}
-
-function updateChart(res) { //更新分时chart
-  // var timeRange = sessionStorage.getItem("timeRange");
-  var timeRange = LocationElement.timeRange;
-  if (timeRange) {
-    timeRange = JSON.parse(timeRange)
-  }
-  if (chart && timeRange) {
-    timeDraw(res, timeRange);
-  }
-}
-
-function sortyAxisdata() { //实时排序区间分组
-  var data = chart.series[0].options.data;
-  var sortArr = new Array();
-  for (var i = 0; i < data.length; i++) {
-    sortArr.push(data[i].y)
-  }
-  sortArr.sort(function(a, b) {
-    return a - b
-  });
-  min = sortArr[0];
-  max = sortArr[sortArr.length - 1];
-  return changetickPositions();
-}
-
-function changetickPositions() {
-  var range = Number(math.eval((max - min) / 8).toFixed(5));
-  var minval = parseFloat(min.toFixed(2)) < 10 ? parseFloat(min) : parseFloat(min.toFixed(2));
-  var maxval = parseFloat(max.toFixed(2)) < 10 ? parseFloat(max) : parseFloat(max.toFixed(2));
-  var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
-  // 保留小数点
-  var averageMin = math.eval(minval - range);
-  var averageCenter = math.eval(average.toFixed(5));
-  var averageMax = math.eval(maxval + range);
-  averageMin = averageMin > 10 ? averageMin.toFixed(2) : averageMin.toFixed(5);
-  averageCenter = averageCenter > 10 ? averageCenter.toFixed(2) : averageCenter.toFixed(5);
-  averageMax = averageMax > 10 ? averageMax.toFixed(2) : averageMax.toFixed(5);
-  return [Number(averageMin), Number(averageCenter), Number(averageMax)];
-}
-
-function drawLine() {
-  // 绘制参考线:
-  var points = chart.series[0].points;
-  var lastLine = points[points.length - 1];
-  var align = (lastLine.plotX < chart.plotWidth / 2) ? "right" : "left";
-  chart.update({
-    yAxis: {
-      plotLines: [{
-        zIndex: 99,
-        value: lastLine.y,
-        id: "draw-plotLine",
-        className: "draw-plotline",
-        color: '#0aa20d',
-        width: 1,
-        label: {
-          text: '<div class="label-draw-plotline">分时 ' + lastLine.y + '</div>',
-          align: align,
-          x: 0,
-          useHTML: true,
-        }
-      }],
-      tickPositions: sortyAxisdata()
-    }
-
-  })
-
-  ///绘制SVG文字部分;
-  var render = chart.renderer.label("<div>自定义SVG</div>",
-      lastLine.plotX + chart.plotLeft - 20,
-      lastLine.plotY + chart.plotTop - 45,
-      'callout',
-      lastLine.plotX + chart.plotLeft,
-      lastLine.plotY + chart.plotTop)
-    .css({
-      color: '#FFFFFF',
-      align: 'center',
-    })
-    .attr({
-      fill: 'rgba(250, 0, 0, 0.75)',
-      padding: 8,
-      r: 5,
-      zIndex: 6
-    })
-    .add();
-  render.destroy();
-}
-
-function TouchDefault() {
-  $("body").on("touchmove", function(e) {
-    var target = $(e.target).parents("#container");
-    if (target.length) {
-      $(".highcharts-tooltip").show();
-      $(".highcharts-markers").show();
-      $(".Crosshair-Music").show();
-    }
-  })
-  $("body").on("touchend", function(e) {
-    var target = $(e.target).parents("#container");
-    if (target.length) {
-      $(".highcharts-tooltip").hide();
-      $(".highcharts-markers").hide();
-      $(".Crosshair-Music").hide();
-    }
-  })
-}
-
 $(function() {
+
+  Highcharts.setOptions({
+    global: {
+      useUTC: false //取消默认格林威治时间
+    },
+    lang: {
+      contextButtonTitle: "图表导出菜单",
+      decimalPoint: ".",
+      downloadJPEG: "下载JPEG图片",
+      downloadPDF: "下载PDF文件",
+      downloadPNG: "下载PNG文件",
+      downloadSVG: "下载SVG文件",
+      drillUpText: "返回 {series.name}",
+      loading: "加载中",
+      months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+      noData: "没有数据",
+      numericSymbols: ["千", "兆", "G", "T", "P", "E"],
+      printChart: "打印图表",
+      resetZoom: "恢复缩放",
+      resetZoomTitle: "恢复图表",
+      shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      thousandsSep: ",",
+      weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六", "星期天"]
+    },
+    chart: {
+      events: {
+        redraw: function() { //重绘回调
+
+        }
+      }
+    },
+  });
+
+  function timeFormatter(time) { //ios时间戳
+    var date = time;
+    date = date.replace(/\-/g, "/");
+    return date;
+  }
+
+  function timeDraw(res, timeRange) { //更新点及线操作
+    var series = chart.series[0];
+    var time = timeFormatter(res[res.length - 1]);
+    var value = res[0];
+    var titledata = $(".title_date").attr("data-time");
+    var titleTime = new Date(timeFormatter(titledata)).getTime();
+    console.log(res);
+    if (new Date(time) >= new Date(timeRange[0]) && new Date(time) < new Date(new Date(timeRange[1]).getTime() + 1000 * 60)) {
+      if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
+        chart.series[0].addPoint({
+          x: new Date(time).getTime(),
+          y: Number(value)
+        });
+        var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(time));
+        $(".title_date").attr("data-time", dateFirst);
+      } else {
+        var seriesData = chart.series[0].options.data;
+        chart.series[0].data[seriesData.length - 1].update({
+          x: new Date(time).getTime(),
+          y: Number(value)
+        })
+      }
+      drawLine();
+      chart.redraw();
+    }
+  }
+
+  function updateChart(res) { //更新分时chart
+    // var timeRange = sessionStorage.getItem("timeRange");
+    var timeRange = LocationElement.timeRange;
+    if (timeRange) {
+      timeRange = JSON.parse(timeRange)
+    }
+    if (chart && timeRange) {
+      timeDraw(res, timeRange);
+    }
+  }
+
+  function sortyAxisdata() { //实时排序区间分组
+    var data = chart.series[0].options.data;
+    var sortArr = new Array();
+    for (var i = 0; i < data.length; i++) {
+      sortArr.push(data[i].y)
+    }
+    sortArr.sort(function(a, b) {
+      return a - b
+    });
+    min = sortArr[0];
+    max = sortArr[sortArr.length - 1];
+    return changetickPositions();
+  }
+
+  function changetickPositions() {
+    var range = Number(math.eval((max - min) / 8).toFixed(5));
+    var minval = parseFloat(min.toFixed(2)) < 10 ? parseFloat(min) : parseFloat(min.toFixed(2));
+    var maxval = parseFloat(max.toFixed(2)) < 10 ? parseFloat(max) : parseFloat(max.toFixed(2));
+    var average = parseFloat(((minval + maxval) / 2).toFixed(2)) < 10 ? parseFloat((minval + maxval) / 2) : parseFloat(((minval + maxval) / 2).toFixed(2));
+    // 保留小数点
+    var averageMin = math.eval(minval - range);
+    var averageCenter = math.eval(average.toFixed(5));
+    var averageMax = math.eval(maxval + range);
+    averageMin = averageMin > 10 ? averageMin.toFixed(2) : averageMin.toFixed(5);
+    averageCenter = averageCenter > 10 ? averageCenter.toFixed(2) : averageCenter.toFixed(5);
+    averageMax = averageMax > 10 ? averageMax.toFixed(2) : averageMax.toFixed(5);
+    return [Number(averageMin), Number(averageCenter), Number(averageMax)];
+  }
+
+  function drawLine() {
+    // 绘制参考线:
+    var points = chart.series[0].points;
+    var lastLine = points[points.length - 1];
+    var align = (lastLine.plotX < chart.plotWidth / 2) ? "right" : "left";
+    chart.update({
+      yAxis: {
+        plotLines: [{
+          zIndex: 99,
+          value: lastLine.y,
+          id: "draw-plotLine",
+          className: "draw-plotline",
+          color: '#0aa20d',
+          width: 1,
+          label: {
+            text: '<div class="label-draw-plotline">分时 ' + lastLine.y + '</div>',
+            align: align,
+            x: 0,
+            useHTML: true,
+          }
+        }],
+        tickPositions: sortyAxisdata()
+      }
+
+    })
+
+    ///绘制SVG文字部分;
+    var render = chart.renderer.label("<div>自定义SVG</div>",
+        lastLine.plotX + chart.plotLeft - 20,
+        lastLine.plotY + chart.plotTop - 45,
+        'callout',
+        lastLine.plotX + chart.plotLeft,
+        lastLine.plotY + chart.plotTop)
+      .css({
+        color: '#FFFFFF',
+        align: 'center',
+      })
+      .attr({
+        fill: 'rgba(250, 0, 0, 0.75)',
+        padding: 8,
+        r: 5,
+        zIndex: 6
+      })
+      .add();
+    render.destroy();
+  }
+
+  function TouchDefault() {
+    $("body").on("touchmove", function(e) {
+      var target = $(e.target).parents("#container");
+      if (target.length) {
+        $(".highcharts-tooltip").show();
+        $(".highcharts-markers").show();
+        $(".Crosshair-Music").show();
+      }
+    })
+    $("body").on("touchend", function(e) {
+      var target = $(e.target).parents("#container");
+      if (target.length) {
+        $(".highcharts-tooltip").hide();
+        $(".highcharts-markers").hide();
+        $(".Crosshair-Music").hide();
+      }
+    })
+  }
+
   var selected = 1;
   sessionStorage.hq_inner_left == 0;
   sessionStorage.clickType = "Min01";
@@ -209,6 +210,7 @@ $(function() {
     var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
     var index_socket = Math.floor((Math.random() * socketUrlArr.length));
     socketUrl = socketUrlArr[index_socket];
+    quotationAjax(); //Highcharts分时图渲染;
     initinnerSocket();
   });
   sessionStorage.quateJson = 1
@@ -226,6 +228,7 @@ $(function() {
     $('.hq_inner_tradeWrap img').attr("src", "" + require("../img/ljt@2x.png"));
   }
 
+  quotationAjax(); //页面首次加载重新渲染;
   // tab选项卡
   /*
       tabl选项卡start
@@ -424,32 +427,37 @@ $(function() {
   })
 
   //绘图分时图ajax
-  $.ajax({
-    url: "https://app5.fx168api.com/quotation/getMinHourData.json",
-    dataType: "JSONP",
-    type: "GET",
-    data: {
-      // "count": 240,
-      // "type": sessionStorage.clickType,
-      "code": getUrlParam('key')
-    },
-    success: getMinDataData
-  })
+  function quotationAjax() {
+    $.ajax({
+      url: "https://app5.fx168api.com/quotation/getMinHourData.json",
+      dataType: "JSONP",
+      type: "GET",
+      data: {
+        // "count": 240,
+        // "type": sessionStorage.clickType,
+        "code": getUrlParam('key')
+      },
+      success: getMinDataData
+    })
+  }
 
   //绘制k线图
   function hq_kAjax() {
     $.ajax({
-      url: baseUrl + "quotation/getData.json",
+      // url: baseUrl + "quotation/getData.json",
+      url: "https://app5.fx168api.com/h5/quotation/getData.json",
       dataType: "JSONP",
       type: "GET",
       data: {
-        "count": 240,
+        "count": 30,
         "type": sessionStorage.clickType,
-        "code": getUrlParam('key')
-
+        "code": getUrlParam('key'),
+        "minDate": "2018-12-03 00:00:00",
+        "maxDate": Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', new Date())
       },
       success: initData
     })
+    console.log(LocationElement)
   }
   // 分时图回调函数
   function fillZero(value) { //补零
@@ -644,7 +652,7 @@ $(function() {
         gridLineColor: "#515151",
         crosshair: {
           dashStyle: "Solid",
-          className:"Crosshair-Music",
+          className: "Crosshair-Music",
           snap: true,
           color: "#ff5c01"
         },
@@ -681,7 +689,7 @@ $(function() {
           dashStyle: "Solid",
           snap: true,
           color: "#ff5c01",
-          className:"Crosshair-Music",
+          className: "Crosshair-Music",
         },
         lineWidth: 0,
         lineColor: "#515151",
@@ -760,6 +768,7 @@ $(function() {
     var newDate = [];
     var newDateOne = [];
     var vol = [];
+    var Karray = new Array();
     for (var i = 0; i < bigArr.length; i++) {
       var dates = bigArr[i].date;
       var dateArr = dates.split(" ");
@@ -777,10 +786,17 @@ $(function() {
         parseFloat(vol1),
       ]);
       newDate.unshift(newDate1);
-      // newDateOne.unshift(dates);
       vol.unshift(vol1);
+      var iostimeFomat = timeFormatter(bigArr[i].date);
+      Karray.unshift({
+        x: new Date(iostimeFomat).getTime(),
+        open: parseFloat(bigArr[i].openPrice),
+        high: parseFloat(bigArr[i].highPrice),
+        low: parseFloat(bigArr[i].lowPrice),
+        close: parseFloat(bigArr[i].closePrice),
+      })
     }
-
+    hourChart(Karray);
     //MA计算公式
     function calculateMA(dayCount) {
       var result = [];
@@ -795,327 +811,422 @@ $(function() {
         }
         result.push((sum / dayCount).toFixed(6));
       }
-
       return result;
-
     }
 
-    var dom = document.getElementById("container2");
-    var myChart = echarts.init(dom);
-    opsetQuoteData();
-    var option = {
-      animation: false,
-      // backgroundColor:'#0D1219',
+    // var dom = document.getElementById("container2");
+    // var myChart = echarts.init(dom);
+    // var option = {
+    //   animation: false,
+    //   // backgroundColor:'#0D1219',
+    //   title: {
+    //     text: '',
+    //     left: 0
+    //   },
+    //
+    //   tooltip: {
+    //     triggerOn: 'mousemove',
+    //     trigger: 'axis',
+    //     formatter: function(params) {
+    //       var res = params[0].name;
+    //       res += '<br/>' + params[0].seriesName;
+    //       res += '<br/>  开盘 : ' + params[0].value[0] + '</br>' + '  最高 : ' + params[0].value[3];
+    //       res += '<br/>  收盘 : ' + params[0].value[1] + '</br>' + '  最低 : ' + params[0].value[2];
+    //       return res;
+    //     },
+    //     textStyle: {
+    //       color: 'white',
+    //       decoration: 'none',
+    //       // fontFamily: 'Microsoft YaHei',
+    //       fontSize: 24,
+    //       // fontStyle: 'italic',
+    //       fontWeight: 'bold'
+    //     },
+    //   },
+    //   // legend: {
+    //   //     data: ['KLine', 'MA5','MA10','MA30']
+    //   // },
+    //   grid: [{
+    //     left: '2%',
+    //     right: '7%',
+    //     height: '80%'
+    //   }],
+    //   xAxis: [{
+    //     // offset:100,
+    //     axisLabel: { //调整x轴的lable
+    //       textStyle: {
+    //         fontSize: 20 // 让字体变大
+    //       }
+    //     },
+    //     type: 'category',
+    //     data: newDate,
+    //     scale: true,
+    //     boundaryGap: false,
+    //     axisLine: {
+    //       onZero: false
+    //     },
+    //     splitLine: {
+    //       show: false
+    //     },
+    //     splitNumber: 3,
+    //     min: 'dataMin',
+    //     max: 'dataMax'
+    //   }],
+    //   yAxis: [{
+    //     position: 'right',
+    //     splitLine: {
+    //       lineStyle: {
+    //         color: '#1a1e24',
+    //         width: 2
+    //       }
+    //     },
+    //     splitNumber: 3,
+    //     axisLabel: { //调整x轴的lable
+    //       textStyle: {
+    //         fontSize: 20 // 让字体变大
+    //       }
+    //     },
+    //     scale: true,
+    //     splitArea: {
+    //       show: false
+    //     },
+    //
+    //   }],
+    //   dataZoom: [{
+    //     disabled: true,
+    //
+    //     type: 'inside',
+    //     dataZoomIndex: 100,
+    //     xAxisIndex: [0, 0],
+    //     start: myStart,
+    //     end: 100
+    //   }],
+    //   series: [{
+    //
+    //     name: newKey,
+    //     type: 'candlestick',
+    //     data: dataWrap,
+    //     itemStyle: {
+    //       normal: {
+    //         color: '#0D1219',
+    //         color0: '#0AA20D',
+    //         borderColor: '#EC1A1A',
+    //         borderColor0: '#0AA20D',
+    //       }
+    //     },
+    //
+    //   }, {
+    //     name: 'MA5',
+    //     type: 'line',
+    //     symbol: 'none',
+    //     data: calculateMA(5),
+    //     smooth: true,
+    //     lineStyle: {
+    //       normal: {
+    //         opacity: 0.5,
+    //         color: 'blue'
+    //       }
+    //     }
+    //   }, {
+    //     name: 'MA10',
+    //     type: 'line',
+    //     symbol: 'none',
+    //     data: calculateMA(10),
+    //     smooth: true,
+    //     lineStyle: {
+    //       normal: {
+    //         opacity: 0.5,
+    //         color: 'yellow'
+    //       }
+    //     }
+    //   }, {
+    //     name: 'MA30',
+    //     type: 'line',
+    //     symbol: 'none',
+    //     data: calculateMA(30),
+    //     smooth: true,
+    //     lineStyle: {
+    //       normal: {
+    //         opacity: 0.5,
+    //         color: 'red'
+    //       }
+    //     }
+    //   }]
+    // };
+    // if (option && typeof option === "object") {
+    //   myChart.setOption(option, true); //显示
+    // }
+
+  }
+
+  function calculateMA(dayCount, data) {
+    var result = [];
+    for (var i = 0, len = data.length; i < len; i++) {
+      if (i < dayCount) {
+        continue;
+      }
+      var sum = 0;
+      for (var j = 0; j < dayCount; j++) {
+        sum += data[i].open;
+      }
+      result.push({
+          x: data[i].x,
+          y: Number((sum / dayCount).toFixed(5))
+      });
+    }
+    return result;
+  }
+
+  function hourChart(data) {
+    //时间戳, 开盘价, 最高价, 最低价, 收盘价 [1147651200000, 67.37, 68.38, 67.12, 67.79],
+    var options = {
+      chart: {
+        borderRadius: 0,
+        animation: false,
+        backgroundColor: "#0D1219",
+        plotBorderColor: '#515151',
+        plotBorderWidth: 1,
+        spacingTop: 18,
+        spacingRight: 18,
+        spacingLeft: 18,
+      },
+      rangeSelector: {
+        selected: 1,
+        inputDateFormat: '%Y-%m-%d'
+      },
       title: {
-        text: '',
-        left: 0
+        text: ''
       },
-
       tooltip: {
-        triggerOn: 'mousemove',
-        trigger: 'axis',
-        formatter: function(params) {
-          var res = params[0].name;
-          res += '<br/>' + params[0].seriesName;
-          res += '<br/>  开盘 : ' + params[0].value[0] + '</br>' + '  最高 : ' + params[0].value[3];
-          res += '<br/>  收盘 : ' + params[0].value[1] + '</br>' + '  最低 : ' + params[0].value[2];
-          return res;
-        },
-        textStyle: {
-          color: 'white',
-          decoration: 'none',
-          // fontFamily: 'Microsoft YaHei',
-          fontSize: 24,
-          // fontStyle: 'italic',
-          fontWeight: 'bold'
-        },
+        borderRadius: 0,
+        followTouchMove: true,
+        shadow: false,
+        borderWidth: 0,
+        backgroundColor: 'rgba(10, 162, 13,0.6)',
+        shape: "square",
+        xDateFormat: '%y-%m-%d %H:%M',
+        useHTML: true,
+        enabled: true,
+        headerFormat: '<span style="font-size: 18px">{point.key}</span><br/>',
+        crosshairs: [true, true],
+        style: {
+          "color": "#fff",
+          "cursor": "default",
+          "fontSize": "18px",
+          "pointerEvents": "none",
+          "whiteSpace": "nowrap"
+        }
       },
-      // legend: {
-      //     data: ['KLine', 'MA5','MA10','MA30']
-      // },
-      grid: [{
-        left: '2%',
-        right: '7%',
-        height: '80%'
-      }],
-      xAxis: [{
-        // offset:100,
-        axisLabel: { //调整x轴的lable
-          textStyle: {
-            fontSize: 20 // 让字体变大
-          }
-        },
-        type: 'category',
-        data: newDate,
-        scale: true,
-        boundaryGap: false,
-        axisLine: {
-          onZero: false
-        },
-        splitLine: {
-          show: false
-        },
-        splitNumber: 3,
-        min: 'dataMin',
-        max: 'dataMax'
-      }],
+      xAxis: {
+        dateTimeLabelFormats: {
+          millisecond: '%H:%M:%S.%L',
+          second: '%H:%M:%S',
+          minute: '%H:%M',
+          hour: '%H:%M',
+          day: '%m-%d',
+          week: '%m-%d',
+          month: '%y-%m',
+          year: '%Y'
+        }
+      },
       yAxis: [{
-        position: 'right',
-        splitLine: {
-          lineStyle: {
-            color: '#1a1e24',
-            width: 2
-          }
+        labels: {
+          align: 'right',
+          x: -3
         },
-        splitNumber: 3,
-        axisLabel: { //调整x轴的lable
-          textStyle: {
-            fontSize: 20 // 让字体变大
-          }
+        title: {
+          text: ''
         },
-        scale: true,
-        splitArea: {
-          show: false
-        },
-
-      }],
-      dataZoom: [{
-        disabled: true,
-
-        type: 'inside',
-        dataZoomIndex: 100,
-        xAxisIndex: [0, 0],
-        start: myStart,
-        end: 100
+        height: '100%',
+        lineWidth: 2
       }],
       series: [{
-
-        name: newKey,
         type: 'candlestick',
-        data: dataWrap,
-        itemStyle: {
-          normal: {
-            color: '#0D1219',
-            color0: '#0AA20D',
-            borderColor: '#EC1A1A',
-            borderColor0: '#0AA20D',
-
-
-          }
+        name: sessionStorage.getItem("series_title"),
+        color: 'green',
+        lineColor: 'green',
+        upColor: 'red',
+        upLineColor: 'red',
+        data: data,
+        rangeSelector: {
+          enabled: false
         },
-
-      }, {
-        name: 'MA5',
-        type: 'line',
-        symbol: 'none',
-        data: calculateMA(5),
-        smooth: true,
-        lineStyle: {
-          normal: {
-            opacity: 0.5,
-            color: 'blue'
-          }
+        exporting: {
+          enabled: false
+        },
+        navigator: {
+          enabled: false
+        },
+        scrollbar: {
+          enabled: false
+        },
+        credits: {
+          enabled: false
         }
       }, {
-        name: 'MA10',
+        name: 'MA20',
         type: 'line',
-        symbol: 'none',
-        data: calculateMA(10),
-        smooth: true,
-        lineStyle: {
-          normal: {
-            opacity: 0.5,
-            color: 'yellow'
-          }
-        }
-      }, {
-        name: 'MA30',
-        type: 'line',
-        symbol: 'none',
-        data: calculateMA(30),
-        smooth: true,
-        lineStyle: {
-          normal: {
-            opacity: 0.5,
-            color: 'red'
-          }
-        }
+        color: "#FF5C01",
+        data: calculateMA(20, data),
       }]
     };
-    if (option && typeof option === "object") {
-      var startTime = +new Date();
-      myChart.setOption(option, true); //显示
-      var endTime = +new Date();
-      var updateTime = endTime - startTime;
-    }
-
+    chart = Highcharts.stockChart('container2', options);
   }
+  // 获取地址栏参数 s
+  function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg); //匹配目标参数
+    if (r != null) return unescape(r[2]);
+    return null; //返回参数值
+  }
+  // 获取地址栏参数 e
+  function opsetQuoteData() {
+    $.ajax({
+      type: 'GET',
+      url: "https://app5.fx168api.com/quotation/getQuotationTradeInfo.json",
+      data: {
+        "key": getUrlParam('key'),
 
-
-
-})
-// 获取地址栏参数 s
-function getUrlParam(name) {
-  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-  var r = window.location.search.substr(1).match(reg); //匹配目标参数
-  if (r != null) return unescape(r[2]);
-  return null; //返回参数值
-}
-// 获取地址栏参数 e
-function opsetQuoteData() {
-  $.ajax({
-    type: 'GET',
-    url: "https://app5.fx168api.com/quotation/getQuotationTradeInfo.json",
-    data: {
-      "key": getUrlParam('key'),
-
-    },
-    dataType: 'jsonp',
-    success: getTabListData
-  })
-}
-var newKey = "";
-
-function getTabListData(data) {
-  // console.log(data);
-  var arr = data.data;
-  newKey = arr.name;
-  // console.log(newKey)
-  sessionStorage.setItem("series_title", arr.keyWord);
-  $('.hqIn_title').html(arr.keyWord);
-  var Minutes = timeFormatter(arr.date);
-  var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(Minutes));
-  console.log(dateFirst)
-  $('.title_date').html(arr.date).attr({
-    "data-time": dateFirst,
-    "data-min": new Date(dateFirst).getMinutes()
-  });
-  $('.hq_inner_trade').html(arr.tradePrice);
-  $('.hq_inner_range').html(arr.range);
-  $('.hq_inner_rangePercent').html(arr.rangePercent);
-  $('.hq_data_open').html(arr.openPrice);
-  $('.hq_data_high').html(arr.highPrice);
-  $('.hq_data_preClose').html(arr.preClosePrice);
-  $('.hq_data_low').html(arr.lowPrice);
-  quateAboutNews();
-  sessionStorage.setItem("rangePercent", arr.rangePercent) //range范围
-}
-
-function initinnerSocket() {
-  // socket 行情请求
-  $('.hq_inner_con_Left').attr("data-key", getUrlParam('key'));
-  var hq_key = [];
-  var hq_value = [];
-  socket = io.connect(socketUrl, {
-    'reconnect': true
-  });
-
-  socket.emit('quotationH5', {
-    "secret": "h5Socket",
-    "appType": "h5"
-  });
-
-  socket.on('quotationPushH5', function(data) {
-    var resArr = JSON.parse(data);
-    var key1 = null;
-    var data = null;
-    $.each(resArr, function(key, value) {
-      key1 = key;
-      data = value;
+      },
+      dataType: 'jsonp',
+      success: getTabListData
     })
+  }
+  var newKey = "";
 
-    if ($('.hq_inner_con_Left').attr("data-key") == key1) {
-      $('.hq_inner_trade').html(data[0]);
-      $('.hq_inner_range').html(data[5]);
-      $('.hq_inner_rangePercent').html(data[6]);
-      // 当时间大于等于上一个时间时再赋值
-      var stringTime2 = $('.title_date').html();
-      var timestamp3 = Date.parse(new Date(stringTime2.replace(/\-/g, "/")));
-      timestamp3 = timestamp3 / 1000; //上一个时间
-      var stringTime = data[7].replace(/\-/g, "/");
-      var timestamp2 = Date.parse(new Date(stringTime));
-      timestamp2 = timestamp2 / 1000; //推送的时间
-      if (timestamp2 >= timestamp3) {
-        $('.title_date').html(data[7]);
-        /////////分时实时划线
-        updateChart(data);
-      }
-      sessionStorage.hq_inner_date = data[7];
-      sessionStorage.hq_inner_tradePrice = data[0];
-      sessionStorage.hq_inner_range = data[5];
-      sessionStorage.hq_inner_rangePercent = data[6];
-    }
-    // $('.hq_List').eq(i).attr("data-key")==hq_key[i]
-  });
-}
-
-// 相关新闻
-function quateAboutNews() {
-  $.ajax({
-    url: searchUrl + "news/searchAppNews.json",
-    dataType: "jsonp",
-    type: "GET",
-    data: {
-      keyWord: newKey,
-      pageSize: 3,
-      pageNo: 1
-    },
-    success: quateAboutNewsSuc
-  })
-}
-
-function quateAboutNewsSuc(data) {
-  var arr = data.data.items;
-  var result = "";
-
-  //console.log(data)
-  var clickimgRes = '';
-
-  for (var i = 0; i < arr.length; i++) {
-    var substr = arr[i].publishTime.substring(5, 16);
-    var substr_title = arr[i].newsTitle.substring(0, 28);
-    arr[i].publishTime = substr;
-    arr[i].newsTitle = substr_title;
-    var newsId = arr[i].id;
-    // newsIdArrOli2.push(newsId);
-
-    if (arr[i].hotType && arr[i].hotType != "" && arr[i].hotType != null && arr[i].hotType != undefined) {
-      if (arr[i].hotType == 2) {
-        clickimgRes = '' + require("../img/img_h5_v.2.0/2d.png")
-      } else if (arr[i].hotType == 3) {
-        clickimgRes = '' + require("../img/img_h5_v.2.0/3d.png")
-      } else if (arr[i].hotType == 4) {
-        clickimgRes = '' + require("../img/img_h5_v.2.0/4d.png")
-      } else if (arr[i].hotType == 5) {
-        clickimgRes = '' + require("../img/img_h5_v.2.0/5d.png")
-      }
-    }
-    result += '<a class="oli2" href="/active/article/' + arr[i].id + '.html" data_newID="' + arr[i].id + '">' +
-      '<img class="newImg lazy" data-original="' + arr[i].image + '" src="' + require("../img/newPic@2x.png") + '" alt="">' +
-      '<div class="odiv">' +
-      '<div class="newsTitle">' +
-      '<p class="news_tile_p">' + arr[i].newsTitle + '</p>' +
-      '<div class="new_bt">' +
-      '<p class="new_bt_p1">' +
-      '<img class="clickimg" src="' + clickimgRes + '"/>'
-
-      +
-      '</p>' +
-      '<p class="new_bt_p2">' + arr[i].publishTime + '</p>' +
-      '</div>' +
-      '</div>' +
-      '</div>' +
-      '</a>';
+  function getTabListData(data) {
+    // console.log(data);
+    var arr = data.data;
+    newKey = arr.name;
+    // console.log(newKey)
+    sessionStorage.setItem("series_title", arr.keyWord);
+    $('.hqIn_title').html(arr.keyWord);
+    var Minutes = timeFormatter(arr.date);
+    var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(Minutes));
+    console.log(dateFirst)
+    $('.title_date').html(arr.date).attr({
+      "data-time": dateFirst,
+      "data-min": new Date(dateFirst).getMinutes()
+    });
+    $('.hq_inner_trade').html(arr.tradePrice);
+    $('.hq_inner_range').html(arr.range);
+    $('.hq_inner_rangePercent').html(arr.rangePercent);
+    $('.hq_data_open').html(arr.openPrice);
+    $('.hq_data_high').html(arr.highPrice);
+    $('.hq_data_preClose').html(arr.preClosePrice);
+    $('.hq_data_low').html(arr.lowPrice);
+    quateAboutNews();
+    sessionStorage.setItem("rangePercent", arr.rangePercent) //range范围
   }
 
-  $('.quateAbout').html(result);
-  $("img.lazy").lazyload();
-  // $(".oli2").click(function(){
-  //     newsIdIndex=$(this).attr("data_newID");
-  //     var newsIdURL=baseUrl+"news/getNews.json?newsId="+newsIdIndex;
-  //     var clockNewsNumUrl=baseUrl+"news/clickNews.json?newsId="+newsIdIndex;
-  //     localStorage.newsIdURLIndex=newsIdURL;
-  //     localStorage.clockNewsNum=clockNewsNumUrl;
+  function initinnerSocket() {
+    // socket 行情请求
+    $('.hq_inner_con_Left').attr("data-key", getUrlParam('key'));
+    var hq_key = [];
+    var hq_value = [];
+    socket = io.connect(socketUrl, {
+      'reconnect': true
+    });
 
-  // });
-}
+    socket.emit('quotationH5', {
+      "secret": "h5Socket",
+      "appType": "h5"
+    });
+
+    socket.on('quotationPushH5', function(data) {
+      var resArr = JSON.parse(data);
+      var key1 = null;
+      var data = null;
+      $.each(resArr, function(key, value) {
+        key1 = key;
+        data = value;
+      })
+
+      if ($('.hq_inner_con_Left').attr("data-key") == key1) {
+        if (data[0].indexOf("-") != -1) {
+          quotationAjax()
+        }
+        $('.hq_inner_trade').html(data[0]);
+        $('.hq_inner_range').html(data[5]);
+        $('.hq_inner_rangePercent').html(data[6]);
+        // 当时间大于等于上一个时间时再赋值
+        var stringTime2 = $('.title_date').html();
+        var timestamp3 = Date.parse(new Date(stringTime2.replace(/\-/g, "/")));
+        timestamp3 = timestamp3 / 1000; //上一个时间
+        var stringTime = data[7].replace(/\-/g, "/");
+        var timestamp2 = Date.parse(new Date(stringTime));
+        timestamp2 = timestamp2 / 1000; //推送的时间
+        if (timestamp2 >= timestamp3) {
+          $('.title_date').html(data[7]);
+          /////////分时实时划线
+          updateChart(data);
+        }
+        sessionStorage.hq_inner_date = data[7];
+        sessionStorage.hq_inner_tradePrice = data[0];
+        sessionStorage.hq_inner_range = data[5];
+        sessionStorage.hq_inner_rangePercent = data[6];
+      }
+      // $('.hq_List').eq(i).attr("data-key")==hq_key[i]
+    });
+  }
+
+  // 相关新闻
+  function quateAboutNews() {
+    $.ajax({
+      url: searchUrl + "news/searchAppNews.json",
+      dataType: "jsonp",
+      type: "GET",
+      data: {
+        keyWord: newKey,
+        pageSize: 3,
+        pageNo: 1
+      },
+      success: quateAboutNewsSuc
+    })
+  }
+
+  function quateAboutNewsSuc(data) {
+    var arr = data.data.items;
+    var result = "";
+    var clickimgRes = '';
+
+    for (var i = 0; i < arr.length; i++) {
+      var substr = arr[i].publishTime.substring(5, 16);
+      var substr_title = arr[i].newsTitle.substring(0, 28);
+      arr[i].publishTime = substr;
+      arr[i].newsTitle = substr_title;
+      var newsId = arr[i].id;
+
+      if (arr[i].hotType && arr[i].hotType != "" && arr[i].hotType != null && arr[i].hotType != undefined) {
+        if (arr[i].hotType == 2) {
+          clickimgRes = '' + require("../img/img_h5_v.2.0/2d.png")
+        } else if (arr[i].hotType == 3) {
+          clickimgRes = '' + require("../img/img_h5_v.2.0/3d.png")
+        } else if (arr[i].hotType == 4) {
+          clickimgRes = '' + require("../img/img_h5_v.2.0/4d.png")
+        } else if (arr[i].hotType == 5) {
+          clickimgRes = '' + require("../img/img_h5_v.2.0/5d.png")
+        }
+      }
+      result += '<a class="oli2" href="/active/article/' + arr[i].id + '.html" data_newID="' + arr[i].id + '">' +
+        '<img class="newImg lazy" data-original="' + arr[i].image + '" src="' + require("../img/newPic@2x.png") + '" alt="">' +
+        '<div class="odiv">' +
+        '<div class="newsTitle">' +
+        '<p class="news_tile_p">' + arr[i].newsTitle + '</p>' +
+        '<div class="new_bt">' +
+        '<p class="new_bt_p1">' +
+        '<img class="clickimg" src="' + clickimgRes + '"/>'
+
+        +
+        '</p>' +
+        '<p class="new_bt_p2">' + arr[i].publishTime + '</p>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</a>';
+    }
+
+    $('.quateAbout').html(result);
+    $("img.lazy").lazyload();
+  }
+})
