@@ -26,3 +26,6 @@ https://www.bbsmax.com/A/6pdDXlxydw/
 
 
 https://stackoverflow.com/questions/38771499/error-in-highstock-chart-data-is-undefined-in-tooltip
+
+
+scrollbar https://blog.csdn.net/zyjcxc/article/details/77455585

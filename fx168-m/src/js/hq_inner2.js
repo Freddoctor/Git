@@ -372,50 +372,61 @@ $(function() {
   $('.min').click(function() {
     sessionStorage.clickType = "Min01";
     $('.sum').css("display", "none");
-
+    quotationAjax();
+    if (Kchart) {
+      Kchart.destroy();
+      Kchart = null;
+    }
   })
+
   $('.hq_hour').click(function() {
     sessionStorage.clickType = "Min60";
     selected = 1;
     hq_kAjax()
-
   })
+
   $('.hq_day').click(function() {
     sessionStorage.clickType = "Day";
     selected = 1;
     hq_kAjax()
-
   })
+
   $('.hq_week').click(function() {
     sessionStorage.clickType = "Week";
     selected = 4;
     hq_kAjax()
   })
+
   $('.hq_month').click(function() {
     sessionStorage.clickType = "Month";
     selected = 5;
     hq_kAjax()
   })
+
   $('.hq_min01').click(function() {
     sessionStorage.clickType = "Min01";
     selected = 1;
     hq_kAjax()
   })
+
   $('.hq_min03').click(function() {
     sessionStorage.clickType = "Min03";
     selected = 6;
     hq_kAjax()
   })
+
   $('.hq_min05').click(function() {
     sessionStorage.clickType = "Min05";
     selected = 2;
     hq_kAjax()
   })
+
   $('.hq_min15').click(function() {
     sessionStorage.clickType = "Min15";
     selected = 2;
     hq_kAjax()
   })
+
   $('.hq_min30').click(function() {
     sessionStorage.clickType = "Min30";
     selected = 2;
@@ -739,6 +750,10 @@ $(function() {
   }
 
   function initData(data) {
+    if (chart) {
+      chart.destroy();
+      chart = null;
+    }
     if (!data.data) return false;
     $(".title_date").attr("data-kchartime", data.data.maxDate.replace(/\-/g, "/"));
     var bigArr = data.data.totalList;
@@ -818,6 +833,33 @@ $(function() {
         spacingLeft: 18,
         panning: true
       },
+      navigator: {
+        enabled: true,
+        adaptToUpdatedData: true,
+      },
+      scrollbar: {
+        liveRedraw: false,
+        enabled:true,
+        barBackgroundColor: 'gray',
+        barBorderRadius: 7,
+        barBorderWidth: 0,
+        buttonBackgroundColor: 'gray',
+        buttonBorderWidth: 0,
+        buttonBorderRadius: 7,
+        trackBackgroundColor: 'none',
+        trackBorderWidth: 1,
+        trackBorderRadius: 8,
+        trackBorderColor: '#CCC'
+      },
+      plotOptions: {
+        series: {
+          lineWidth: 1,
+          dataLabels: {
+            allowOverlap: true
+          },
+        },
+        getExtremesFromAll: true,
+      },
       rangeSelector: {
         selected: 1,
         inputDateFormat: '%Y-%m-%d'
@@ -848,9 +890,6 @@ $(function() {
           "whiteSpace": "nowrap"
         }
       },
-      scrollbar: {
-        liveRedraw: false
-      },
       xAxis: {
         dateTimeLabelFormats: {
           millisecond: '%H:%M:%S.%L',
@@ -868,6 +907,7 @@ $(function() {
         tickColor: "#515151",
         gridLineWidth: 0.5,
         gridLineColor: "#515151",
+        ordinal: true,
         labels: {
           useHTML: false,
           autoRotation: false,
@@ -877,14 +917,22 @@ $(function() {
             'fontSize': '16px'
           },
           formatter: function(e) {
-            return Highcharts.dateFormat('%H:%M', this.value)
-          }
-        }
+            return Highcharts.dateFormat('%Y-%m-%d %H:%M', this.value)
+          },
+          step: 4
+        },
       },
       yAxis: [{
         title: {
           text: ''
         },
+        offset: 0,
+        tickAmount: 3,
+        tickPosition: "inside",
+        tickmarkPlacement: "on",
+        startOnTick: true,
+        endOnTick: true,
+        showLastLabel: true,
         labels: {
           y: 0,
           x: 0,
@@ -939,7 +987,8 @@ $(function() {
         },
         dataGrouping: {
           enabled: false
-        }
+        },
+        // showInNavigator: false
       }, {
         name: 'MA5',
         type: 'spline',
@@ -948,7 +997,8 @@ $(function() {
         lineWidth: 1,
         dataGrouping: {
           enabled: false
-        }
+        },
+        showInNavigator: false
       }, {
         name: 'MA10',
         type: 'spline',
@@ -957,7 +1007,8 @@ $(function() {
         lineWidth: 1,
         dataGrouping: {
           enabled: false
-        }
+        },
+        showInNavigator: false
       }, {
         name: 'MA30',
         type: 'spline',
@@ -966,7 +1017,8 @@ $(function() {
         lineWidth: 1,
         dataGrouping: {
           enabled: false
-        }
+        },
+        showInNavigator: false
       }]
     };
     Kchart = Highcharts.stockChart('container2', options);
@@ -980,13 +1032,13 @@ $(function() {
       yAxis: {
         plotLines: [{
           zIndex: 99,
-          value: lastLine[0],
+          value: lastLine[3],
           id: "draw-plotLine",
           className: "draw-plotline",
           color: '#0aa20d',
           width: 1,
           label: {
-            text: '<div class="label-draw-plotline">分时 ' + '' + '</div>',
+            text: '<div class="label-draw-plotline">CLOSE: ' + lastLine[3] + '</div>',
             align: "left",
             x: 0,
             useHTML: true,
@@ -1042,14 +1094,15 @@ $(function() {
       var seriesData = Kchart.series[0].options.data;
       var dataArr = KLineAreaSort(seriesData, time, value);
       // Kchart.series[0].data[seriesData.length - 1].update(dataArr, false);
-      Kchart.series[0].removePoint(seriesData.length -1 ,false);
-      Kchart.series[0].addPoint(dataArr ,false);
+      Kchart.series[0].removePoint(seriesData.length - 1, false);
+      Kchart.series[0].addPoint(dataArr, false);
     }
-    MaLineDraw();
+    MaLineDraw(); //绘制MA线
+    drawKchartLine(); //绘制参考线
     Kchart.redraw();
   }
 
-  function MaLineDraw() {
+  function MaLineDraw() { //MA线绘制
     var seriesData = Kchart.series[0].options.data;
     var ma5data = calculateMA(5, seriesData);
     var ma10data = calculateMA(10, seriesData);
@@ -1059,7 +1112,7 @@ $(function() {
     Kchart.series[3].setData(ma30data, false);
   }
 
-  function KLineAreaSort(seriesData, time, value) {
+  function KLineAreaSort(seriesData, time, value) { //socket数据流K线判断值
     // 时间戳, 开盘价, 最高价, 最低价, 收盘价
     var kEndData = seriesData[seriesData.length - 1];
     var arrPrice = [
@@ -1073,6 +1126,28 @@ $(function() {
     return [new Date(time).getTime(), kEndData[1], maxPrice, minPrice, closePrice]
   }
 
+  function KLineXtickPos(seriesData, time) { //x轴tickpostion
+    var date = $(".title_date").attr("data-kchartime");
+    var now = new Date(date).getTime();
+    var reverseSeries = seriesData.reverse();
+    var newXlist = reverseSeries.filter(function(item, index) {
+      return now == item[0] + index * 60 * 10000
+    })
+    newXlist = newXlist.reverse();
+    Kchart.update({
+      xAxis: {
+        tickPositions: KLineXtickPos()
+      }
+    })
+  }
+
+  function KLineYtickPos() { //y轴tickpostion
+    Kchart.update({
+      yAxis: {
+        tickPositions: KLineYtickPos()
+      }
+    })
+  }
   // 获取地址栏参数 s
   function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象

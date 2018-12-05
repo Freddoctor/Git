@@ -473,3 +473,7 @@ tspan {
 .hide {
   display: none !important;
 }
+
+tspan {
+  font-size: 11px;
+}
