@@ -22,6 +22,7 @@ import Highcharts from "./highstock.js"
 const math = require('mathjs');
 var chart = null;
 var socket = null;
+var Kchart = null;
 var max = "";
 var min = "";
 var LocationElement = {
@@ -49,9 +50,11 @@ $(function() {
       printChart: "打印图表",
       resetZoom: "恢复缩放",
       resetZoomTitle: "恢复图表",
-      shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月',
+        '9月', '10月', '11月', '12月'
+      ],
       thousandsSep: ",",
-      weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六", "星期天"]
+      weekdays: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
     },
     chart: {
       events: {
@@ -74,7 +77,7 @@ $(function() {
     var value = res[0];
     var titledata = $(".title_date").attr("data-time");
     var titleTime = new Date(timeFormatter(titledata)).getTime();
-    console.log(res);
+    // console.log(res);
     if (new Date(time) >= new Date(timeRange[0]) && new Date(time) < new Date(new Date(timeRange[1]).getTime() + 1000 * 60)) {
       if (new Date(time).getTime() >= (titleTime + 1000 * 60)) {
         chart.series[0].addPoint({
@@ -182,21 +185,14 @@ $(function() {
     render.destroy();
   }
 
-  function TouchDefault() {
-    $("body").on("touchmove", function(e) {
-      var target = $(e.target).parents("#container");
-      if (target.length) {
-        $(".highcharts-tooltip").show();
-        $(".highcharts-markers").show();
-        $(".Crosshair-Music").show();
-      }
-    })
+  TouchDefault();
+
+  function TouchDefault() { //手动离开屏幕消失tip提示
     $("body").on("touchend", function(e) {
       var target = $(e.target).parents("#container");
       if (target.length) {
-        $(".highcharts-tooltip").hide();
-        $(".highcharts-markers").hide();
-        $(".Crosshair-Music").hide();
+        chart.pointer.reset();
+        chart.pointer.chartPosition = null; // also reset the chart position, used in #149 fix
       }
     })
   }
@@ -449,15 +445,15 @@ $(function() {
       dataType: "JSONP",
       type: "GET",
       data: {
-        "count": 30,
+        "count": 240,
         "type": sessionStorage.clickType,
         "code": getUrlParam('key'),
-        "minDate": "2018-12-03 00:00:00",
+        "minDate": "",
         "maxDate": Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', new Date())
       },
       success: initData
     })
-    console.log(LocationElement)
+    // console.log(LocationElement)
   }
   // 分时图回调函数
   function fillZero(value) { //补零
@@ -742,24 +738,9 @@ $(function() {
     console.log(chart)
   }
 
-  var myStart = 70;
-  $('.add').click(function() {
-    myStart += 5;
-    if (myStart >= 100) {
-      myStart = 100;
-    }
-    hq_kAjax();
-  })
-  $('.jian').click(function() {
-    if (myStart <= 0) {
-      myStart = 0;
-    }
-    myStart -= 5;
-    hq_kAjax();
-  })
-
-
   function initData(data) {
+    if (!data.data) return false;
+    $(".title_date").attr("data-kchartime", data.data.maxDate.replace(/\-/g, "/"));
     var bigArr = data.data.totalList;
     var arrList = [];
     var dateList = [];
@@ -788,191 +769,37 @@ $(function() {
       newDate.unshift(newDate1);
       vol.unshift(vol1);
       var iostimeFomat = timeFormatter(bigArr[i].date);
-      Karray.unshift({
-        x: new Date(iostimeFomat).getTime(),
-        open: parseFloat(bigArr[i].openPrice),
-        high: parseFloat(bigArr[i].highPrice),
-        low: parseFloat(bigArr[i].lowPrice),
-        close: parseFloat(bigArr[i].closePrice),
-      })
+      // Karray.unshift({
+      //   x: new Date(iostimeFomat).getTime(),
+      //   open: parseFloat(bigArr[i].openPrice),
+      //   high: parseFloat(bigArr[i].highPrice),
+      //   low: parseFloat(bigArr[i].lowPrice),
+      //   close: parseFloat(bigArr[i].closePrice),
+      // })
+      Karray.unshift([
+        new Date(iostimeFomat).getTime(),
+        parseFloat(bigArr[i].openPrice),
+        parseFloat(bigArr[i].highPrice),
+        parseFloat(bigArr[i].lowPrice),
+        parseFloat(bigArr[i].closePrice),
+      ])
     }
     hourChart(Karray);
-    //MA计算公式
-    function calculateMA(dayCount) {
-      var result = [];
-      for (var i = 0, len = newDate.length; i < len; i++) {
-        if (i < dayCount) {
-          result.push('-');
-          continue;
-        }
-        var sum = 0;
-        for (var j = 0; j < dayCount; j++) {
-          sum += dataWrap[i - j][1];
-        }
-        result.push((sum / dayCount).toFixed(6));
-      }
-      return result;
-    }
-
-    // var dom = document.getElementById("container2");
-    // var myChart = echarts.init(dom);
-    // var option = {
-    //   animation: false,
-    //   // backgroundColor:'#0D1219',
-    //   title: {
-    //     text: '',
-    //     left: 0
-    //   },
-    //
-    //   tooltip: {
-    //     triggerOn: 'mousemove',
-    //     trigger: 'axis',
-    //     formatter: function(params) {
-    //       var res = params[0].name;
-    //       res += '<br/>' + params[0].seriesName;
-    //       res += '<br/>  开盘 : ' + params[0].value[0] + '</br>' + '  最高 : ' + params[0].value[3];
-    //       res += '<br/>  收盘 : ' + params[0].value[1] + '</br>' + '  最低 : ' + params[0].value[2];
-    //       return res;
-    //     },
-    //     textStyle: {
-    //       color: 'white',
-    //       decoration: 'none',
-    //       // fontFamily: 'Microsoft YaHei',
-    //       fontSize: 24,
-    //       // fontStyle: 'italic',
-    //       fontWeight: 'bold'
-    //     },
-    //   },
-    //   // legend: {
-    //   //     data: ['KLine', 'MA5','MA10','MA30']
-    //   // },
-    //   grid: [{
-    //     left: '2%',
-    //     right: '7%',
-    //     height: '80%'
-    //   }],
-    //   xAxis: [{
-    //     // offset:100,
-    //     axisLabel: { //调整x轴的lable
-    //       textStyle: {
-    //         fontSize: 20 // 让字体变大
-    //       }
-    //     },
-    //     type: 'category',
-    //     data: newDate,
-    //     scale: true,
-    //     boundaryGap: false,
-    //     axisLine: {
-    //       onZero: false
-    //     },
-    //     splitLine: {
-    //       show: false
-    //     },
-    //     splitNumber: 3,
-    //     min: 'dataMin',
-    //     max: 'dataMax'
-    //   }],
-    //   yAxis: [{
-    //     position: 'right',
-    //     splitLine: {
-    //       lineStyle: {
-    //         color: '#1a1e24',
-    //         width: 2
-    //       }
-    //     },
-    //     splitNumber: 3,
-    //     axisLabel: { //调整x轴的lable
-    //       textStyle: {
-    //         fontSize: 20 // 让字体变大
-    //       }
-    //     },
-    //     scale: true,
-    //     splitArea: {
-    //       show: false
-    //     },
-    //
-    //   }],
-    //   dataZoom: [{
-    //     disabled: true,
-    //
-    //     type: 'inside',
-    //     dataZoomIndex: 100,
-    //     xAxisIndex: [0, 0],
-    //     start: myStart,
-    //     end: 100
-    //   }],
-    //   series: [{
-    //
-    //     name: newKey,
-    //     type: 'candlestick',
-    //     data: dataWrap,
-    //     itemStyle: {
-    //       normal: {
-    //         color: '#0D1219',
-    //         color0: '#0AA20D',
-    //         borderColor: '#EC1A1A',
-    //         borderColor0: '#0AA20D',
-    //       }
-    //     },
-    //
-    //   }, {
-    //     name: 'MA5',
-    //     type: 'line',
-    //     symbol: 'none',
-    //     data: calculateMA(5),
-    //     smooth: true,
-    //     lineStyle: {
-    //       normal: {
-    //         opacity: 0.5,
-    //         color: 'blue'
-    //       }
-    //     }
-    //   }, {
-    //     name: 'MA10',
-    //     type: 'line',
-    //     symbol: 'none',
-    //     data: calculateMA(10),
-    //     smooth: true,
-    //     lineStyle: {
-    //       normal: {
-    //         opacity: 0.5,
-    //         color: 'yellow'
-    //       }
-    //     }
-    //   }, {
-    //     name: 'MA30',
-    //     type: 'line',
-    //     symbol: 'none',
-    //     data: calculateMA(30),
-    //     smooth: true,
-    //     lineStyle: {
-    //       normal: {
-    //         opacity: 0.5,
-    //         color: 'red'
-    //       }
-    //     }
-    //   }]
-    // };
-    // if (option && typeof option === "object") {
-    //   myChart.setOption(option, true); //显示
-    // }
-
   }
 
-  function calculateMA(dayCount, data) {
+  function calculateMA(dayCount, data) { //MA线计算
     var result = [];
     for (var i = 0, len = data.length; i < len; i++) {
-      if (i < dayCount) {
+      if (i < dayCount - 1) {
         continue;
       }
       var sum = 0;
+      var dataList = 0;
       for (var j = 0; j < dayCount; j++) {
-        sum += data[i].open;
+        sum += data[i - j][4];
+        dataList = data[i][0]
       }
-      result.push({
-          x: data[i].x,
-          y: Number((sum / dayCount).toFixed(5))
-      });
+      result.push([dataList, parseFloat(math.eval(sum / dayCount).toFixed(5))]);
     }
     return result;
   }
@@ -989,6 +816,7 @@ $(function() {
         spacingTop: 18,
         spacingRight: 18,
         spacingLeft: 18,
+        panning: true
       },
       rangeSelector: {
         selected: 1,
@@ -997,9 +825,12 @@ $(function() {
       title: {
         text: ''
       },
+      credits: {
+        enabled: false
+      },
       tooltip: {
         borderRadius: 0,
-        followTouchMove: true,
+        followTouchMove: false,
         shadow: false,
         borderWidth: 0,
         backgroundColor: 'rgba(10, 162, 13,0.6)',
@@ -1007,15 +838,18 @@ $(function() {
         xDateFormat: '%y-%m-%d %H:%M',
         useHTML: true,
         enabled: true,
-        headerFormat: '<span style="font-size: 18px">{point.key}</span><br/>',
+        headerFormat: '<span style="font-size: 13px">{point.key}</span><br/>',
         crosshairs: [true, true],
         style: {
           "color": "#fff",
           "cursor": "default",
-          "fontSize": "18px",
+          "fontSize": "13px",
           "pointerEvents": "none",
           "whiteSpace": "nowrap"
         }
+      },
+      scrollbar: {
+        liveRedraw: false
       },
       xAxis: {
         dateTimeLabelFormats: {
@@ -1027,18 +861,58 @@ $(function() {
           week: '%m-%d',
           month: '%y-%m',
           year: '%Y'
+        },
+        lineWidth: 0,
+        lineColor: "#515151",
+        tickWidth: 0,
+        tickColor: "#515151",
+        gridLineWidth: 0.5,
+        gridLineColor: "#515151",
+        labels: {
+          useHTML: false,
+          autoRotation: false,
+          autoRotationLimit: 0,
+          style: {
+            'color': '#858585',
+            'fontSize': '16px'
+          },
+          formatter: function(e) {
+            return Highcharts.dateFormat('%H:%M', this.value)
+          }
         }
       },
       yAxis: [{
-        labels: {
-          align: 'right',
-          x: -3
-        },
         title: {
           text: ''
         },
+        labels: {
+          y: 0,
+          x: 0,
+          align: "right",
+          style: {
+            'color': '#858585',
+            'fontSize': '18px'
+          },
+        },
+        plotLines: [{
+          id: "draw-KLine",
+          color: "#7cb5ec",
+          width: 0,
+          value: 96.9,
+          className: "draw-plotline",
+          label: {
+            text: '分时',
+            align: 'right',
+            x: 0
+          }
+        }],
         height: '100%',
-        lineWidth: 2
+        lineWidth: 0,
+        lineColor: "#515151",
+        tickWidth: 0,
+        tickColor: "#515151",
+        gridLineWidth: 0.5,
+        gridLineColor: "#515151",
       }],
       series: [{
         type: 'candlestick',
@@ -1062,16 +936,143 @@ $(function() {
         },
         credits: {
           enabled: false
+        },
+        dataGrouping: {
+          enabled: false
         }
       }, {
-        name: 'MA20',
-        type: 'line',
-        color: "#FF5C01",
-        data: calculateMA(20, data),
+        name: 'MA5',
+        type: 'spline',
+        color: "#0D58A6",
+        data: calculateMA(5, data),
+        lineWidth: 1,
+        dataGrouping: {
+          enabled: false
+        }
+      }, {
+        name: 'MA10',
+        type: 'spline',
+        color: "#E5FB00",
+        data: calculateMA(10, data),
+        lineWidth: 1,
+        dataGrouping: {
+          enabled: false
+        }
+      }, {
+        name: 'MA30',
+        type: 'spline',
+        color: "#FB000D",
+        data: calculateMA(30, data),
+        lineWidth: 1,
+        dataGrouping: {
+          enabled: false
+        }
       }]
     };
-    chart = Highcharts.stockChart('container2', options);
+    Kchart = Highcharts.stockChart('container2', options);
+    drawKchartLine();
   }
+
+  function drawKchartLine() { //动态绘制参考线
+    var yData = Kchart.series[0].yData;
+    var lastLine = yData[yData.length - 1];
+    Kchart.update({
+      yAxis: {
+        plotLines: [{
+          zIndex: 99,
+          value: lastLine[0],
+          id: "draw-plotLine",
+          className: "draw-plotline",
+          color: '#0aa20d',
+          width: 1,
+          label: {
+            text: '<div class="label-draw-plotline">分时 ' + '' + '</div>',
+            align: "left",
+            x: 0,
+            useHTML: true,
+          }
+        }],
+      }
+    })
+  }
+
+  function typeKey(type) { //分钟、小时、周、日、月类型判断
+    var typeMinute = null;
+    switch (type) {
+      case "Min01":
+        typeMinute = 1;
+        break;
+      case "Min03":
+        typeMinute = 3;
+        break;
+      case "Min05":
+        typeMinute = 5;
+        break;
+      case "Min15":
+        typeMinute = 15;
+        break;
+      case "Min30":
+        typeMinute = 30;
+        break;
+      default:
+        typeMinute = null;
+    }
+    return {
+      minute: typeMinute
+    }
+  }
+
+  function timeKchartLine(res) { ///分钟线K线
+    if (!Kchart) return false;
+    var series = Kchart.series[0];
+    var titledata = $(".title_date").attr("data-kchartime");
+    var time = timeFormatter(res[res.length - 1]);
+    var value = parseFloat(res[0]);
+    var titleTime = new Date(timeFormatter(titledata)).getTime();
+    var clickType = sessionStorage.getItem("clickType")
+    var minute = typeKey(clickType).minute;
+    if (new Date(time) >= (titleTime + minute * 1000 * 60)) {
+      Kchart.series[0].addPoint([
+        new Date(time).getTime(), parseFloat(value), parseFloat(value), parseFloat(value), parseFloat(value)
+      ], false)
+      var dateFirst = Highcharts.dateFormat('%Y/%m/%d %H:%M:00', new Date(time));
+      $(".title_date").attr("data-kchartime", dateFirst);
+    } else {
+      // 时间戳, 开盘价, 最高价, 最低价, 收盘价
+      var seriesData = Kchart.series[0].options.data;
+      var dataArr = KLineAreaSort(seriesData, time, value);
+      // Kchart.series[0].data[seriesData.length - 1].update(dataArr, false);
+      Kchart.series[0].removePoint(seriesData.length -1 ,false);
+      Kchart.series[0].addPoint(dataArr ,false);
+    }
+    MaLineDraw();
+    Kchart.redraw();
+  }
+
+  function MaLineDraw() {
+    var seriesData = Kchart.series[0].options.data;
+    var ma5data = calculateMA(5, seriesData);
+    var ma10data = calculateMA(10, seriesData);
+    var ma30data = calculateMA(30, seriesData);
+    Kchart.series[1].setData(ma5data, false);
+    Kchart.series[2].setData(ma10data, false);
+    Kchart.series[3].setData(ma30data, false);
+  }
+
+  function KLineAreaSort(seriesData, time, value) {
+    // 时间戳, 开盘价, 最高价, 最低价, 收盘价
+    var kEndData = seriesData[seriesData.length - 1];
+    var arrPrice = [
+      kEndData[1], kEndData[2], kEndData[3], kEndData[4]
+    ];
+    Math.max.apply(null, arrPrice);
+    Math.min.apply(null, arrPrice);
+    var maxPrice = value > kEndData[2] ? value : kEndData[2];
+    var minPrice = value < kEndData[3] ? value : kEndData[3];
+    var closePrice = parseFloat(value);
+    return [new Date(time).getTime(), kEndData[1], maxPrice, minPrice, closePrice]
+  }
+
   // 获取地址栏参数 s
   function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
@@ -1086,7 +1087,6 @@ $(function() {
       url: "https://app5.fx168api.com/quotation/getQuotationTradeInfo.json",
       data: {
         "key": getUrlParam('key'),
-
       },
       dataType: 'jsonp',
       success: getTabListData
@@ -1160,6 +1160,7 @@ $(function() {
           $('.title_date').html(data[7]);
           /////////分时实时划线
           updateChart(data);
+          timeKchartLine(data) //K线;
         }
         sessionStorage.hq_inner_date = data[7];
         sessionStorage.hq_inner_tradePrice = data[0];

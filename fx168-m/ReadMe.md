@@ -20,3 +20,9 @@ Andro http://www.itdaan.com/blog/2015/10/21/3be3b12c3f883acf158640af54f44102.htm
 可查阅参考 ：http://demo.rabifoo.com/stock/
 tradingview : https://github.com/zlq4863947/tradingViewWikiCn
 https://cn.tradingview.com/symbols/ETHUSD/
+
+https://www.highcharts.com/stock/demo/lazy-loading
+https://www.bbsmax.com/A/6pdDXlxydw/
+
+
+https://stackoverflow.com/questions/38771499/error-in-highstock-chart-data-is-undefined-in-tooltip
