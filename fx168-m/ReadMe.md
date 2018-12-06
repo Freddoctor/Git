@@ -29,3 +29,7 @@ https://stackoverflow.com/questions/38771499/error-in-highstock-chart-data-is-un
 
 
 scrollbar https://blog.csdn.net/zyjcxc/article/details/77455585
+
+股票 K线 canvas 手工实现 ：https://www.jianshu.com/p/7b1cabf11b4d
+
+ canvas绘制股票K线图： https://cloud.tencent.com/info/e80d71eface91cae5491069180fc4888.html

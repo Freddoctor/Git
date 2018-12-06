@@ -243,7 +243,6 @@ $(function() {
       $(".sideline").css({
         width: $(this).outerWidth()
       });
-
       $(this).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
       navName(sessionStorage.pagecount3);
       return false
@@ -254,6 +253,11 @@ $(function() {
       $(".find_nav_list li").eq(0).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
     }
   });
+
+  //页面初始化记录分时数据
+  navName("分时");
+  $(".find_nav_list  ul li").eq(0).addClass("find_nav_cur").siblings().removeClass("find_nav_cur")
+
   var nav_w = $(".find_nav_list li").first().width();
   $(".sideline").width(nav_w);
   $(".find_nav_list li").on('click', function() {
@@ -287,7 +291,6 @@ $(function() {
   var fl_w = $(".find_nav_list").width();
   var flb_w = $(".find_nav_left").width();
   var x1, y1, ty_left;
-
   $(".find_nav_list").on('touchstart', function(e) {
     var touch1 = e.originalEvent.targetTouches[0];
     x1 = touch1.pageX;
@@ -339,21 +342,18 @@ $(function() {
     } else if ($('.hq_inner_fzx_wrap').css("display") == "block") {
       $('.hq_inner_fzx_wrap').css("display", "none");
     }
-
   })
 
   $('.hq_inner_fzx_wrap ul li').click(function() {
     $('.hq_inner_fzx_wrap').css("display", "none")
     var index = $(this).index();
     $('.hq_inner_fzx_wrap ul li').eq(index).each(function() {
-
       $('.hq_inner_fz a').html($(this).text());
     })
   })
 
   for (var i = 0; i < $('.find_nav_list li').length; i++) {
     $('.find_nav_list li').eq(i).click(function() {
-
       if ($(this).index() < 5) {
         $('.hq_inner_fzx_wrap').css("display", "none");
         $('.hq_inner_fz a').html("分钟");
@@ -462,9 +462,10 @@ $(function() {
         "minDate": "",
         "maxDate": Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', new Date())
       },
-      success: initData
+      success: function(data) {
+        initData(data, sessionStorage.clickType)
+      }
     })
-    // console.log(LocationElement)
   }
   // 分时图回调函数
   function fillZero(value) { //补零
@@ -749,13 +750,21 @@ $(function() {
     console.log(chart)
   }
 
-  function initData(data) {
+  function initData(data, type) {
     if (chart) {
       chart.destroy();
       chart = null;
     }
     if (!data.data) return false;
-    $(".title_date").attr("data-kchartime", data.data.maxDate.replace(/\-/g, "/"));
+    console.log(type);
+    if ((type.indexOf("Min") != -1) || (type.indexOf("Day") != -1)) {
+      $(".title_date").attr("data-kchartime", data.data.maxDate.replace(/\-/g, "/"));
+    } else if (type.indexOf("Week") != -1) {
+      $(".title_date").attr("data-weektime", data.data.maxDate.replace(/\-/g, "/"));
+      weekMonRest(); //强制设置周一 00:00:00
+    } else if (type.indexOf("Month") != -1) {
+      $(".title_date").attr("data-monthtime", data.data.maxDate.replace(/\-/g, "/"));
+    }
     var bigArr = data.data.totalList;
     var arrList = [];
     var dateList = [];
@@ -831,15 +840,15 @@ $(function() {
         spacingTop: 18,
         spacingRight: 18,
         spacingLeft: 18,
-        panning: true
+        panning: true,
       },
       navigator: {
         enabled: true,
         adaptToUpdatedData: true,
       },
       scrollbar: {
-        liveRedraw: false,
-        enabled:true,
+        liveRedraw: true,
+        enabled: true,
         barBackgroundColor: 'gray',
         barBorderRadius: 7,
         barBorderWidth: 0,
@@ -860,10 +869,7 @@ $(function() {
         },
         getExtremesFromAll: true,
       },
-      rangeSelector: {
-        selected: 1,
-        inputDateFormat: '%Y-%m-%d'
-      },
+      rangeSelector: {},
       title: {
         text: ''
       },
@@ -967,26 +973,26 @@ $(function() {
         name: sessionStorage.getItem("series_title"),
         color: 'green',
         lineColor: 'green',
-        upColor: 'red',
+        upColor: '#0d1219',
         upLineColor: 'red',
         data: data,
-        rangeSelector: {
-          enabled: false
-        },
-        exporting: {
-          enabled: false
-        },
-        navigator: {
-          enabled: false
-        },
-        scrollbar: {
-          enabled: false
-        },
-        credits: {
-          enabled: false
-        },
+        // rangeSelector: {
+        //   enabled: true
+        // },
+        // exporting: {
+        //   enabled: false
+        // },
+        // navigator: {
+        //   enabled: true
+        // },
+        // scrollbar: {
+        //   enabled: true
+        // },
+        // credits: {
+        //   enabled: false
+        // },
         dataGrouping: {
-          enabled: false
+          enabled: false,
         },
         // showInNavigator: false
       }, {
@@ -998,7 +1004,6 @@ $(function() {
         dataGrouping: {
           enabled: false
         },
-        showInNavigator: false
       }, {
         name: 'MA10',
         type: 'spline',
@@ -1008,7 +1013,6 @@ $(function() {
         dataGrouping: {
           enabled: false
         },
-        showInNavigator: false
       }, {
         name: 'MA30',
         type: 'spline',
@@ -1018,7 +1022,6 @@ $(function() {
         dataGrouping: {
           enabled: false
         },
-        showInNavigator: false
       }]
     };
     Kchart = Highcharts.stockChart('container2', options);
@@ -1050,6 +1053,8 @@ $(function() {
 
   function typeKey(type) { //分钟、小时、周、日、月类型判断
     var typeMinute = null;
+    var typeWeek = null;
+    var typeMonth = null;
     switch (type) {
       case "Min01":
         typeMinute = 1;
@@ -1066,23 +1071,52 @@ $(function() {
       case "Min30":
         typeMinute = 30;
         break;
-      default:
-        typeMinute = null;
+      case "Min60":
+        typeMinute = 60;
+        break;
+      case "Day":
+        typeMinute = 24 * 60;
+        break;
+      case "Week":
+        typeWeek = 1;
+        break;
+      case "Month":
+        typeMonth = 1;
+        break;
     }
     return {
-      minute: typeMinute
+      minute: typeMinute,
+      week: typeWeek,
+      month: typeMonth
     }
   }
 
   function timeKchartLine(res) { ///分钟线K线
     if (!Kchart) return false;
+    var clickType = sessionStorage.getItem("clickType")
+    var minute = typeKey(clickType).minute;
+    var week = typeKey(clickType).week;
+    var month = typeKey(clickType).month;
+    if (minute) {
+      minuteKchartLine(res, minute);
+    }
+    if (week) {
+      weekKchartLine(res);
+    }
+    if (month) {
+      monthKchartLine(res);
+    }
+    MaLineDraw(); //绘制MA线
+    drawKchartLine(); //绘制参考线
+    Kchart.redraw();
+  }
+
+  function minuteKchartLine(res, minute) { //分钟、小时、天绘制
     var series = Kchart.series[0];
     var titledata = $(".title_date").attr("data-kchartime");
     var time = timeFormatter(res[res.length - 1]);
     var value = parseFloat(res[0]);
     var titleTime = new Date(timeFormatter(titledata)).getTime();
-    var clickType = sessionStorage.getItem("clickType")
-    var minute = typeKey(clickType).minute;
     if (new Date(time) >= (titleTime + minute * 1000 * 60)) {
       Kchart.series[0].addPoint([
         new Date(time).getTime(), parseFloat(value), parseFloat(value), parseFloat(value), parseFloat(value)
@@ -1097,9 +1131,67 @@ $(function() {
       Kchart.series[0].removePoint(seriesData.length - 1, false);
       Kchart.series[0].addPoint(dataArr, false);
     }
-    MaLineDraw(); //绘制MA线
-    drawKchartLine(); //绘制参考线
-    Kchart.redraw();
+  }
+
+  function weekMonRest() { //dataweek时间坐标周一重置
+    var titledata = $(".title_date").attr("data-weektime"); //当前获取最大时间maxDate
+    var dateFirst = setMonDate(titledata)
+    $(".title_date").attr("data-weektime", dateFirst);
+  }
+
+  function setMonDate(time) { //强制设置为周一方法
+    var RefTime = new Date(timeFormatter(time));
+    var weekDay = RefTime.getDay();
+    var dValue = 0;
+    if (weekDay == 0) {
+      dValue = 6;
+    } else {
+      dValue = weekDay - 1;
+    }
+    var monDate = new Date(RefTime - dValue * 24 * 60 * 60 * 1000) //周一的00:00:00
+    var getMonday = Highcharts.dateFormat('%Y/%m/%d 00:00:00', monDate);
+    return getMonday;
+  }
+
+  function weekKchartLine(res) { //周绘制
+    var series = Kchart.series[0];
+    var titledata = $(".title_date").attr("data-weektime");
+    var time = timeFormatter(res[res.length - 1]);
+    var value = parseFloat(res[0]);
+    var titleTime = new Date(timeFormatter(titledata)).getTime();
+    if (new Date(time) >= (titleTime + 7 * 24 * 60 * 60 * 1000)) {
+      Kchart.series[0].addPoint([
+        new Date(time).getTime(), parseFloat(value), parseFloat(value), parseFloat(value), parseFloat(value)
+      ], false)
+      var dateFirst = setMonDate(time);
+      $(".title_date").attr("data-weektime", dateFirst);
+    } else {
+      // 时间戳, 开盘价, 最高价, 最低价, 收盘价
+      var seriesData = Kchart.series[0].options.data;
+      var dataArr = KLineAreaSort(seriesData, time, value);
+      Kchart.series[0].removePoint(seriesData.length - 1, false);
+      Kchart.series[0].addPoint(dataArr, false);
+    }
+  }
+
+  function monthKchartLine(res) { //月绘制
+    var series = Kchart.series[0];
+    var titledata = $(".title_date").attr("data-monthtime");
+    var time = timeFormatter(res[res.length - 1]);
+    var value = parseFloat(res[0]);
+    var titleTime = new Date(timeFormatter(titledata)).getMonth();
+    if (new Date(time).getMonth() != titleTime) {
+      Kchart.series[0].addPoint([
+        new Date(time).getTime(), parseFloat(value), parseFloat(value), parseFloat(value), parseFloat(value)
+      ], false)
+      $(".title_date").attr("data-monthtime", time);
+    } else {
+      // 时间戳, 开盘价, 最高价, 最低价, 收盘价
+      var seriesData = Kchart.series[0].options.data;
+      var dataArr = KLineAreaSort(seriesData, time, value);
+      Kchart.series[0].removePoint(seriesData.length - 1, false);
+      Kchart.series[0].addPoint(dataArr, false);
+    }
   }
 
   function MaLineDraw() { //MA线绘制
