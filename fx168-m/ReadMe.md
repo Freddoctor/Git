@@ -26,7 +26,7 @@ https://www.bbsmax.com/A/6pdDXlxydw/
 
 
 https://stackoverflow.com/questions/38771499/error-in-highstock-chart-data-is-undefined-in-tooltip
-
+highchart左右滑动拖拽 https://bbs.hcharts.cn/thread-2586-1-1.html
 
 scrollbar https://blog.csdn.net/zyjcxc/article/details/77455585
 

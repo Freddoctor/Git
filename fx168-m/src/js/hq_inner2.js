@@ -372,34 +372,50 @@ $(function() {
   $('.min').click(function() {
     sessionStorage.clickType = "Min01";
     $('.sum').css("display", "none");
-    quotationAjax();
     if (Kchart) {
       Kchart.destroy();
       Kchart = null;
     }
+    quotationAjax();
   })
 
   $('.hq_hour').click(function() {
     sessionStorage.clickType = "Min60";
     selected = 1;
+    if (Kchart) {
+      Kchart.destroy();
+      Kchart = null;
+    }
     hq_kAjax()
   })
 
   $('.hq_day').click(function() {
     sessionStorage.clickType = "Day";
     selected = 1;
+    if (Kchart) {
+      Kchart.destroy();
+      Kchart = null;
+    }
     hq_kAjax()
   })
 
   $('.hq_week').click(function() {
     sessionStorage.clickType = "Week";
     selected = 4;
+    if (Kchart) {
+      Kchart.destroy();
+      Kchart = null;
+    }
     hq_kAjax()
   })
 
   $('.hq_month').click(function() {
     sessionStorage.clickType = "Month";
     selected = 5;
+    if (Kchart) {
+      Kchart.destroy();
+      Kchart = null;
+    }
     hq_kAjax()
   })
 
@@ -841,25 +857,31 @@ $(function() {
         spacingRight: 18,
         spacingLeft: 18,
         panning: true,
+        pinchType: 'x',
+        resetZoomButton: {
+          position: {
+            y: -1000
+          }
+        }
       },
-      navigator: {
-        enabled: true,
-        adaptToUpdatedData: true,
-      },
-      scrollbar: {
-        liveRedraw: true,
-        enabled: true,
-        barBackgroundColor: 'gray',
-        barBorderRadius: 7,
-        barBorderWidth: 0,
-        buttonBackgroundColor: 'gray',
-        buttonBorderWidth: 0,
-        buttonBorderRadius: 7,
-        trackBackgroundColor: 'none',
-        trackBorderWidth: 1,
-        trackBorderRadius: 8,
-        trackBorderColor: '#CCC'
-      },
+      // navigator: {
+      //   enabled: true,
+      //   adaptToUpdatedData: true,
+      // },
+      // scrollbar: {
+      //   liveRedraw: true,
+      //   enabled: true,
+      //   barBackgroundColor: 'gray',
+      //   barBorderRadius: 7,
+      //   barBorderWidth: 0,
+      //   buttonBackgroundColor: 'gray',
+      //   buttonBorderWidth: 0,
+      //   buttonBorderRadius: 7,
+      //   trackBackgroundColor: 'none',
+      //   trackBorderWidth: 1,
+      //   trackBorderRadius: 8,
+      //   trackBorderColor: '#CCC'
+      // },
       plotOptions: {
         series: {
           lineWidth: 1,
@@ -869,7 +891,7 @@ $(function() {
         },
         getExtremesFromAll: true,
       },
-      rangeSelector: {},
+      // rangeSelector: {},
       title: {
         text: ''
       },
@@ -897,6 +919,7 @@ $(function() {
         }
       },
       xAxis: {
+        minRange: 0,
         dateTimeLabelFormats: {
           millisecond: '%H:%M:%S.%L',
           second: '%H:%M:%S',
@@ -1024,7 +1047,11 @@ $(function() {
         },
       }]
     };
-    Kchart = Highcharts.stockChart('container2', options);
+    var rangeMax = data.length - parseInt(data.length / 4)
+    Kchart = Highcharts.stockChart('container2', options, function(c) {
+      // 动态改变 x 轴范围即可实现拖动
+      c.xAxis[0].setExtremes(data[rangeMax][0], data[data.length - 1][0]);
+    });
     drawKchartLine();
   }
 
