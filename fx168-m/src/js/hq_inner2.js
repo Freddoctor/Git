@@ -196,7 +196,7 @@ $(function() {
     //     chart.pointer.chartPosition = null; // also reset the chart position, used in #149 fix
     //   }
     // })
-    $("body").on("touchend", "#container",function(e) {
+    $("body").on("touchend", "#container", function(e) {
       chart.pointer.reset();
       chart.pointer.chartPosition = null;
     });
@@ -381,50 +381,30 @@ $(function() {
   $('.min').click(function() {
     sessionStorage.clickType = "Min01";
     $('.sum').css("display", "none");
-    if (Kchart) {
-      Kchart.destroy();
-      Kchart = null;
-    }
     quotationAjax();
   })
 
   $('.hq_hour').click(function() {
     sessionStorage.clickType = "Min60";
     selected = 1;
-    if (Kchart) {
-      Kchart.destroy();
-      Kchart = null;
-    }
     hq_kAjax()
   })
 
   $('.hq_day').click(function() {
     sessionStorage.clickType = "Day";
     selected = 1;
-    if (Kchart) {
-      Kchart.destroy();
-      Kchart = null;
-    }
     hq_kAjax()
   })
 
   $('.hq_week').click(function() {
     sessionStorage.clickType = "Week";
     selected = 4;
-    if (Kchart) {
-      Kchart.destroy();
-      Kchart = null;
-    }
     hq_kAjax()
   })
 
   $('.hq_month').click(function() {
     sessionStorage.clickType = "Month";
     selected = 5;
-    if (Kchart) {
-      Kchart.destroy();
-      Kchart = null;
-    }
     hq_kAjax()
   })
 
@@ -460,6 +440,14 @@ $(function() {
 
   //绘图分时图ajax
   function quotationAjax() {
+    if (Kchart) {
+      Kchart.destroy();
+      Kchart = null;
+    }
+    if (chart) {
+      chart.destroy();
+      chart = null;
+    }
     $.ajax({
       url: "https://app5.fx168api.com/quotation/getMinHourData.json",
       dataType: "JSONP",
@@ -475,6 +463,14 @@ $(function() {
 
   //绘制k线图
   function hq_kAjax() {
+    if (chart) {
+      chart.destroy();
+      chart = null;
+    }
+    if (Kchart) {
+      Kchart.destroy();
+      Kchart = null;
+    }
     $.ajax({
       // url: baseUrl + "quotation/getData.json",
       url: "https://app5.fx168api.com/h5/quotation/getData.json",
@@ -776,10 +772,6 @@ $(function() {
   }
 
   function initData(data, type) {
-    if (chart) {
-      chart.destroy();
-      chart = null;
-    }
     if (!data.data) return false;
     console.log(type);
     if ((type.indexOf("Min") != -1) || (type.indexOf("Day") != -1)) {
@@ -879,7 +871,7 @@ $(function() {
       },
       scrollbar: { //导航条显示
         liveRedraw: true,
-        enabled: false,
+        enabled: true,
         barBackgroundColor: 'gray',
         barBorderRadius: 7,
         barBorderWidth: 0,

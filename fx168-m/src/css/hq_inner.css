@@ -477,3 +477,7 @@ tspan {
 tspan {
   font-size: 11px;
 }
+
+.highcharts-scrollbar {
+  visibility: hidden;
+}
