@@ -12,10 +12,11 @@ import {
   index_socket
 } from "./common.js";
 
+var socketOrginUrl = socketUrl;
 // import io from 'socket.io-client';
 import io from "./socket.io.js";
 // import echarts from "echarts";
-import echarts from "./echarts.js";
+// import echarts from "./echarts.js";
 import Highcharts from "./highstock.js"
 
 // 高精度计算
@@ -188,13 +189,17 @@ $(function() {
   TouchDefault();
 
   function TouchDefault() { //手动离开屏幕消失tip提示
-    $("body").on("touchend", function(e) {
-      var target = $(e.target).parents("#container");
-      if (target.length) {
-        chart.pointer.reset();
-        chart.pointer.chartPosition = null; // also reset the chart position, used in #149 fix
-      }
-    })
+    // $("body").on("touchend", function(e) {
+    //   var target = $(e.target).parents("#container");
+    //   if (target.length) {
+    //     chart.pointer.reset();
+    //     chart.pointer.chartPosition = null; // also reset the chart position, used in #149 fix
+    //   }
+    // })
+    $("body").on("touchend", "#container",function(e) {
+      chart.pointer.reset();
+      chart.pointer.chartPosition = null;
+    });
   }
 
   var selected = 1;
@@ -205,7 +210,7 @@ $(function() {
   socket.on('disconnect', function() {
     var socketUrlArr = ["https://app6.fx168api.com:9091", "https://app7.fx168api.com:9091"]; //行情
     var index_socket = Math.floor((Math.random() * socketUrlArr.length));
-    socketUrl = socketUrlArr[index_socket];
+    socketOrginUrl = socketUrlArr[index_socket];
     quotationAjax(); //Highcharts分时图渲染;
     initinnerSocket();
   });
@@ -231,87 +236,91 @@ $(function() {
       @gcy
 
   */
-  $('.titleBar1').html(sessionStorage.fgTile); //改变标题
+  function initHTML() { //初始化导航点击
+    $('.titleBar1').html(sessionStorage.fgTile); //改变标题
 
-  $(".find_nav_list").css("left", sessionStorage.hq_inner_left + "px");
+    $(".find_nav_list").css("left", sessionStorage.hq_inner_left + "px");
 
-  $(".find_nav_list li").each(function() {
-    if ($(this).find("a").text() == sessionStorage.pagecount3) {
-      $(".sideline").css({
-        left: 0
-      });
-      $(".sideline").css({
-        width: $(this).outerWidth()
+    $(".find_nav_list li").each(function() {
+      if ($(this).find("a").text() == sessionStorage.pagecount3) {
+        $(".sideline").css({
+          left: 0
+        });
+        $(".sideline").css({
+          width: $(this).outerWidth()
+        });
+        $(this).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
+        navName(sessionStorage.pagecount3);
+        return false
+      } else {
+        $(".sideline").css({
+          left: 0
+        });
+        $(".find_nav_list li").eq(0).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
+      }
+    });
+
+    //页面初始化记录分时数据
+    navName("分时");
+    $(".find_nav_list  ul li").eq(0).addClass("find_nav_cur").siblings().removeClass("find_nav_cur")
+
+    var nav_w = $(".find_nav_list li").first().width();
+    $(".sideline").width(nav_w);
+    $(".find_nav_list li").click(function() {
+      $('.sum').css("display", "block");
+      nav_w = $(this).width();
+      $(".sideline").stop(true);
+      $(".sideline").animate({
+        left: $(this).position().left
+      }, 300);
+      $(".sideline").animate({
+        width: nav_w
       });
       $(this).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
-      navName(sessionStorage.pagecount3);
-      return false
-    } else {
-      $(".sideline").css({
-        left: 0
-      });
-      $(".find_nav_list li").eq(0).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
-    }
-  });
-
-  //页面初始化记录分时数据
-  navName("分时");
-  $(".find_nav_list  ul li").eq(0).addClass("find_nav_cur").siblings().removeClass("find_nav_cur")
-
-  var nav_w = $(".find_nav_list li").first().width();
-  $(".sideline").width(nav_w);
-  $(".find_nav_list li").on('click', function() {
-    $('.sum').css("display", "block");
-    nav_w = $(this).width();
-    $(".sideline").stop(true);
-    $(".sideline").animate({
-      left: $(this).position().left
-    }, 300);
-    $(".sideline").animate({
-      width: nav_w
+      var fn_w = ($(".find_nav").width() - nav_w) / 2;
+      var fnl_l;
+      var fnl_x = parseInt($(this).position().left);
+      if (fnl_x <= fn_w) {
+        fnl_l = 0;
+      } else if (fn_w - fnl_x <= flb_w - fl_w) {
+        fnl_l = flb_w - fl_w;
+      } else {
+        fnl_l = fn_w - fnl_x;
+      }
+      $(".find_nav_list").animate({
+        "left": fnl_l
+      }, 300);
+      sessionStorage.hq_inner_left = fnl_l;
+      var c_nav = $(this).find("a").text();
+      navName(c_nav);
     });
-    $(this).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
-    var fn_w = ($(".find_nav").width() - nav_w) / 2;
-    var fnl_l;
-    var fnl_x = parseInt($(this).position().left);
-    if (fnl_x <= fn_w) {
-      fnl_l = 0;
-    } else if (fn_w - fnl_x <= flb_w - fl_w) {
-      fnl_l = flb_w - fl_w;
-    } else {
-      fnl_l = fn_w - fnl_x;
-    }
-    $(".find_nav_list").animate({
-      "left": fnl_l
-    }, 300);
-    sessionStorage.hq_inner_left = fnl_l;
-    var c_nav = $(this).find("a").text();
-    navName(c_nav);
-  });
-  var fl_w = $(".find_nav_list").width();
-  var flb_w = $(".find_nav_left").width();
-  var x1, y1, ty_left;
-  $(".find_nav_list").on('touchstart', function(e) {
-    var touch1 = e.originalEvent.targetTouches[0];
-    x1 = touch1.pageX;
-    y1 = touch1.pageY;
-    ty_left = parseInt($(this).css("left"));
-  });
-  $(".find_nav_list").on('touchmove', function(e) {
-    var touch2 = e.originalEvent.targetTouches[0];
-    var x2 = touch2.pageX;
-    var y2 = touch2.pageY;
-    if (ty_left + x2 - x1 >= 0) {
-      $(this).css("left", 0);
-    } else if (ty_left + x2 - x1 <= flb_w - fl_w) {
-      $(this).css("left", flb_w - fl_w);
-    } else {
-      $(this).css("left", ty_left + x2 - x1);
-    }
-    if (Math.abs(y2 - y1) > 0) {
-      e.preventDefault();
-    }
-  });
+    var fl_w = $(".find_nav_list").width();
+    var flb_w = $(".find_nav_left").width();
+    var x1, y1, ty_left;
+    $(".find_nav_list").on('touchstart', function(e) {
+      var touch1 = e.originalEvent.targetTouches[0];
+      x1 = touch1.pageX;
+      y1 = touch1.pageY;
+      ty_left = parseInt($(this).css("left"));
+    });
+    $(".find_nav_list").on('touchmove', function(e) {
+      var touch2 = e.originalEvent.targetTouches[0];
+      var x2 = touch2.pageX;
+      var y2 = touch2.pageY;
+      if (ty_left + x2 - x1 >= 0) {
+        $(this).css("left", 0);
+      } else if (ty_left + x2 - x1 <= flb_w - fl_w) {
+        $(this).css("left", flb_w - fl_w);
+      } else {
+        $(this).css("left", ty_left + x2 - x1);
+      }
+      if (Math.abs(y2 - y1) > 0) {
+        e.preventDefault();
+      }
+    });
+  }
+
+  initHTML();
 
   function navName(c_nav) {
     switch (c_nav) {
@@ -864,24 +873,25 @@ $(function() {
           }
         }
       },
-      // navigator: {
-      //   enabled: true,
-      //   adaptToUpdatedData: true,
-      // },
-      // scrollbar: {
-      //   liveRedraw: true,
-      //   enabled: true,
-      //   barBackgroundColor: 'gray',
-      //   barBorderRadius: 7,
-      //   barBorderWidth: 0,
-      //   buttonBackgroundColor: 'gray',
-      //   buttonBorderWidth: 0,
-      //   buttonBorderRadius: 7,
-      //   trackBackgroundColor: 'none',
-      //   trackBorderWidth: 1,
-      //   trackBorderRadius: 8,
-      //   trackBorderColor: '#CCC'
-      // },
+      navigator: { //导航区域显示
+        enabled: false,
+        adaptToUpdatedData: true,
+      },
+      scrollbar: { //导航条显示
+        liveRedraw: true,
+        enabled: false,
+        barBackgroundColor: 'gray',
+        barBorderRadius: 7,
+        barBorderWidth: 0,
+        height: 24,
+        buttonBackgroundColor: 'gray',
+        buttonBorderWidth: 0,
+        buttonBorderRadius: 7,
+        trackBackgroundColor: 'none',
+        trackBorderWidth: 1,
+        trackBorderRadius: 8,
+        trackBorderColor: '#CCC'
+      },
       plotOptions: {
         series: {
           lineWidth: 1,
@@ -1246,13 +1256,6 @@ $(function() {
   }
 
   function KLineXtickPos(seriesData, time) { //x轴tickpostion
-    var date = $(".title_date").attr("data-kchartime");
-    var now = new Date(date).getTime();
-    var reverseSeries = seriesData.reverse();
-    var newXlist = reverseSeries.filter(function(item, index) {
-      return now == item[0] + index * 60 * 10000
-    })
-    newXlist = newXlist.reverse();
     Kchart.update({
       xAxis: {
         tickPositions: KLineXtickPos()
@@ -1318,7 +1321,7 @@ $(function() {
     $('.hq_inner_con_Left').attr("data-key", getUrlParam('key'));
     var hq_key = [];
     var hq_value = [];
-    socket = io.connect(socketUrl, {
+    socket = io.connect(socketOrginUrl, {
       'reconnect': true
     });
 
