@@ -100,52 +100,42 @@
   <!-- 助力进度 -->
   <section class="assistance">
     <h3>老金论坛</h3>
-    <h2>现已有<span>5</span>人助力</h2>
+    <h2>现已有<span data-sharepeople="true">-</span>人助力</h2>
     <aside class="list-progress">
-      <!-- 进度第一阶段 -->
-      <div class="module_progres active1">
-        <ins class="pos_1"></ins>
-        <ins class="pos_2"></ins>
-        <ins class="pos_3"></ins>
-        <i class="pro_way"><img src="./images/1@2x.png" alt=""></i>
-      </div>
-      <!-- 进度第二阶段 -->
-      <div class="module_progres active2 hidden">
-        <ins class="pos_1"></ins>
-        <ins class="pos_2"></ins>
-        <ins class="pos_3"></ins>
-        <i class="pro_way"><img src="./images/2@2x.png" alt=""></i>
-      </div>
-      <!-- 进度第三阶段 -->
-      <div class="module_progres active3 hidden">
-        <ins class="pos_1"></ins>
-        <ins class="pos_2"></ins>
-        <ins class="pos_3"></ins>
-        <i class="pro_way"><img src="./images/3@2x.png" alt=""></i>
+      <div id="progressWarp">
+        <!-- 进度第一阶段 -->
+        <div class="module_progres">
+          <ins class="pos_1"></ins>
+          <ins class="pos_2"></ins>
+          <ins class="pos_3"></ins>
+          <i class="pro_way1"></i>
+          <i class="pro_way2"></i>
+          <i class="pro_way3"></i>
+        </div>
       </div>
       <ul class="module_art">
-        <li class="active">
-          <div class="ninja">
-            5人
+        <li>
+          <div class="ninja" data-helprequire="true">
+            -人
           </div>
           <div class="discount">
-            <span>80</span><em>元优惠</em>
+            <span data-rate="true">--</span><em>元优惠</em>
           </div>
         </li>
         <li>
-          <div class="ninja">
-            15人
+          <div class="ninja" data-helprequire="true">
+            -人
           </div>
           <div class="discount">
-            <span>180</span><em>元优惠</em>
+            <span data-rate="true">-</span><em>元优惠</em>
           </div>
         </li>
         <li>
-          <div class="ninja">
-            25人
+          <div class="ninja" data-helprequire="true">
+            -人
           </div>
           <div class="discount">
-            <span>900</span><em>元优惠</em>
+            <span data-rate="true">-</span><em>元优惠</em>
           </div>
         </li>
       </ul>
@@ -157,13 +147,13 @@
         <a class="a-end" href="javascript:;">活动已结束</a>
       </div>
       <!-- 活动计时 -->
-      <div class="time-come hidden">
+      <div class="time-come">
         <em>活动倒计时</em>
-        <span>47</span><ins>:</ins>
-        <span>59</span><ins>:</ins>
-        <span>59</span>
+        <span data-hour="true">--</span><ins>:</ins>
+        <span data-minutes="true">--</span><ins>:</ins>
+        <span data-seconds="true">--</span>
       </div>
-      <div class="time-come time-end ">
+      <div class="time-come time-end hidden ">
         <em>活动倒计时</em>
         <span>00</span><ins>:</ins>
         <span>00</span><ins>:</ins>
@@ -179,50 +169,17 @@
     <h2>看看都有谁帮助助力</h2>
     <div id="assis_wrap">
       <ul>
-        <li class="clear">
-          <img class="left" alt="">
-          <div class="left nickname">
-            <aside class="onega">
-              <span>悄悄许下美好的愿望</span>
-              <time>2017-08-08 19:55:11</time>
-            </aside>
-            <h5>为您助力</h5>
-          </div>
-        </li>
-        <li class="clear">
-          <img class="left" alt="">
-          <div class="left nickname">
-            <aside class="onega">
-              <span>踩踩踩34234</span>
-              <time>2017-08-08 19:55:11</time>
-            </aside>
-            <h5>为您助力</h5>
-          </div>
-        </li>
-        <li class="clear">
-          <img class="left" alt="">
-          <div class="left nickname">
-            <aside class="onega">
-              <span>我说深恶了</span>
-              <time>2017-08-08 19:55:11</time>
-            </aside>
-            <h5>为您助力</h5>
-          </div>
-        </li>
       </ul>
     </div>
-
   </section>
   <!-- FX168文案 -->
   <section class="sub_recommend mar_b20">
     <h2>FX168财经学院</h2>
     <p>
-      FX168财经学院是一个“传播咨询、解读热点、财源共享”的平台，被授予ISO9001国际质量管理体系认证证书和被授予ISO270001信息安全体系认证证书，
-      同时具有人力资源服务许可证。
+      FX168财经学院是一个“传播咨询、解读热点、财源共享”的平台，被授予ISO9001国际质量管理体系认证证书和被授予ISO270001信息安全体系认证证书， 同时具有人力资源服务许可证。
     </p>
     <p>
-      FX168财经学院是一个“传播咨询、解读热点、财源共享”的平台，被授予ISO9001国际质量管理体系认证证书和被授予ISO270001信息安全体系认证证书，
-      同时具有人力资源服务许可证。
+      FX168财经学院是一个“传播咨询、解读热点、财源共享”的平台，被授予ISO9001国际质量管理体系认证证书和被授予ISO270001信息安全体系认证证书， 同时具有人力资源服务许可证。
     </p>
   </section>
   <!-- 分享 -->

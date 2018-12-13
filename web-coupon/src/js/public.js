@@ -18,7 +18,7 @@ function AssisFunc(obj, num) { //滚动轮播广告
   var $moveBox = $boxwrap.find("ul");
 
   var Hight = $moveBox.height();
-  console.log(Hight);
+  // console.log(Hight);
 
   if ($moveBox.find("li").length <= num) {
     return false;
@@ -31,7 +31,7 @@ function AssisFunc(obj, num) { //滚动轮播广告
     for (var i = 0; i <= num; i++) {
       str += "<li class='clear'> " + $moveBox.find("li").eq(i).html() + "</li>";
     }
-    console.log(str)
+    // console.log(str)
     $moveBox.append(str);
     // var first = $moveBox.find("li:first").clone(true);
     // var second = $moveBox.find("li").eq(1).clone(true);

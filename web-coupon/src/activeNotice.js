@@ -19,7 +19,9 @@ $(function() {
       dataType: "jsonp",
       type: "GET",
       data: {
-        "sign": sign
+        // "sign": decodeURI(sign),
+        activeId:3,
+        userCenterId:"1f2fd1ac1dd7b944c4ce34f9ed265ab6"
       },
       success: usersShowSuccess
     });
@@ -30,5 +32,5 @@ $(function() {
   function usersShowSuccess(data) {
     console.log(data);
   }
-  
+
 })

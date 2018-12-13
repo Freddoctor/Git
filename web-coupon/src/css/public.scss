@@ -493,48 +493,75 @@ body {
 
   .list-progress {
     margin-top: 0.37rem;
+
+    .active0 {
+      .pos_1 {
+        background: url("../images/weidaoyuan@2x.png") no-repeat 0 0;
+        background-size: 100% 100%;
+      }
+
+      .pos_2 {
+        background: url("../images/weidaoyuan@2x.png") no-repeat 0 0;
+        background-size: 100% 100%;
+      }
+
+      .pos_3 {
+        background: url("../images/weidaoyuan@2x.png") no-repeat 0 0;
+        background-size: 100% 100%;
+      }
+    }
+
     .active1 {
-      .pos_1{
-        background:url("../images/dadaiyuan@2x.png") no-repeat 0 0;
+      .pos_1 {
+        background: url("../images/dadaiyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
-      .pos_2{
-        background:url("../images/weidaoyuan@2x.png") no-repeat 0 0;
+
+      .pos_2 {
+        background: url("../images/weidaoyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
-      .pos_3{
-        background:url("../images/weidaoyuan@2x.png") no-repeat 0 0;
+
+      .pos_3 {
+        background: url("../images/weidaoyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
     }
+
     .active2 {
-      .pos_1{
-        background:url("../images/dadaiyuan@2x.png") no-repeat 0 0;
+      .pos_1 {
+        background: url("../images/dadaiyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
-      .pos_2{
-        background:url("../images/dadaiyuan@2x.png") no-repeat 0 0;
+
+      .pos_2 {
+        background: url("../images/dadaiyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
-      .pos_3{
-        background:url("../images/weidaoyuan@2x.png") no-repeat 0 0;
+
+      .pos_3 {
+        background: url("../images/weidaoyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
     }
+
     .active3 {
-      .pos_1{
-        background:url("../images/dadaiyuan@2x.png") no-repeat 0 0;
+      .pos_1 {
+        background: url("../images/dadaiyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
-      .pos_2{
-        background:url("../images/dadaiyuan@2x.png") no-repeat 0 0;
+
+      .pos_2 {
+        background: url("../images/dadaiyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
-      .pos_3{
-        background:url("../images/dadaiyuan@2x.png") no-repeat 0 0;
+
+      .pos_3 {
+        background: url("../images/dadaiyuan@2x.png") no-repeat 0 0;
         background-size: 100% 100%;
       }
     }
+
     .module_progres {
       position: relative;
       width: 6.04rem;
@@ -569,11 +596,46 @@ body {
         }
       }
 
-      i.pro_way {
-        height: 0.08rem;
+      i.pro_way1 {
+        height: 0.075rem;
         position: absolute;
         top: 0.16rem;
         left: 0.04rem;
+        width: 30%;
+        width: 0;
+        background: linear-gradient(to right,#30c5ed,#32aeed);
+        border-radius: 0.075rem;
+
+        img {
+          height: 100%;
+          width: auto;
+        }
+      }
+
+      i.pro_way2 {
+        height: 0.075rem;
+        position: absolute;
+        top: 0.16rem;
+        left: 36%;
+        width: 27.5%;
+        width: 0;
+        background: linear-gradient(to right,#32aeed,#3291ed);
+        border-radius: 0.075rem;
+        img {
+          height: 100%;
+          width: auto;
+        }
+      }
+
+      i.pro_way3 {
+        height: 0.075rem;
+        position: absolute;
+        top: 0.16rem;
+        left: 68.8%;
+        width: 26%;
+        width: 0;
+        background: linear-gradient(to right,#3291ed,#327ced);
+        border-radius: 0.075rem;
 
         img {
           height: 100%;
@@ -628,7 +690,6 @@ body {
             vertical-align: bottom;
             font-size: 0.26rem;
             line-height: 0.4rem;
-
           }
         }
       }

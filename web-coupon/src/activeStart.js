@@ -9,12 +9,12 @@ import "jquery";
 window.acceptToken = acceptToken;
 
 function acceptToken(str) { //接受app返回值
-  if (!str) needToLogin();
-  return str;
+  if (!str) {
+    needToLogin();
+  };
 }
 
 $(function() {
-
   // isLogin();
   getToken();
   //广告轮播
@@ -29,7 +29,7 @@ $(function() {
     isShare: 1, //0:不分享 1:分享
     shareTitle: "分享啊",
     shareUrl: window.location.href,
-    sharePlatform: "微信",
+    sharePlatform: "朋友圈",
     shareImage: "https://avatar.csdn.net/5/4/0/3_alanfancy.jpg",
     shareContent: "给你推荐一赞，去看看大家对它的评价吧"
   };
@@ -47,9 +47,9 @@ $(function() {
   $(".share_webchat ul").find("li").each(function(i) {
     $(this).click(function() {
       var str = JSON.stringify(shareJson);
-      openCourseDetail(241);
-      copy("1112313213213")
-      openShare(str);
+      openCourseDetail(295);
+      // copy("1112313213213")
+      // openShare(str);
     })
   })
 
