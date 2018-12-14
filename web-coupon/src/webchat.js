@@ -246,3 +246,30 @@ function getQueryString(name) {
   if (r != null) return r[2];
   return null;
 }
+
+getJsapiSignature(); //微信授权
+
+function getJsapiSignature() {
+  $.ajax({
+    url: baseUrl.api + "/common/getJsapiSignature.json",
+    dataType: "jsonp",
+    type: "GET",
+    data: {
+      // url: "location.href.split('#')[0]"
+      url:"active.fx168api.com"
+    },
+    success: function(res) {
+      var data = res.data;
+      console.log(data)
+      wx.config({
+        debug: true, // 开启调试模式。
+        appId: data.appId, // 必填，公众号的唯一标识
+        timestamp: data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+        signature: data.signature, // 必填，签名
+        url: "active.fx168api.com",
+        jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"] // 必填，需要使用的JS接口列表
+      });
+    }
+  });
+}

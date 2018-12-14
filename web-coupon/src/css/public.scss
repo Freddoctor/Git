@@ -1015,6 +1015,7 @@ body {
       border-radius: 0.06rem;
       background: rgb(237,237,237);
       overflow-y: auto;
+      -webkit-overflow-scrolling:touch;
       img {
         width:100%;
         display: block;
