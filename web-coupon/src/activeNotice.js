@@ -3,34 +3,69 @@ import "./css/activeNotice.scss";
 
 import {
   AssisFunc,
-  baseUrl
+  baseUrl,
+  formatDate
 } from "./js/public.js";
 
 import "jquery";
 
 $(function() {
-  AssisFunc("#assis_wrap", 2);
-  console.log(baseUrl);
-  var str = "5D83B28D28C6F4A7E201C99606E945FC%1DrKz1KYyjFDdCOsfXfZ%2Fn5T9ieqqyX0cgAu64pjQ8oQOHFnWz9C6Q4AwT%2B4OAhG%2FTsrFahxutlF015jLyWuSHDcKCPRBP4O2KnqgQ%2BqF80Ks%3D%1DMNniBaFSAl5w3ullZ%2BXWXPdVwSOMbD%2B49NkQg%2BVoEBbiCZEtq0vspce3nSAU%2BqQyW9HEZ6u6w2kRbyUN%2FoyeQvPRv4QW6i2Ukij41pUgkKQpgCyHCTpM1NXXk1LzcF82aRPR%2B7fE4rIjbPEYozeVs5hQ9omoCqDOdAh8qJ1p6GY%3D";
 
-  function getUserList(sign) {
+  function getUserList() {
     $.ajax({
-      url: baseUrl.api + "/active/getSharePageShowInfo.json",
+      url: baseUrl.api + "/active/getClassActivePage.json",
       dataType: "jsonp",
       type: "GET",
       data: {
-        // "sign": decodeURI(sign),
-        activeId:3,
-        userCenterId:"1f2fd1ac1dd7b944c4ce34f9ed265ab6"
+        activeId: 3,
+        t: "1F8AE456CB53AC5317E107AA2722DCF6"
       },
       success: usersShowSuccess
     });
   }
 
-  getUserList(str);
+  getUserList();
 
-  function usersShowSuccess(data) {
-    console.log(data);
+  copyOpenDetailClick();
+
+  function usersShowSuccess(res) {
+    console.log(res);
+    var data = res.data;
+    var time = data.finishDate;
+    var timeFormat = formatDate(time, 'yyyy年MM月dd日hh时mm分'); //yyyy-MM-dd hh:mm:ss
+    $("[data-endtime]").html(timeFormat)
+    getWechatUserList(data.wechatUserList);
+  }
+
+  function getWechatUserList(wechatUserList) {
+    var str = "";
+    if (wechatUserList && typeof wechatUserList == "object") {
+      for (var i = 0; i < wechatUserList.length; i++) {
+        str += '<li class="clear">' +
+          '<img class="left" alt="" src=' + wechatUserList[i].headImgUrl + '>' +
+          '<div class="left nickname">' +
+          '<aside class="onega">' +
+          '<span>' + wechatUserList[i].nickName + '</span>' +
+          '<time>' + wechatUserList[i].helpTime + '</time>' +
+          '</aside>' +
+          '<h5>为您助力</h5>' +
+          '</div>' +
+          '</li>'
+      }
+      $("#assis_wrap ul").html(str + str);
+    }
+    AssisFunc("#assis_wrap", 2); //助理人员轮播
+  }
+
+
+  function copyOpenDetailClick() { //copy 优惠券码;
+    $("[data-copy]").click(function() {
+      var str = $("#coupon-password").html();
+      copy(str);
+    });
+    $(".use_btn").click(function() {
+      openCourseDetail(295);
+    })
   }
 
 })

@@ -61,6 +61,22 @@ strong {
   font-weight: normal;
   text-decoration: none;
 }
+
+.mart_59 {
+  margin-top: 0.59rem !important;
+}
+
+.mart_58 {
+  margin-top: 0.58rem !important;
+}
+
+.marb_43 {
+  margin-bottom: 0.43rem !important;
+}
+
+.marb_98 {
+  margin-bottom: .98rem !important;
+}
 // 课程介绍
 
 body {
@@ -621,6 +637,7 @@ body {
         width: 0;
         background: linear-gradient(to right,#32aeed,#3291ed);
         border-radius: 0.075rem;
+
         img {
           height: 100%;
           width: auto;
@@ -732,7 +749,7 @@ body {
 
     .end-btn {
       margin-top: 0.5rem;
-
+      display: none;
       a {
         border-radius: 0.1rem;
         display: block;
@@ -754,6 +771,7 @@ body {
       color: rgb(51,51,51);
 
       &.time-end {
+        display: none;
         margin-top: 0.3rem;
       }
 
@@ -949,6 +967,7 @@ body {
 // 活动规则介绍
 
 .tip-rules {
+  display: none;
   z-index: 9;
   position: fixed;
   top: 0;
@@ -988,14 +1007,18 @@ body {
     }
 
     .article {
-      padding: 0.2rem 0.25rem 0.2rem 0.5rem;
+      // padding: 0.2rem 0.25rem 0.2rem 0.5rem;
+      padding: 0.2rem .1rem;
       height: 5.08rem;
       box-sizing: border-box;
       border: 1px solid rgb(214,214,214);
       border-radius: 0.06rem;
       background: rgb(237,237,237);
       overflow-y: auto;
-
+      img {
+        width:100%;
+        display: block;
+      }
       p {
         padding-bottom: 0.1rem;
         text-indent: -1em;
@@ -1014,6 +1037,16 @@ body {
         vertical-align: middle;
         width: 0.3rem;
         height: 0.3rem;
+
+        &.check_true {
+          background: url("../images/allow@2x.png") no-repeat 0 0;
+          background-size: 100% 100%;
+        }
+
+        &.check_false {
+          background: url("../images/weixuanzhong@2x.png") no-repeat 0 0;
+          background-size: 100% 100%;
+        }
 
         img {
           width: 100%;

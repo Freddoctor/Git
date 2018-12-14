@@ -1,15 +1,3 @@
-.mart_59 {
-  margin-top: 0.59rem !important;
-}
-
-.mart_58 {
-  margin-top: 0.58rem !important;
-}
-
-.marb_43 {
-  margin-bottom: 0.43rem !important;
-}
-
 .user_coupon {
   margin: 0 0.2rem;
   border-radius: 0.16rem;
@@ -69,10 +57,13 @@
 }
 
 .join_active {
-  display: block;
+  position:fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
   width: 6.28rem;
   height: 1.34rem;
-  margin: -0.45rem auto 0.1rem;
+  // margin: -0.45rem auto 0.1rem;
   font-size: 0.42rem;
   line-height: 1.15rem;
   text-align: center;

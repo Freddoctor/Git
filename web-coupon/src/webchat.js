@@ -8,6 +8,12 @@ import {
 import "jquery";
 
 $(function() {
+
+  var activeId = null; //活动id
+  var activeShareId = null; //分享id
+  var helpCount = null; //帮助人数
+  var userCenterId = null;
+  var openId = null;
   //查看课程介绍
   $("#curse-introduct").click(function() {
     $(".sub_wrap").show();
@@ -37,12 +43,13 @@ $(function() {
   function usersShowSuccess(res) {
     var data = res.data
     console.log(data);
-    $("[data-sharepeople]").html(data.helpCount);
-    progress(data.classConfigList, data.helpCount);
-    getWechatUserList(data.wechatUserList);
-    //广告轮播
-    AssisFunc("#assis_wrap", 2);
-    countTime(data.now, data.finishDate)
+    helpCount = data.helpCount;
+    activeId = data.activeId;
+    activeShareId = data.activeShareId;
+    progress(data.classConfigList, data.helpCount); //当前进度
+    getWechatUserList(data.wechatUserList); //微信助力人员
+    countTime(data.now, data.finishDate); //倒计时
+    $("[data-sharepeople]").html(data.helpCount); //助力人数显示
   }
 
   function getWechatUserList(wechatUserList) {
@@ -62,11 +69,13 @@ $(function() {
       }
       $("#assis_wrap ul").html(str + str);
     }
+    AssisFunc("#assis_wrap", 2); //助理人员轮播
   }
 
-  function progress(parms, helpCount) { //进度条
+  function progress(parms, helpCount) { //当前进度
     if (parms && typeof parms == "object") {
       $(".module_art").find("li").each(function(i) {
+        if (parms[i] == null) return false;
         var helpPersonRequire = parms[i].helpPersonRequire + "人";
         var rate = parms[i].rate;
         $(this).find("[data-helprequire]").html(helpPersonRequire);
@@ -76,7 +85,7 @@ $(function() {
     }
   }
 
-  function rateProgress(parms, helpCount) {
+  function rateProgress(parms, helpCount) { //进度条展示
     var discount = 0;
     var pro_way1 = "0%";
     var pro_way2 = "0%";
@@ -129,24 +138,26 @@ $(function() {
     $(".pro_way3").css("width", pro_way3);
   }
 
-
-  function fullZero(num,calc) {
-    var str = '';
-    if (num < calc) {
-      str = "0" + num;
+  function countTime(now, finishDate) { //倒计时
+    var now = new Date().getTime();
+    var finishDate = 1544832000000;
+    var now = new Date(now).getTime();
+    var i = 0;
+    console.log(now, finishDate)
+    if (now >= finishDate) {
+      $(".time-start").hide().remove();
+      $(".active-btn").hide().remove();
+      $(".end-btn").show();
+      $(".time-end").show();
+      return false;
     }
-    return str;
-  }
-
-  function countTime(now, finishDate) {
-    var now = now;
-    var finishDate = finishDate;
     var timer = setInterval(function() {
-      var date = new Date();
-      var now = date.getTime();
+      var start = now + (1000 * (++i))
+      // var date = new Date();
+      // var now = date.getTime();
       var endDate = new Date(finishDate); //设置截止时间
       var end = endDate.getTime();
-      var leftTime = end - now; //时间差
+      var leftTime = end - start; //时间差
       var d, h, m, s, ms;
       if (leftTime >= 0) {
         // d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
@@ -154,8 +165,6 @@ $(function() {
         m = Math.floor(leftTime / 1000 / 60 % 60);
         s = Math.floor(leftTime / 1000 % 60);
         ms = Math.floor(leftTime % 1000);
-
-        
         if (ms < 100) {
           ms = "0" + ms;
         }
@@ -169,12 +178,63 @@ $(function() {
           h = "0" + h;
         }
       } else {
-        return false;
+        h = "00";
+        m = "00";
+        s = "00";
+        clearInterval(timer);
+        $(".time-start").hide().remove();
+        $(".active-btn").hide().remove();
+        $(".end-btn").show();
+        $(".time-end").show()
       }
       $("[data-hour]").html(h);
       $("[data-minutes]").html(m);
       $("[data-seconds]").html(s);
-    }, 500)
+    }, 1000)
+  }
+
+  setActive();
+
+  function setActive() { //发起活动
+    $("#setActive").click(function() { //发起活动弹出层
+      $(".tip-rules").show();
+    })
+
+    $(".check_rule").click(function() { //活动规则
+      var ins = $(this).find("ins");
+      if (ins.hasClass("check_true")) {
+        ins.removeClass("check_true").addClass("check_false");
+      } else if (ins.hasClass("check_false")) {
+        ins.removeClass("check_false").addClass("check_true");
+      }
+    })
+
+    $(".close_tip").click(function() { //关闭弹框
+      $(this).parent().parent().hide();
+    })
+  }
+
+  setHelp();
+
+  function setHelp() { //帮助助力
+    $("#setHelp").click(function() {
+      $.ajax({
+        url: baseUrl.api + "/active/helpShareActive.json",
+        dataType: "jsonp",
+        type: "GET",
+        data: {
+          activeShareId: 2,
+          openId: 1
+        },
+        success: showTip
+      });
+    })
+
+    function showTip(res) {
+      var msg = res.msg;
+      $('.alert_success').find("p").html(msg);
+      $('.alert_success').fadeIn(500).fadeOut(500);
+    }
   }
 })
 
