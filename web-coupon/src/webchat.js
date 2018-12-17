@@ -255,8 +255,8 @@ function getJsapiSignature() {
     dataType: "jsonp",
     type: "GET",
     data: {
-      // url: "location.href.split('#')[0]"
-      url:"active.fx168api.com"
+      url: location.href.split('#')[0]
+      // url:"http://140.206.169.46"
     },
     success: function(res) {
       var data = res.data;
@@ -267,9 +267,22 @@ function getJsapiSignature() {
         timestamp: data.timestamp, // 必填，生成签名的时间戳
         nonceStr: data.nonceStr, // 必填，生成签名的随机串
         signature: data.signature, // 必填，签名
-        url: "active.fx168api.com",
-        jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"] // 必填，需要使用的JS接口列表
+        url: "http://active.fx168api.com",
+        jsApiList: ["updateAppMessageShareData", "updateTimelineShareData", "onMenuShareTimeline", "onMenuShareAppMessage"] // 必填，需要使用的JS接口列表
       });
     }
   });
 }
+
+wx.ready(function() { //需在用户可能点击分享按钮前就先调用
+  wx.onMenuShareTimeline({
+    title: '1232134', // 分享标题
+    desc: '123123', // 分享描述
+    link: location.href.split('#')[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    imgUrl: 'https://avatar.csdn.net/5/4/0/3_alanfancy.jpg', // 分享图标
+    success: function() {
+      // 设置成功
+      console.log(111)
+    }
+  })
+});

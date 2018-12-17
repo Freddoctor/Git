@@ -29,6 +29,7 @@ module.exports = {
     port: 8888,
     compress: true,
     inline: true,
+    disableHostCheck: true,
   },
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
