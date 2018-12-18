@@ -4,6 +4,7 @@
   background: #fff;
   overflow: hidden;
   position: relative;
+
   .box {
     position: relative;
     overflow: hidden;
@@ -72,6 +73,7 @@
   color: #fff;
 
   &.disable {
+    bottom: 0.18rem;
     line-height: 1.08rem;
     height: 1.08rem;
     width: 6.02rem;

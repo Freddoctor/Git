@@ -13,30 +13,43 @@ import "jquery";
 var shareJson = {
   isShare: 0, //0:不分享 1:分享
   shareTitle: "分享啊",
-  shareUrl: window.location.href,
+  // shareUrl: window.location.href,
+  shareUrl: "http://192.168.30.175/webchat.html",
   sharePlatform: "朋友圈",
   shareImage: "https://avatar.csdn.net/5/4/0/3_alanfancy.jpg",
   shareContent: "给你推荐一赞，去看看大家对它的评价吧"
 };
 
-var activeId = null;
-var t = null;
+var activeId = getQueryString("activeId") || 3;
+
+var t = "A88D6FE54C60C5826F8C4BE4EDBC8C16";
 var isShared = null;
 var shareUrl = null;
 
 function acceptToken(str) { //接受app返回值
   if (!str) {
     addEventLog({
-      activeId: 3,
+      activeId: activeId,
       eventTags: 4,
-      activeShareId: 3,
-      t: "1F8AE456CB53AC5317E107AA2722DCF6"
+      activeShareId: activeId,
+      // t: "1F8AE456CB53AC5317E107AA2722DCF6"
     })
     needToLogin();
   } else {
+    t = str;
     shareJs(JSON.stringify(shareJson));
     $(".share_webchat").show();
   }
+}
+
+getActiveInfo(); //获取app内部activeId信息
+
+function getQueryString(name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  // if (r != null) return unescape(r[2]);
+  if (r != null) return r[2];
+  return null;
 }
 
 $(function() {
@@ -47,10 +60,10 @@ $(function() {
     $(".user_coupon").removeClass("margin_top_neg")
     $(this).hide();
     addEventLog({
-      activeId: 3,
+      activeId: activeId,
       eventTags: 3,
-      activeShareId: 3,
-      t: "1F8AE456CB53AC5317E107AA2722DCF6"
+      activeShareId: activeId,
+      t: t
     })
   })
 
@@ -64,12 +77,13 @@ $(function() {
   })
 
   $(".join_active").click(function() { //参加活动
+    if ($(this).hasClass("disable")) return false;
     getToken();
     addEventLog({
-      activeId: 3,
+      activeId: activeId,
       eventTags: 2,
-      activeShareId: 3,
-      t: "1F8AE456CB53AC5317E107AA2722DCF6"
+      activeShareId: activeId,
+      t: t
     })
   })
 
@@ -87,17 +101,17 @@ $(function() {
       $(this).parent().parent().parent().hide();
       if (sharePlatform == '朋友圈') {
         addEventLog({
-          activeId: 3,
+          activeId: activeId,
           eventTags: 6,
-          activeShareId: 3,
-          t: "1F8AE456CB53AC5317E107AA2722DCF6"
+          activeShareId: activeId,
+          t: t
         })
       } else if (sharePlatform == '微信') {
         addEventLog({
-          activeId: 3,
+          activeId: activeId,
           eventTags: 7,
-          activeShareId: 3,
-          t: "1F8AE456CB53AC5317E107AA2722DCF6"
+          activeShareId: activeId,
+          t: t
         })
       }
       openShare(JSON.stringify(shareJson)); //分享至微信/朋友圈
@@ -110,8 +124,8 @@ $(function() {
       dataType: "jsonp",
       type: "GET",
       data: {
-        activeId: 2,
-        t: "A88D6FE54C60C5826F8C4BE4EDBC8C16"
+        activeId: activeId,
+        t: t
       },
       success: shareActiveSuccess
     });
@@ -133,8 +147,8 @@ $(function() {
       dataType: "jsonp",
       type: "GET",
       data: {
-        activeId: 3,
-        t: "A88D6FE54C60C5826F8C4BE4EDBC8C16"
+        activeId: activeId,
+        t: t
       },
       success: getActiveSuccess
     });
@@ -168,6 +182,12 @@ $(function() {
     progress(data.classConfigList, data.helpCount); //当前进度
     getWechatUserList(data.wechatUserList); //微信助力人员
     countTime(data.now, data.finishDate); //倒计时
+    if (data.isShared == 0) {
+      $(".assistance").hide();
+      $(".assis_man").hide();
+    } else if (data.isShared == 1) {
+      $(".join_active.able").html("分享活动");
+    }
   }
 
   function getWechatUserList(wechatUserList) { //微信助力的人数
@@ -256,14 +276,13 @@ $(function() {
     $(".pro_way2").css("width", pro_way2);
     $(".pro_way3").css("width", pro_way3);
   }
-  window.countTime = countTime;
 
   function countTime(now, finishDate) { //倒计时
     var now = now;
     var that = this;
     var timer = null;
     clearInterval(timer);
-    var finishDate = 1546041600000 || finishDate;
+    var finishDate = finishDate;
     var now = new Date(now).getTime();
     var i = 0;
     console.log(now, finishDate)
@@ -323,14 +342,18 @@ $(function() {
       dataType: "jsonp",
       type: "GET",
       data: {
-        activeId: 3,
-        t: "A88D6FE54C60C5826F8C4BE4EDBC8C16"
+        activeId: activeId,
+        t: t
       },
       success: function(res) {}
     });
   }
 
-})
+  function returnActiveInfo(res) { //接受appactiveId
+    activeId = res;
+  }
 
+  window.returnActiveInfo = returnActiveInfo;
+})
 
 window.acceptToken = acceptToken;

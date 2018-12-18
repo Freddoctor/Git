@@ -16,7 +16,7 @@ module.exports = {
     webchat: ["./src/webchat.js"],
     error: ["./src/404.js"],
     activeNotice: ["./src/activeNotice.js"],
-    activeStart:["./src/activeStart.js"]
+    activeStart: ["./src/activeStart.js"]
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -26,7 +26,7 @@ module.exports = {
     contentBase: './dist',
     hot: true,
     host: '192.168.30.175',
-    port: 8888,
+    port: 80,
     compress: true,
     inline: true,
     disableHostCheck: true,
@@ -201,13 +201,13 @@ module.exports = {
     ],
     splitChunks: {
       cacheGroups: {
-            commons: {
-                test: /[\\/]node_modules[\\/]/,
-                name: "vendor",
-                chunks: "all",
-                // minChunks:2,
-            }
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all",
+          // minChunks:2,
         }
+      }
     }
   },
 }

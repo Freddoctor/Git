@@ -8,13 +8,26 @@ import {
 
 import "jquery";
 
+var code = getQueryString("code");
+
+var sign = getQueryString("sign") || "B73FF07F9D585A9D008604B30581EC7A%1D%2BiVcZf6M0UgPm12ntMKcMC2L1OEm8HU6qkwwmXX6ciOuTvj%2Fhp11ctoq7pVAtulI0UNE41OYXPSADY2fChJHp8ZyKyjeDMFLMuQsKABC384%3D%1DCFC0sb%2Ft2UkNXWps2ug7JgEPiAKLy2%2FGslo%2BC2CkJz95huPOlHg41TniS3%2B80tcySYBahhJhPFPaJr%2FPRD79ZJdyKAvyV62A514ZVJzbruJGHKx9Nfnc5KLK84iJNvNUTH04PbLU76%2F%2FGgXrTZiTZpWMWhyzfR8K%2FRIv%2FVbx8zk%3D";
+
+var openId = null;
+
+if (!code) {
+  window.location.href =
+    'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + 'wxeb4937fe06467ccd' + '&redirect_uri=' +
+    encodeURIComponent(window.location.href) +
+    '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+}
+
 $(function() {
 
   var activeId = null; //活动id
   var activeShareId = null; //分享id
   var helpCount = null; //帮助人数
   var userCenterId = null;
-  var openId = null;
+
   var checkIsHelp = false;
   //查看课程介绍
   $("#curse-introduct").click(function() {
@@ -26,7 +39,6 @@ $(function() {
       activeId: 3,
       eventTags: 3,
       activeShareId: 3,
-      t: "1F8AE456CB53AC5317E107AA2722DCF6"
     })
   })
 
@@ -39,14 +51,18 @@ $(function() {
     $("#curse-introduct").show();
   })
 
+
   function getAjaxUserList() {
     $.ajax({
       url: baseUrl.api + "/active/getSharePageShowInfo.json",
       dataType: "jsonp",
       type: "GET",
+      // data: {
+      //   activeId: 3,
+      //   userCenterId: "d210c5c78630f81b099680da22831aa6"
+      // },
       data: {
-        activeId: 3,
-        userCenterId: "d210c5c78630f81b099680da22831aa6"
+        sign: encodeURIComponent(sign)
       },
       success: usersShowSuccess
     });
@@ -154,7 +170,7 @@ $(function() {
 
   function countTime(now, finishDate) { //倒计时
     var now = now;
-    var finishDate = 1546041600000 || finishDate;
+    var finishDate = 1545264000000 || finishDate;
     var now = new Date(now).getTime();
     var i = 0;
     console.log(now, finishDate)
@@ -220,7 +236,6 @@ $(function() {
         activeId: 3,
         eventTags: 9,
         activeShareId: 3,
-        t: "1F8AE456CB53AC5317E107AA2722DCF6"
       })
     })
     $(".check_rule").click(function() { //活动规则
@@ -245,7 +260,7 @@ $(function() {
         type: "GET",
         data: {
           activeShareId: 2,
-          openId: 1
+          openId: openId
         },
         success: function(res) {
           showTip(res);
@@ -253,7 +268,6 @@ $(function() {
             activeId: 3,
             eventTags: 8,
             activeShareId: 3,
-            t: "1F8AE456CB53AC5317E107AA2722DCF6"
           })
         }
       });
@@ -294,8 +308,25 @@ $(function() {
     }
   }
 
+  if (code) {
+    getOpenId(code);
+  }
 
-  checkIsAlreadyHelp() // 检测是否助力过
+  function getOpenId(code) { //获取openId的值
+    $.ajax({
+      url: baseUrl.api + "/common/acceptWechatCode.json",
+      dataType: "jsonp",
+      type: "GET",
+      data: {
+        code: code
+      },
+      success: function(res) {
+        if (!res.data) return false;
+        openId = res.data.openId;
+        checkIsAlreadyHelp() // 检测是否助力过
+      }
+    });
+  }
 
   function checkIsAlreadyHelp() {
     $.ajax({
@@ -304,7 +335,7 @@ $(function() {
       type: "GET",
       data: {
         activeShareId: 2,
-        openId: 1
+        openId: openId
       },
       success: function(res) {
         console.log(res);

@@ -18,7 +18,7 @@ $(function() {
       type: "GET",
       data: {
         activeId: 3,
-        t: "1F8AE456CB53AC5317E107AA2722DCF6"
+        t: "A88D6FE54C60C5826F8C4BE4EDBC8C16"
       },
       success: usersShowSuccess
     });
@@ -52,7 +52,7 @@ $(function() {
           '</div>' +
           '</li>'
       }
-      $("#assis_wrap ul").html(str + str);
+      $("#assis_wrap ul").html(str);
     }
     AssisFunc("#assis_wrap", 2); //助理人员轮播
   }

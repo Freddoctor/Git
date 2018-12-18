@@ -66,11 +66,7 @@ var ua = window.navigator.userAgent;
 var isAndroid = ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1; //android终端
 var isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 var isWeiXin = (function() {
-  if (ua.match(/MicroMessenger/i) == 'micromessenger') {
-    return true;
-  } else {
-    return false;
-  }
+  return ua.toLowerCase().indexOf('micromessenger') !== -1
 })()
 
 var baseUrl = {
@@ -83,16 +79,15 @@ var baseUrl = {
 function isLogin() {
   if (isiOS && window.webkit && !isWeiXin) {
     window.webkit.messageHandlers.isLogin.postMessage("123");
-  } else if (window.SysClientJs && isAndroid) {
+  } else if (window.SysClientJs && isAndroid && !isWeiXin) {
     window.SysClientJs.isLogin()
   }
 }
 
 function getToken() { //原生获取token
   if (isiOS && window.webkit && !isWeiXin) {
-    alert(111)
     window.webkit.messageHandlers.getToken.postMessage("123");
-  } else if (window.SysClientJs && isAndroid) {
+  } else if (window.SysClientJs && isAndroid && !isWeiXin) {
     window.SysClientJs.getToken()
   }
 }
@@ -100,7 +95,7 @@ function getToken() { //原生获取token
 function needToLogin() { //需要登录原生app
   if (isiOS && window.webkit && !isWeiXin) {
     window.webkit.messageHandlers.needToLogin.postMessage("123");
-  } else if (window.SysClientJs && isAndroid) {
+  } else if (window.SysClientJs && isAndroid && !isWeiXin) {
     window.SysClientJs.needToLogin()
   }
 }
@@ -111,7 +106,7 @@ function returnIsLogin(str) {
 }
 
 function shareJs(shareJson) { //分享接口
-  if (window.SysClientJs && isAndroid) {
+  if (window.SysClientJs && isAndroid && !isWeiXin) {
     window.SysClientJs.shareJs(shareJson);
   }
   if (isiOS && window.webkit && !isWeiXin) {
@@ -124,7 +119,7 @@ function openShare(sharetitles) { //终端分享列表
   if (isiOS && window.webkit && !isWeiXin) {
     window.webkit.messageHandlers.openShare.postMessage(sharetitles);
   }
-  if (window.SysClientJs && isAndroid) {
+  if (window.SysClientJs && isAndroid && !isWeiXin) {
     window.SysClientJs.openShare(sharetitles);
   }
 }
@@ -133,7 +128,7 @@ function openCourseDetail(idName) { //跳转课程
   if (isiOS && window.webkit && !isWeiXin) {
     window.webkit.messageHandlers.openCourseDetail.postMessage(idName);
   }
-  if (window.SysClientJs && isAndroid) {
+  if (window.SysClientJs && isAndroid && !isWeiXin) {
     window.SysClientJs.openCourseDetail(idName);
   }
 }
@@ -142,7 +137,7 @@ function copy(str) { //复制
   if (isiOS && window.webkit && !isWeiXin) {
     window.webkit.messageHandlers.copy.postMessage(str);
   }
-  if (window.SysClientJs && isAndroid) {
+  if (window.SysClientJs && isAndroid && !isWeiXin) {
     window.SysClientJs.copy(str);
   }
 }
@@ -165,7 +160,7 @@ function formatDate(date, fmt) {
 }
 
 function addEventLog(parm, success) { //增加操作日志
-  if(!window.$) return false;
+  if (!window.$) return false;
   $.ajax({
     url: baseUrl.api + "/active/addEventLog.json",
     dataType: "jsonp",
@@ -184,6 +179,15 @@ function addEventLog(parm, success) { //增加操作日志
   })
 }
 
+function getActiveInfo() { //获取activeId
+  if (isiOS && window.webkit && !isWeiXin) {
+    window.webkit.messageHandlers.getActiveInfo.postMessage("123");
+  }
+  if (window.SysClientJs && isAndroid && !isWeiXin) {
+    window.SysClientJs.getActiveInfo();
+  }
+}
+
 window.isLogin = isLogin;
 window.shareJs = shareJs;
 window.openShare = openShare;
@@ -192,7 +196,7 @@ window.openCourseDetail = openCourseDetail;
 window.copy = copy;
 window.getToken = getToken;
 window.needToLogin = needToLogin;
-
+window.getActiveInfo = getActiveInfo;
 
 
 module.exports.AssisFunc = AssisFunc;

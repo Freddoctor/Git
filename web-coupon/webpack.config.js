@@ -13,26 +13,10 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   entry: {
-    commonProblem: ["./src/app1.js"],
-    componyIntro: ["./src/app2.js"],
-    exitEntry: ["./src/app3.js"],
-    home: ["./src/app4.js"],
-    licenseInfo: ["./src/app5.js"],
-    newinner: ["./src/app6.js"],
-    overseaInner: ["./src/app7.js"],
-    piracyWarn: ["./src/app8.js"],
-    platform: ["./src/app9.js"],
-    pointTable: ["./src/app10.js"],
-    realTest: ["./src/app11.js"],
-    rollovers: ["./src/app12.js"],
-    search: ["./src/app13.js"],
-    share: ["./src/app14.js"],
-    shareTrainingInner: ["./src/app15.js"],
-    threeInner: ["./src/app16.js"],
-    tradeInfo: ["./src/app17.js"],
-    traderCommunity: ["./src/app18.js"],
-    traderShare: ["./src/app19.js"],
-    trainingInner: ["./src/app20.js"],
+    webchat: ["./src/webchat.js"],
+    error: ["./src/404.js"],
+    activeNotice: ["./src/activeNotice.js"],
+    activeStart: ["./src/activeStart.js"]
   },
   // externals: {
   //   jquery: 'window.jQuery' //src 第三方库
@@ -49,184 +33,24 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
     new HtmlWebpackPlugin({
-      filename: './commonProblem.html',
-      template: './src/app/commonProblem.html',
-      chunks: ['commonProblem', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
+      filename: './webchat.html',
+      template: './src/webchat.html',
+      chunks: ['webchat', 'vendor'],
     }),
     new HtmlWebpackPlugin({
-      filename: './componyIntro.html',
-      template: './src/app/componyIntro.html',
-      chunks: ['componyIntro', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
+      filename: './404.html',
+      template: './src/404.html',
+      chunks: ['error', 'vendor'],
     }),
     new HtmlWebpackPlugin({
-      filename: './exitEntry.html',
-      template: './src/app/exitEntry.html',
-      chunks: ['exitEntry', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
+      filename: './activeNotice.html',
+      template: './src/activeNotice.html',
+      chunks: ['activeNotice', 'vendor'],
     }),
     new HtmlWebpackPlugin({
-      filename: './home.html',
-      template: './src/app/home.html',
-      chunks: ['home', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './licenseInfo.html',
-      template: './src/app/licenseInfo.html',
-      chunks: ['licenseInfo', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './newinner.html',
-      template: './src/app/newinner.html',
-      chunks: ['newinner', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './overseaInner.html',
-      template: './src/app/overseaInner.html',
-      chunks: ['overseaInner', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './piracyWarn.html',
-      template: './src/app/piracyWarn.html',
-      chunks: ['piracyWarn', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './platform.html',
-      template: './src/app/platform.html',
-      chunks: ['platform', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './pointTable.html',
-      template: './src/app/pointTable.html',
-      chunks: ['pointTable', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './realTest.html',
-      template: './src/app/realTest.html',
-      chunks: ['realTest', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './rollovers.html',
-      template: './src/app/rollovers.html',
-      chunks: ['rollovers', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './search.html',
-      template: './src/app/search.html',
-      chunks: ['search', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './share.html',
-      template: './src/app/share.html',
-      chunks: ['share', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './shareTrainingInner.html',
-      template: './src/app/shareTrainingInner.html',
-      chunks: ['shareTrainingInner', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './threeInner.html',
-      template: './src/app/threeInner.html',
-      chunks: ['threeInner', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './tradeInfo.html',
-      template: './src/app/tradeInfo.html',
-      chunks: ['tradeInfo', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './traderCommunity.html',
-      template: './src/app/traderCommunity.html',
-      chunks: ['traderCommunity', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './traderShare.html',
-      template: './src/app/traderShare.html',
-      chunks: ['traderShare', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: './trainingInner.html',
-      template: './src/app/trainingInner.html',
-      chunks: ['trainingInner', 'vendor'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true
-      }
+      filename: './activeStart.html',
+      template: './src/activeStart.html',
+      chunks: ['activeStart', 'vendor'],
     }),
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[chunkhash].css",
