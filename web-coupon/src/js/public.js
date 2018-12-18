@@ -28,6 +28,7 @@ function AssisFunc(obj, num) { //滚动轮播广告
 
   function load(num) {
     var str = new String();
+
     for (var i = 0; i <= num; i++) {
       str += "<li class='clear'> " + $moveBox.find("li").eq(i).html() + "</li>";
     }
@@ -41,8 +42,10 @@ function AssisFunc(obj, num) { //滚动轮播广告
     // $moveBox.append(third);
   }
 
+  var timer;
   var i = 0;
-  var timer = setInterval(function() {
+  clearInterval(timer);
+  timer = setInterval(function() {
     i++;
     $moveBox.css({
       "transform": "translateY(" + -i + "px)",
@@ -87,6 +90,7 @@ function isLogin() {
 
 function getToken() { //原生获取token
   if (isiOS && window.webkit && !isWeiXin) {
+    alert(111)
     window.webkit.messageHandlers.getToken.postMessage("123");
   } else if (window.SysClientJs && isAndroid) {
     window.SysClientJs.getToken()
@@ -160,6 +164,26 @@ function formatDate(date, fmt) {
   return fmt;
 }
 
+function addEventLog(parm, success) { //增加操作日志
+  if(!window.$) return false;
+  $.ajax({
+    url: baseUrl.api + "/active/addEventLog.json",
+    dataType: "jsonp",
+    type: "GET",
+    data: {
+      activeId: parm.activeId,
+      eventTags: parm.eventTags,
+      activeShareId: parm.activeShareId,
+      t: parm.t
+    },
+    success: function(res) {
+      if (typeof success == "function") {
+        success(res);
+      }
+    }
+  })
+}
+
 window.isLogin = isLogin;
 window.shareJs = shareJs;
 window.openShare = openShare;
@@ -176,3 +200,4 @@ module.exports.isiOS = isiOS;
 module.exports.isAndroid = isAndroid;
 module.exports.baseUrl = baseUrl;
 module.exports.formatDate = formatDate;
+module.exports.addEventLog = addEventLog;

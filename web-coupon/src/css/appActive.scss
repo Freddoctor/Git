@@ -1,9 +1,9 @@
 .user_coupon {
-  margin: 0 0.2rem;
+  margin: 0 0.2rem 0.2rem;
   border-radius: 0.16rem;
   background: #fff;
   overflow: hidden;
-
+  position: relative;
   .box {
     position: relative;
     overflow: hidden;
@@ -57,7 +57,7 @@
 }
 
 .join_active {
-  position:fixed;
+  position: fixed;
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);

@@ -75,7 +75,16 @@ strong {
 }
 
 .marb_98 {
-  margin-bottom: .98rem !important;
+  margin-bottom: 0.98rem !important;
+}
+
+.mart_30 {
+  margin-top: 0.3rem !important;
+}
+
+.mar_tb20 {
+  margin-top: 0.2rem !important;
+  margin-bottom: 0.2rem !important;
 }
 // 课程介绍
 
@@ -84,6 +93,7 @@ body {
   background: #4792f8;
   font-family: "PingFangSC-Regular", "Microsoft YaHei", Helvetica;
   color: #333;
+  touch-action: manipulation;
 }
 
 .header_img {
@@ -750,6 +760,7 @@ body {
     .end-btn {
       margin-top: 0.5rem;
       display: none;
+
       a {
         border-radius: 0.1rem;
         display: block;
@@ -795,7 +806,6 @@ body {
       span {
         display: inline-block;
         vertical-align: middle;
-        height: 0.32rem;
         width: 0.32rem;
         line-height: 0.32rem;
         font-size: 0.2rem;
@@ -818,8 +828,11 @@ body {
     }
   }
 }
-//下载app文案
 
+.margin_top_neg {
+  margin-top: -0.12rem !important;
+}
+//下载app文案
 .down_h5 {
   color: #fff;
   text-align: center;
@@ -952,6 +965,7 @@ body {
 // 分享提示
 
 .share {
+  display: none;
   position: fixed;
   z-index: 99;
   top: 0;
@@ -1008,18 +1022,20 @@ body {
 
     .article {
       // padding: 0.2rem 0.25rem 0.2rem 0.5rem;
-      padding: 0.2rem .1rem;
+      padding: 0.2rem 0.1rem;
       height: 5.08rem;
       box-sizing: border-box;
       border: 1px solid rgb(214,214,214);
       border-radius: 0.06rem;
       background: rgb(237,237,237);
       overflow-y: auto;
-      -webkit-overflow-scrolling:touch;
+      -webkit-overflow-scrolling: touch;
+
       img {
-        width:100%;
+        width: 100%;
         display: block;
       }
+
       p {
         padding-bottom: 0.1rem;
         text-indent: -1em;

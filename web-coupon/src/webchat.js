@@ -2,7 +2,8 @@ import "./css/public.scss";
 
 import {
   AssisFunc,
-  baseUrl
+  baseUrl,
+  addEventLog
 } from "./js/public.js"
 
 import "jquery";
@@ -14,14 +15,27 @@ $(function() {
   var helpCount = null; //帮助人数
   var userCenterId = null;
   var openId = null;
+  var checkIsHelp = false;
   //查看课程介绍
   $("#curse-introduct").click(function() {
+    // 点击“展开课程介绍”事件
     $(".sub_wrap").show();
+    $(".assistance").removeClass("margin_top_neg");
     $(this).hide();
+    addEventLog({
+      activeId: 3,
+      eventTags: 3,
+      activeShareId: 3,
+      t: "1F8AE456CB53AC5317E107AA2722DCF6"
+    })
   })
 
   $(".sub_wrap .btn_detail").click(function() {
     $(this).parent().hide();
+    $(".assistance").addClass("margin_top_neg");
+    $('html , body').animate({
+      scrollTop: 0
+    }, 0);
     $("#curse-introduct").show();
   })
 
@@ -32,7 +46,7 @@ $(function() {
       type: "GET",
       data: {
         activeId: 3,
-        userCenterId: "1f2fd1ac1dd7b944c4ce34f9ed265ab6"
+        userCenterId: "d210c5c78630f81b099680da22831aa6"
       },
       success: usersShowSuccess
     });
@@ -67,7 +81,7 @@ $(function() {
           '</div>' +
           '</li>'
       }
-      $("#assis_wrap ul").html(str + str);
+      $("#assis_wrap ul").html(str);
     }
     AssisFunc("#assis_wrap", 2); //助理人员轮播
   }
@@ -139,8 +153,8 @@ $(function() {
   }
 
   function countTime(now, finishDate) { //倒计时
-    var now = new Date().getTime();
-    var finishDate = 1544832000000;
+    var now = now;
+    var finishDate = 1546041600000 || finishDate;
     var now = new Date(now).getTime();
     var i = 0;
     console.log(now, finishDate)
@@ -196,10 +210,19 @@ $(function() {
   setActive();
 
   function setActive() { //发起活动
+    $("#setActive").unbind("click");
+    $(".check_rule").unbind("click");
+    $(".close_tip").unbind("click");
+
     $("#setActive").click(function() { //发起活动弹出层
       $(".tip-rules").show();
+      addEventLog({
+        activeId: 3,
+        eventTags: 9,
+        activeShareId: 3,
+        t: "1F8AE456CB53AC5317E107AA2722DCF6"
+      })
     })
-
     $(".check_rule").click(function() { //活动规则
       var ins = $(this).find("ins");
       if (ins.hasClass("check_true")) {
@@ -208,15 +231,13 @@ $(function() {
         ins.removeClass("check_false").addClass("check_true");
       }
     })
-
     $(".close_tip").click(function() { //关闭弹框
       $(this).parent().parent().hide();
     })
   }
 
-  setHelp();
-
   function setHelp() { //帮助助力
+    $("#setHelp").unbind("click");
     $("#setHelp").click(function() {
       $.ajax({
         url: baseUrl.api + "/active/helpShareActive.json",
@@ -226,18 +247,73 @@ $(function() {
           activeShareId: 2,
           openId: 1
         },
-        success: showTip
+        success: function(res) {
+          showTip(res);
+          addEventLog({
+            activeId: 3,
+            eventTags: 8,
+            activeShareId: 3,
+            t: "1F8AE456CB53AC5317E107AA2722DCF6"
+          })
+        }
       });
     })
 
+    var isDisable = false; //1秒多次阻止点击
     function showTip(res) {
       var msg = res.msg;
+      if (isDisable) return false;
+      setTimeout(function() {
+        isDisable = false;
+      }, 1000)
       $('.alert_success').find("p").html(msg);
       $('.alert_success').fadeIn(500).fadeOut(500);
+      isDisable = true;
     }
   }
-})
 
+  function shareMoreHelp() { //帮TA找更多人助力
+    $("#setHelp").unbind("click");
+    $(".share").unbind("click");
+
+    $("#setHelp").html("帮TA找更多人助力");
+
+    $("#setHelp").click(function() {
+      $(".share").show();
+    })
+    $(".share").click(function() {
+      $(this).hide();
+    })
+  }
+
+  function onReadyHelp(res) { //是否已经帮助过
+    if (res == 1) {
+      shareMoreHelp();
+    } else {
+      setHelp();
+    }
+  }
+
+
+  checkIsAlreadyHelp() // 检测是否助力过
+
+  function checkIsAlreadyHelp() {
+    $.ajax({
+      url: baseUrl.api + "/active/checkIsAlreadyHelp.json",
+      dataType: "jsonp",
+      type: "GET",
+      data: {
+        activeShareId: 2,
+        openId: 1
+      },
+      success: function(res) {
+        console.log(res);
+        onReadyHelp(res.data.isAlreadyHelp); //确认是否在助力
+      }
+    });
+  }
+
+})
 
 function getQueryString(name) {
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -246,6 +322,7 @@ function getQueryString(name) {
   if (r != null) return r[2];
   return null;
 }
+
 
 getJsapiSignature(); //微信授权
 
@@ -256,33 +333,39 @@ function getJsapiSignature() {
     type: "GET",
     data: {
       url: location.href.split('#')[0]
-      // url:"http://140.206.169.46"
     },
     success: function(res) {
       var data = res.data;
-      console.log(data)
       wx.config({
-        debug: true, // 开启调试模式。
+        debug: false, // 开启调试模式。
         appId: data.appId, // 必填，公众号的唯一标识
         timestamp: data.timestamp, // 必填，生成签名的时间戳
         nonceStr: data.nonceStr, // 必填，生成签名的随机串
         signature: data.signature, // 必填，签名
         url: "http://active.fx168api.com",
-        jsApiList: ["updateAppMessageShareData", "updateTimelineShareData", "onMenuShareTimeline", "onMenuShareAppMessage"] // 必填，需要使用的JS接口列表
+        jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "previewImage"] // 必填，需要使用的JS接口列表
       });
     }
   });
 }
 
-wx.ready(function() { //需在用户可能点击分享按钮前就先调用
-  wx.onMenuShareTimeline({
-    title: '1232134', // 分享标题
-    desc: '123123', // 分享描述
-    link: location.href.split('#')[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    imgUrl: 'https://avatar.csdn.net/5/4/0/3_alanfancy.jpg', // 分享图标
-    success: function() {
-      // 设置成功
-      console.log(111)
+var shareData = {
+  title: '微信活动',
+  desc: '微信活动',
+  link: location.href.split('#')[0],
+  imgUrl: 'http://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRt8Qia4lv7k3M9J1SKqKCImxJCt7j9rHYicKDI45jRPBxdzdyREWnk0ia0N5TMnMfth7SdxtzMvVgXg/0'
+};
+
+wx.ready(function() { //微信分享
+  wx.checkJsApi({
+    jsApiList: [
+      'onMenuShareAppMessage',
+      'previewImage',
+      'onMenuShareTimeline'
+    ],
+    success: function(res) {
+      wx.onMenuShareAppMessage(shareData);
+      wx.onMenuShareTimeline(shareData);
     }
-  })
-});
+  });
+})
