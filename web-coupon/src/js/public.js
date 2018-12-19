@@ -227,6 +227,14 @@ jsonp.removeJsonp =function (id) {
     }
 }
 
+function getImageUrl(url,name) { //提取imgUrl
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var url = url.split("?")[1];
+  var r = url.match(reg);
+  if(r != null) return decodeURIComponent(r[2]);
+  return null;
+}
+
 window.isLogin = isLogin;
 window.shareJs = shareJs;
 window.openShare = openShare;
@@ -245,3 +253,4 @@ module.exports.baseUrl = baseUrl;
 module.exports.formatDate = formatDate;
 module.exports.addEventLog = addEventLog;
 module.exports.jsonp = jsonp;
+module.exports.getImageUrl = getImageUrl;
