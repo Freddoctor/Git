@@ -25,6 +25,7 @@ var activeId = getQueryString("activeId") || 3;
 var t = "A88D6FE54C60C5826F8C4BE4EDBC8C16";
 var isShared = null;
 var shareUrl = null;
+var pageShare = true;
 
 function acceptToken(str) { //接受app返回值
   if (!str) {
@@ -37,8 +38,10 @@ function acceptToken(str) { //接受app返回值
     needToLogin();
   } else {
     t = str;
-    shareJs(JSON.stringify(shareJson));
-    $(".share_webchat").show();
+    if (pageShare) {
+      shareJs(JSON.stringify(shareJson));
+      $(".share_webchat").show();
+    }
   }
 }
 
@@ -181,10 +184,11 @@ $(function() {
     $("[data-sharepeople]").html(data.helpCount); //助力人数显示
     progress(data.classConfigList, data.helpCount); //当前进度
     getWechatUserList(data.wechatUserList); //微信助力人员
-    countTime(data.now, data.finishDate); //倒计时
+    countTime(data.shareDate, data.finishDate, data.isOverTime); //倒计时
     if (data.isShared == 0) {
       $(".assistance").hide();
       $(".assis_man").hide();
+      $(".join_active.able").html("参加活动");
     } else if (data.isShared == 1) {
       $(".join_active.able").html("分享活动");
     }
@@ -277,7 +281,7 @@ $(function() {
     $(".pro_way3").css("width", pro_way3);
   }
 
-  function countTime(now, finishDate) { //倒计时
+  function countTime(now, finishDate, isOverTime) { //倒计时
     var now = now;
     var that = this;
     var timer = null;
@@ -285,12 +289,12 @@ $(function() {
     var finishDate = finishDate;
     var now = new Date(now).getTime();
     var i = 0;
-    console.log(now, finishDate)
-    if (now >= finishDate) {
+    if (now >= finishDate || isOverTime == 1) {
       $(".time-start").hide().remove();
       $(".active-btn").hide().remove();
       $(".end-btn").show();
       $(".time-end").show();
+      endActive();
       return false;
     }
     timer = setInterval(function() {
@@ -327,7 +331,8 @@ $(function() {
         $(".time-start").hide().remove();
         $(".active-btn").hide().remove();
         $(".end-btn").show();
-        $(".time-end").show()
+        $(".time-end").show();
+        endActive();
       }
       $("[data-hour]").html(h);
       $("[data-minutes]").html(m);
@@ -351,6 +356,18 @@ $(function() {
 
   function returnActiveInfo(res) { //接受appactiveId
     activeId = res;
+  }
+
+  function endActive() { //活动结束页面
+    $(".user_coupon").hide();
+    $(".assistance").hide();
+    $(".assis_man").hide();
+    var $cloneRule = $(".active_rule").clone(true);
+    $(".active_rule").hide();
+    $("#bodymain").append($cloneRule);
+    $(".join_active.able").hide();
+    $(".join_active.disable").show();
+    $(".sub_recommend").addClass("mart_zore11");
   }
 
   window.returnActiveInfo = returnActiveInfo;

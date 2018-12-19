@@ -3,7 +3,8 @@ import "./css/public.scss";
 import {
   AssisFunc,
   baseUrl,
-  addEventLog
+  addEventLog,
+  jsonp
 } from "./js/public.js"
 
 import "jquery";
@@ -15,6 +16,7 @@ var sign = getQueryString("sign") || "B73FF07F9D585A9D008604B30581EC7A%1D%2BiVcZ
 var openId = null;
 
 if (!code) {
+  $("body").html("");
   window.location.href =
     'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + 'wxeb4937fe06467ccd' + '&redirect_uri=' +
     encodeURIComponent(window.location.href) +
@@ -36,9 +38,9 @@ $(function() {
     $(".assistance").removeClass("margin_top_neg");
     $(this).hide();
     addEventLog({
-      activeId: 3,
+      activeId: activeId,
       eventTags: 3,
-      activeShareId: 3,
+      activeShareId: activeShareId,
     })
   })
 
@@ -52,34 +54,28 @@ $(function() {
   })
 
 
-  function getAjaxUserList() {
-    $.ajax({
-      url: baseUrl.api + "/active/getSharePageShowInfo.json",
-      dataType: "jsonp",
-      type: "GET",
-      // data: {
-      //   activeId: 3,
-      //   userCenterId: "d210c5c78630f81b099680da22831aa6"
-      // },
-      data: {
-        sign: encodeURIComponent(sign)
-      },
-      success: usersShowSuccess
-    });
+  function getAjaxUserList() { //获取用户列表ajax
+    // data: {
+    //   activeId: 3,
+    //   userCenterId: "d210c5c78630f81b099680da22831aa6"
+    // },
+    jsonp.get(baseUrl.api + "/active/getSharePageShowInfo.json", {
+      sign: sign
+    }, function(res) {
+      usersShowSuccess(res);
+    })
   }
-
-  getAjaxUserList();
 
   function usersShowSuccess(res) {
     var data = res.data
-    console.log(data);
     helpCount = data.helpCount;
     activeId = data.activeId;
     activeShareId = data.activeShareId;
     progress(data.classConfigList, data.helpCount); //当前进度
     getWechatUserList(data.wechatUserList); //微信助力人员
-    countTime(data.now, data.finishDate); //倒计时
+    countTime(data.shareDate, data.finishDate, data.isOverTime); //倒计时
     $("[data-sharepeople]").html(data.helpCount); //助力人数显示
+    checkIsAlreadyHelp() // 检测是否助力过
   }
 
   function getWechatUserList(wechatUserList) {
@@ -168,13 +164,14 @@ $(function() {
     $(".pro_way3").css("width", pro_way3);
   }
 
-  function countTime(now, finishDate) { //倒计时
-    var now = now;
+  function countTime(shareDate, finishDate, isOverTime) { //倒计时
+    var now = shareDate;
     var finishDate = 1545264000000 || finishDate;
     var now = new Date(now).getTime();
     var i = 0;
     console.log(now, finishDate)
-    if (now >= finishDate) {
+    // || isOverTime == 1
+    if (now >= finishDate || isOverTime == 1) {
       $(".time-start").hide().remove();
       $(".active-btn").hide().remove();
       $(".end-btn").show();
@@ -233,9 +230,9 @@ $(function() {
     $("#setActive").click(function() { //发起活动弹出层
       $(".tip-rules").show();
       addEventLog({
-        activeId: 3,
+        activeId: activeId,
         eventTags: 9,
-        activeShareId: 3,
+        activeShareId: activeShareId,
       })
     })
     $(".check_rule").click(function() { //活动规则
@@ -259,20 +256,19 @@ $(function() {
         dataType: "jsonp",
         type: "GET",
         data: {
-          activeShareId: 2,
+          activeShareId: activeShareId,
           openId: openId
         },
         success: function(res) {
           showTip(res);
           addEventLog({
-            activeId: 3,
+            activeId: activeId,
             eventTags: 8,
-            activeShareId: 3,
+            activeShareId: activeShareId,
           })
         }
       });
     })
-
     var isDisable = false; //1秒多次阻止点击
     function showTip(res) {
       var msg = res.msg;
@@ -280,24 +276,35 @@ $(function() {
       setTimeout(function() {
         isDisable = false;
       }, 1000)
+      if (msg == "success") {
+        msg = "助力成功"
+      }
       $('.alert_success').find("p").html(msg);
       $('.alert_success').fadeIn(500).fadeOut(500);
+      $("#setHelp").remove();
+      $("#shareMoreHelp").show().css("display", "block");
+      shareMoreHelp();
       isDisable = true;
     }
   }
 
   function shareMoreHelp() { //帮TA找更多人助力
-    $("#setHelp").unbind("click");
+    $("#shareMoreHelp").unbind("click");
     $(".share").unbind("click");
+    $("#setHelp").remove();
+    $("#shareMoreHelp").show().css("display", "block");;
+    $("#shareMoreHelp").html("帮TA找更多人助力");
 
-    $("#setHelp").html("帮TA找更多人助力");
-
-    $("#setHelp").click(function() {
+    $("#shareMoreHelp").click(function() {
       $(".share").show();
     })
     $(".share").click(function() {
       $(this).hide();
     })
+  }
+
+  if (code) {
+    getOpenId(code);
   }
 
   function onReadyHelp(res) { //是否已经帮助过
@@ -306,10 +313,6 @@ $(function() {
     } else {
       setHelp();
     }
-  }
-
-  if (code) {
-    getOpenId(code);
   }
 
   function getOpenId(code) { //获取openId的值
@@ -323,22 +326,21 @@ $(function() {
       success: function(res) {
         if (!res.data) return false;
         openId = res.data.openId;
-        checkIsAlreadyHelp() // 检测是否助力过
+        getAjaxUserList();
       }
     });
   }
 
-  function checkIsAlreadyHelp() {
+  function checkIsAlreadyHelp() { //检测是否助力
     $.ajax({
       url: baseUrl.api + "/active/checkIsAlreadyHelp.json",
       dataType: "jsonp",
       type: "GET",
       data: {
-        activeShareId: 2,
+        activeShareId: activeShareId,
         openId: openId
       },
       success: function(res) {
-        console.log(res);
         onReadyHelp(res.data.isAlreadyHelp); //确认是否在助力
       }
     });

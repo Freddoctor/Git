@@ -9,6 +9,35 @@ import {
 
 import "jquery";
 
+var t = "A88D6FE54C60C5826F8C4BE4EDBC8C16"
+
+var activeId = getQueryString("activeId") || 3;
+
+var courseSetId = 295;
+
+function acceptToken(str) { //接受app返回值
+  if (!str) {
+    addEventLog({
+      activeId: activeId,
+      eventTags: 4,
+      activeShareId: activeId,
+    })
+    needToLogin();
+  } else {
+    t = str;
+  }
+}
+
+getActiveInfo(); //获取app内部activeId信息
+
+function getQueryString(name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  // if (r != null) return unescape(r[2]);
+  if (r != null) return r[2];
+  return null;
+}
+
 $(function() {
 
   function getUserList() {
@@ -17,8 +46,8 @@ $(function() {
       dataType: "jsonp",
       type: "GET",
       data: {
-        activeId: 3,
-        t: "A88D6FE54C60C5826F8C4BE4EDBC8C16"
+        activeId: activeId,
+        t: t
       },
       success: usersShowSuccess
     });
@@ -27,6 +56,42 @@ $(function() {
   getUserList();
 
   copyOpenDetailClick();
+
+  getClassActiveCouponPage();
+
+  function getClassActiveCouponPage() { //获取优惠券信息
+    $.ajax({
+      url: baseUrl.api + "/active/getClassActiveCouponPage.json",
+      dataType: "jsonp",
+      type: "GET",
+      data: {
+        activeId: activeId,
+        t: t
+      },
+      success: function(res) {
+        console.log(res);
+        var data = res.data;
+        if (data.couponStatus == 0) {
+          // 可用
+        } else if (data.couponStatus == 1) {
+          // 过期
+          $(".use_btn").remove();
+          $(".nouse_btn").show().css("display", "block").html("优惠券已过期");
+        } else if (data.couponStatus == 2) {
+          //已使用
+          $(".use_btn").remove();
+          $(".nouse_btn").show().css("display", "block").html("优惠券已使用");
+        }
+        courseSetId = data.courseSetId; //进入课程ID
+        var couponCode = data.couponCode; //优惠券码
+        var rata = data.rate;
+        var helpCount = data.helpCount;
+        $("#coupon-password").html(couponCode);
+        $("[data-helpcount]").html(helpCount);
+        $("[data-rata]").html(rata + '元');
+      }
+    });
+  }
 
   function usersShowSuccess(res) {
     console.log(res);
@@ -64,8 +129,16 @@ $(function() {
       copy(str);
     });
     $(".use_btn").click(function() {
-      openCourseDetail(295);
+      openCourseDetail(courseSetId);
     })
   }
 
+  function returnActiveInfo(res) { //接受appactiveId
+    activeId = res;
+    getToken(); //id活动获取后获取token
+  }
+
+  window.returnActiveInfo = returnActiveInfo;
 })
+
+window.acceptToken = acceptToken;

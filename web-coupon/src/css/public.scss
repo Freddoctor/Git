@@ -86,7 +86,16 @@ strong {
   margin-top: 0.2rem !important;
   margin-bottom: 0.2rem !important;
 }
+
+
+.mart_zore11 {
+  margin-top:  -0.11rem !important
+}
 // 课程介绍
+
+#shareMoreHelp {
+  display: none;
+}
 
 body {
   font-size: 0.24rem;
@@ -738,6 +747,7 @@ body {
       justify-content: space-between;
 
       a {
+        display: block;
         width: 3.02rem;
         height: 1.05rem;
         line-height: 0.95rem;
@@ -935,6 +945,7 @@ body {
 // FX168介绍
 
 .sub_recommend {
+  position: relative;
   margin: 0.2rem 0.2rem 0;
   overflow: hidden;
   padding-bottom: 0.27rem;
