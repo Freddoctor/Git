@@ -40,15 +40,13 @@ function acceptToken(str) { //接受app返回值
       activeShareId: activeId,
       // t: "1F8AE456CB53AC5317E107AA2722DCF6"
     })
-    needToLogin();
   } else {
     t = str;
+    getAjaxActivePage(); //有token获取课程数据
   }
 }
 
 getActiveInfo(); //获取app内部activeId信息
-
-getToken(); //获取app内部tocken
 
 function getQueryString(name) {
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -83,6 +81,10 @@ $(".sub_wrap .btn_detail").click(function() {
 
 $(".join_active").click(function() { //参加活动
   if ($(this).hasClass("disable")) return false;
+  if (t == null) {
+    needToLogin();
+    return false;
+  }
   shareJs(JSON.stringify(shareJson));
   $(".share_webchat").show();
   addEventLog({
@@ -145,6 +147,8 @@ $(".cancel").click(function() { //取消操作
   $(this).parent().parent().hide();
 })
 
+$(".assistance").hide();
+$(".assis_man").hide();
 
 function getAjaxActivePage() { //获取app内课程活动数据
   $.ajax({
@@ -162,25 +166,20 @@ function getAjaxActivePage() { //获取app内课程活动数据
 function getActiveSuccess(res) { //课程回调
   var data = res.data;
   if (data == "") return false;
-  var list = data.haveCouponUserList;
-  var htmlstr = "";
 
-  for (var i = 0; i < list.length; i++) {
-    var str = list[i];
-    if (str.indexOf("获取") != -1 && str.indexOf("元优惠券") != -1) {
-      var name = str.split("获取")[0];
-      var span = str.split("获取")[1].split("元")[0];
-      htmlstr += "<li><em>" + name + "</em>" + " - 获取<span>" + span + "</span>" + str.split("获取")[1].split("元")[1] + "</li>";
-    }
+  if (data.isShared == 1) { //活动已分享时进度状态显示
+    $(".assistance").show();
+    $(".assis_man").show();
+  } else if (t == null || data.isShared == 0) {
+    $(".assistance").hide();
+    $(".assis_man").hide();
   }
 
-  $(".box .wrap_list").html(htmlstr);
   shareJson.shareUrl = data.shareUrl; //分享url
   shareUrl = data.shareUrl;
   isShared = data.isShared;
   shareJson.shareImage = getImageUrl(shareUrl, "activeShareImg");
   console.log(shareJson);
-  AssisFunc(".box", 5); //广告轮播
   helpUserList(data);
 }
 
@@ -361,12 +360,46 @@ function CouponPage() {
 
 function returnActiveInfo(res) { //接受appactiveId
   activeId = res;
-  // getToken(); //获取app内部tocken
-  setTimeout(function() {
-    getAjaxActivePage(); //课程数据
-  }, 500)
+  getToken(); //获取app内部tocken
+  // setTimeout(function() {
+  //   if (t != null) {
+  //     getAjaxActivePage(); //课程数据
+  //   }
+  // }, 500)
+  getJoinPersons(activeId);
 }
 
+// getJoinPersons(3);
+
+function getJoinPersons(activeId) {
+  $.ajax({
+    url: baseUrl.api + "/active/getJoinPersons.json",
+    dataType: "jsonp",
+    type: "GET",
+    data: {
+      activeId: activeId,
+    },
+    success: function(res) {
+      joinPersonSuccess(res)
+    }
+  });
+}
+
+function joinPersonSuccess(res) {
+  var data = res.data;
+  var list = data.haveCouponUserList;
+  var htmlstr = "";
+  for (var i = 0; i < list.length; i++) {
+    var str = list[i];
+    if (str.indexOf("获取") != -1 && str.indexOf("元优惠券") != -1) {
+      var name = str.split("获取")[0];
+      var span = str.split("获取")[1].split("元")[0];
+      htmlstr += "<li><em>" + name + "</em>" + " - 获取<span>" + span + "</span>" + str.split("获取")[1].split("元")[1] + "</li>";
+    }
+  }
+  $(".box .wrap_list").html(htmlstr);
+  AssisFunc(".box", 5); //广告轮播
+}
 //app内部数据获取
 // getAjaxActivePage();
 

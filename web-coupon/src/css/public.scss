@@ -233,7 +233,7 @@ body {
           top: 0.12rem;
           // top: 50%;
           // transform: translateY(-50%);
-          border-radius: 999px;
+          border-radius: 50%;
           background: rgb(174,174,174);
         }
       }
@@ -838,6 +838,11 @@ body {
   }
 }
 
+@media screen and (min-width: 360px) and (max-width:360px) {
+  .assistance .list-progress .time-come span {
+    font-size: 8px;
+  }
+}
 .margin_top_neg {
   margin-top: -0.12rem !important;
 }
