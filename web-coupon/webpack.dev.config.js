@@ -164,7 +164,17 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader']
-      }, {
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel-loader",
+        query: {
+          presets: ['es2015'],
+          plugins: ['transform-runtime']
+        }
+      },
+      {
         // test: require.resolve('./src/js/jquery-3.1.1.min.js'),
         test: require.resolve('jquery'),
         use: [{
