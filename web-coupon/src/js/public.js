@@ -1,3 +1,6 @@
+import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole
+let vConsole = new VConsole() // 初始化
+
 ! function(n) {
   var e = n.document,
     t = e.documentElement,

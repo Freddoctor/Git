@@ -380,6 +380,7 @@ function getJoinPersons(activeId) {
       activeId: activeId,
     },
     success: function(res) {
+      console.log(res);
       joinPersonSuccess(res)
     }
   });
