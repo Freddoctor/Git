@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "art-template": "^4.13.2",
     "autoprefixer-loader": "^3.2.0",
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
@@ -28,6 +29,7 @@
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
+    "art-template-loader": "^1.4.3",
     "autoprefixer": "^9.1.5",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",

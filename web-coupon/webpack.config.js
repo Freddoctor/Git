@@ -183,6 +183,11 @@ module.exports = {
           loader: 'expose-loader',
           options: '$'
         }]
+      },
+      {
+        test: /\.art$/,
+        loader: "art-template-loader",
+        options: {}
       }
     ]
   },

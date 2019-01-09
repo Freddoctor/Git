@@ -1,0 +1,10 @@
+<p>{{value}}</p>
+<img src="../images/404@2x.png" alt="">
+<ul>
+{{each  list}}
+  <li data-index="{{$index}}">
+    <span>{{$index}} -- {{$value.nickName}} -- {{$value.age}}</span>  <button @Click="delate">删除</button>
+  </li>
+{{/each}}
+</ul>
+<time>{{time | dateFormat 'yyyy-MM-dd hh:mm:ss'}}</time>

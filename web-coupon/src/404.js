@@ -45,3 +45,77 @@ function byte2Hex(b) {
   else
     return b.toString(16);
 }
+
+
+//模板引擎
+var runtime = require('art-template/lib/runtime');
+runtime.dateFormat = function(date, fmt) {
+  var currentDate = new Date(date);
+  var o = {
+    "M+": currentDate.getMonth() + 1, //月份
+    "d+": currentDate.getDate(), //日
+    "h+": currentDate.getHours(), //小时
+    "m+": currentDate.getMinutes(), //分
+    "s+": currentDate.getSeconds(), //秒
+    "q+": Math.floor((currentDate.getMonth() + 3) / 3), //季度
+    "S": currentDate.getMilliseconds() //毫秒
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (currentDate.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+  return fmt;
+};
+
+var template = require("./template/template.art");
+var html = template({
+  key: "1010",
+  time: new Date(),
+  value: "(null)",
+  list: [{
+    nickName: "Dave",
+    age: 25
+  }, {
+    nickName: "Justin",
+    age: 30
+  }]
+});
+
+var ele = document.getElementById("template");
+ele.innerHTML = html;
+
+ele.addEventListener("click", deleteChoose, false)
+
+function deleteChoose(event) {
+  var event = event;
+  // console.log(event.target.tagName.toLowerCase());
+  var attributes = event.target.attributes;
+  // console.log(attributes.length);
+  var methods = TargetEvent(event);
+  console.log(methods);
+  for (var i = 0; i < methods.length; i++) {
+    if (methods[i].name == "click") {
+      var func = methods[i].value;
+      window[func](event);
+    }
+  }
+}
+
+window.delate = delate;
+
+function delate(event) {
+  console.log(event)
+}
+
+function TargetEvent(event) {
+  var attributes = event.target.attributes;
+  var methods = new Array();
+  for (var i = 0; i < attributes.length; i++) {
+    if (attributes[i].name.indexOf("@") != -1) {
+      methods.push({
+        name: attributes[i].name.substr(1),
+        value: attributes[i].value
+      })
+    }
+  }
+  return methods;
+}
