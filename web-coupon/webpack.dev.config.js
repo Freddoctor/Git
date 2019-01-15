@@ -11,7 +11,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
+const merge = require("webpack-merge");
+const portfinder = require("portfinder");
+
 module.exports = {
+  context: path.resolve(__dirname, './'),
   entry: {
     webchat: ["./src/webchat.js"],
     error: ["./src/404.js"],
@@ -25,11 +29,33 @@ module.exports = {
   devServer: {
     contentBase: './dist',
     hot: true,
-    host: '192.168.30.175',
+    host: '0.0.0.0',
     port: 80,
     compress: true,
     inline: true,
     disableHostCheck: true,
+    quiet: false, //控制台中不输出打包的信息
+    noInfo: false, //显示的 webpack 包(bundle)信息,
+    useLocalIp: true, //允许浏览器使用本地 IP 打开
+    proxy: { //前后端分离反向代理
+      '/active': {
+        target: 'http://192.168.30.190:99/active',
+        pathRewrite: {
+          "^/active": "/"
+        },
+        secure: false
+      },
+      '/common': {
+        target: 'http://192.168.30.190:99/common',
+        pathRewrite: {
+          "^/common": "/"
+        },
+        secure: false
+      }
+    },
+    after: function(app) {
+      // 做些有趣的事
+    }
   },
   plugins: [
     // new CleanWebpackPlugin([process.env.NODE_ENV !== 'production' ? '' : 'dist']),
@@ -225,4 +251,9 @@ module.exports = {
       }
     }
   },
-}
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, 'src') //简化 import 路径
+    }
+  }
+};

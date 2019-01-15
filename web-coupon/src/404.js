@@ -119,3 +119,17 @@ function TargetEvent(event) {
   }
   return methods;
 }
+
+var $ = require("jquery");
+
+$.ajax({
+  url:"/active/getClassActivePage.json",
+  type: "GET",
+  data: {
+    activeId: 64,
+    t: "FCA7905D0115B9D9DCB0B1087BADB3B7"
+  },
+  success:function(res) {
+    console.log(res)
+  }
+});
