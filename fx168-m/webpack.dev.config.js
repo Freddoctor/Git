@@ -18,7 +18,7 @@ module.exports = {
     // _404: ["./src/404.js"],
     // _bank: ["./src/bank.js"],
     // _bond: ["./src/bond.js"],
-    // _calendar: ["./src/calendar.js"],
+    _calendar: ["./src/calendar.js"],
     // _city: ["./src/city.js"],
     // _forex: ["./src/forex.js"],
     // _hangye: ["./src/hangye.js"],
@@ -85,11 +85,11 @@ module.exports = {
     //   template: './src/bond.html',
     //   chunks: ['_bond', 'vendor'],
     // }),
-    // new HtmlWebpackPlugin({
-    //   filename: './calendar.html',
-    //   template: './src/calendar.html',
-    //   chunks: ['_calendar', 'vendor'],
-    // }),
+    new HtmlWebpackPlugin({
+      filename: './calendar.html',
+      template: './src/calendar.html',
+      chunks: ['_calendar', 'vendor'],
+    }),
     // new HtmlWebpackPlugin({
     //   filename: './city.html',
     //   template: './src/city.html',

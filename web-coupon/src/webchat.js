@@ -20,6 +20,10 @@ var shareImage = null;
 
 var shareUrl = null;
 
+$(".a-end").click(function(){
+  $(this).attr("href",'https://applvw9hyyd1459.h5.xiaoeknow.com');
+});
+
 var shareData = { //微信分享配置参数
   title: '就差你了，快帮我助力一下参与FX168财经学院课程优惠活动',
   desc: '快来和我一起参加活动，获取超值优惠',
@@ -28,7 +32,7 @@ var shareData = { //微信分享配置参数
 };
 
 if (!code) {
-  localStorage.setItem("link",window.location.href);
+  localStorage.setItem("link", window.location.href);
   $("body").html("");
   window.location.href =
     'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + 'wxeb4937fe06467ccd' + '&redirect_uri=' +
