@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" sizes="32x32" type="image/png" href="//static.nodejs.cn/_static/img/favicon.png">
+</head>
+
+<body>
+	<h2>这是静态目录</h2>
+	<form action="/post" method="post" id="form">
+		姓名： <input type="text" name="name"><br> 密码： <input type="password" name="password"><br>
+		<input type="submit" id="submit">
+	</form>
+</body>
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script>
+	$.get("/home").then((res) => {
+		console.log(res)
+	});
+	$("#submit").on('click', function(event) {
+		$.post("/submit", {
+			name: $("input[name='name']").val(),
+			password: $("input[name='password']").val()
+		});
+		event.preventDefault();
+	})
+</script>
+
+</html>

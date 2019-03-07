@@ -1,0 +1,13 @@
+{
+	"author": "",
+	"description": "",
+	"license": "ISC",
+	"main": "app.js",
+	"name": "api",
+	"scripts": {
+		"pm2": "pm2 start app.js -i 0",
+		"dev": "supervisor -e js,html -i build -n exit -x node app.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"version": "1.0.0"
+}
