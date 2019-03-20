@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+    .setting li {
+      font-size: 12px;
+      line-height: 50px;
+      position: relative;
+      height: 50px;
+      list-style: none;
+    }
+
+    .scale_panel {
+      font-size: 12px;
+      color: #999;
+      width: 200px;
+      position: absolute;
+      line-height: 18px;
+      left: 60px;
+      top: -0px;
+    }
+
+    .scale_panel .r {
+      float: right;
+    }
+
+    .scale {
+      background-repeat: repeat-x;
+      background-position: 0 100%;
+      background-color: #E4E4E4;
+      border-left: 1px #83BBD9 solid;
+      width: 200px;
+      height: 3px;
+      position: relative;
+      font-size: 0px;
+      border-radius: 3px;
+    }
+
+    .scale div {
+      background-repeat: repeat-x;
+      background-color: #3BE3FF;
+      width: 0px;
+      position: absolute;
+      height: 3px;
+      width: 0;
+      left: 0;
+      bottom: 0;
+    }
+
+    .scale span {
+      background: url(http://www.jq22.com/demo/jquery-tz20151211/scroll.gif) no-repeat;
+      width: 8px;
+      height: 16px;
+      position: absolute;
+      left: -2px;
+      top: -5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <aside>
+      <span>技术指标查询验证</span>
+    </aside>
+    <aside class="">
+      <ul>
+        <li>
+          <span>行情选择:</span>
+          <select name="hq" id="">
+            <option value="上证"></option>
+            <option value="上证"></option>
+          </select>
+        </li>
+        <li>
+          <span>K线类型:</span>
+          <select name="Kline" id="">
+              <option value="日线"></option>
+              <option value="周线"></option>
+          </select>
+        </li>
+        <li>
+          <span>K线数量:</span>
+          <select name="Knum" id="">
+            <option value="60"></option>
+            <option value="90"></option>
+          </select>
+        </li>
+      </ul>
+    </aside>
+    <aside>
+      <button>查询</button>
+    </aside>
+  </header>
+  <section class="wraper">
+    <aside class="body-side">
+      <ul>
+        <li class="open">主图</li>
+        <li>MA</li>
+        <li>BOLL</li>
+      </ul>
+      <ul>
+        <li class="open">附图</li>
+        <li>MACD</li>
+        <li>RSI</li>
+        <li>KDJ</li>
+        <li>W&R</li>
+        <li>DMI</li>
+      </ul>
+    </aside>
+    <aside class="body">
+      <h2>MA（移动平均线）</h2>
+      <div class="body-area">
+        <div class="setting">
+          <h3>参数设置：</h3>
+          <ul>
+            <li>
+              <span>p1</span>
+              <em>5</em>
+              <span id="title">0%</span>
+              <div class="scale_panel">
+                <span class="r">100</span>0
+                <div class="scale" id="bar">
+                  <div style="width: 0px;"></div>
+                  <span id="btn" style="left: 0px;"></span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span>p2</span>
+              <em>10</em>
+              <span id="title2">0%</span>
+              <div class="scale_panel">
+                <span class="r">100</span>0
+                <div class="scale" id="bar2">
+                  <div style="width: 0px;"></div>
+                  <span id="btn2" style="left: 0px;"></span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span>p3</span>
+              <em>20</em>
+              <span id="title3">0%</span>
+              <div class="scale_panel">
+                <span class="r">100</span>0
+                <div class="scale" id="bar3">
+                  <div style="width: 0px;"></div>
+                  <span id="btn3" style="left: 0px;"></span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="canvas-chart"></div>
+        <div class="table">
+          <ul>
+            <li>时间</li>
+            <li>OPEN</li>
+            <li>HIGH</li>
+            <li>CLOSE</li>
+            <li>LOW</li>
+            <li>VOLUME</li>
+            <li>MA1</li>
+            <li>MA2</li>
+            <li>MA3</li>
+          </ul>
+          <ul>
+            <li>2019-2-22</li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <ul>
+            <li>2019-2-23</li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+        <div class="page">
+          <span>1</span>
+          <span>2</span>
+          <select name="" id="">
+            <option value="30">30条/页</option>
+            <option value="60">60条/页</option>
+            <option value="90">90条/页</option>
+          </select>
+        </div>
+        <article class="right-article">
+          <h3>指标算法：</h3>
+          <p>
+            MA1:MA(CLOSE,P1); <br> MA2:MA(CLOSE,P2);
+            <br> MA3:MA(CLOSE,P3)
+          </p>
+          <h3>指标算法：</h3>
+          <p>
+            主图叠加指标 绘制收盘价的P1日、P2日、P3日移动平均线。P1、P2、P3一般取5日、10日、20日。<br>
+             一般用法： 葛氏八法则: <br>
+             1. 平均线从下降逐渐走平，当股价从平均线的下方突破平均线时是为买进信号。 <br>
+             2. 股价连续上升远离平均线之上，股价突然下跌，但未跌破上升的平均线，股价又再度上升时，可以加码买进。 <br>
+             3. 股价虽一时跌至平均线之下，但平均线仍在上扬且股价不久马上又恢复到平均线之上时，仍为买进信号。<br>
+             4. 股价跌破平均线之下，突然连续暴跌，远离平均线时，很可能再向平均线弹升，这也是买进信号。<br>
+              5. 股价急速上升远超过上升的平均线时，将出现短线的回跌，再趋向于平均线，这是卖出信号。 <br>
+              6. 平均线走势从上升逐渐走平转弯下跌，而股价从平均线的上方，往下跌破平均线时，应是卖出信号。 <br>
+              7. 股价跌落于平均线之下，然后向平均线弹升，但未突破平均线即又告回落，仍是卖出信号。<br>
+              8. 股价虽上升突破平均线，但立刻又恢复到平均线之下而此时平均线又继续下跌，则是卖出信号。<br>
+          </p>
+        </article>
+      </div>
+    </aside>
+  </section>
+  <script type="text/javascript">
+    function scale(btn, bar, title) {
+      this.btn = document.getElementById(btn);
+      this.bar = document.getElementById(bar);
+      this.title = document.getElementById(title);
+      this.step = this.bar.getElementsByTagName("DIV")[0];
+      this.init();
+    };
+    scale.prototype = {
+      init: function() {
+        var f = this,
+          g = document,
+          b = window,
+          m = Math;
+        f.btn.onmousedown = function(e) {
+          var x = (e || b.event).clientX;
+          var l = this.offsetLeft;
+          var max = f.bar.offsetWidth - this.offsetWidth;
+          g.onmousemove = function(e) {
+            var thisX = (e || b.event).clientX;
+            var to = m.min(max, m.max(-2, l + (thisX - x)));
+            f.btn.style.left = to + 'px';
+            f.ondrag(m.round(m.max(0, to / max) * 100), to);
+            b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
+          };
+          g.onmouseup = new Function('this.onmousemove=null');
+        };
+      },
+      ondrag: function(pos, x) {
+        this.step.style.width = Math.max(0, x) + 'px';
+        this.title.innerHTML = pos + '%';
+      }
+    }
+    new scale('btn', 'bar', 'title');
+    new scale('btn2', 'bar2', 'title2');
+    new scale('btn3', 'bar3', 'title3');
+  </script>
+</body>
+
+</html>
