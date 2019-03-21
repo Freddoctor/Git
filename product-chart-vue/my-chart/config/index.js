@@ -18,11 +18,11 @@ module.exports = {
           '^/api': ''
         }
       },
-      '/dev': {
-        target: "http://192.168.30.182:19999",
+      '/kline': {
+        target: "http://192.168.30.221:19999/kline",
         changeOrigin: true,
         pathRewrite: {
-          '^/dev': ""
+          '^/kline': ""
         }
       }
     },

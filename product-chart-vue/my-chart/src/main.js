@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+console.log(process.env.NODE_ENV); ///开发环境与生产环境
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

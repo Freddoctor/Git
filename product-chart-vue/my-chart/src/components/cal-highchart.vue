@@ -18,6 +18,7 @@ export default {
     data() {
         return {
             chart: null,
+            timer: null,
             ohlc: [],
             volume: [],
             chartOptions: {
@@ -29,8 +30,13 @@ export default {
                         lineWidth: 1,
                     }
                 },
+                loading: {
+                    hideDuration: 500,
+                    showDuration: 200
+                },
                 chart: {
                     spacingTop: 32,
+                    animation: false,
                     events: {
                         load: function() {
                             this.renderer.label(`<ul class="flex-table" id="renderer"></ul>`, 20, 0, "rect", 0, 0, true)
@@ -132,13 +138,12 @@ export default {
         this.chart = this.$refs.highcharts.chart;
         // console.log(this.$Highcharts);
         // console.log(chart.series[1]);
-        // console.log(this.chart);
-        console.log(this.chart.chartWidth);
-        this.updataHighchart();
+        this.updataHighchart(this.emmitDeliver, this.addtionDeliver);
     },
     methods: {
-        HighchartInit() {
-                this.updataHighchart(this.emmitDeliver);
+        HighchartInit(emmitDeliver, addtionDeliver) {
+                $("#renderer").html("");
+                this.updataHighchart(emmitDeliver, addtionDeliver);
             },
             resizeHighchart(isTrue) { //图表缩放
                 if (isTrue == true) {
@@ -147,24 +152,24 @@ export default {
                     this.chart.setSize($(".show-area").width(), 400, false);
                 }
             },
-            updataHighchart() { //更新表单
+            updataHighchart(emmitDeliver, addtionDeliver) { //更新表单
                 this.chart.showLoading('Loading data from server...');
                 while (this.chart.series.length) { //清空所有数据列
-                    this.chart.series[0].remove(true);
+                    this.chart.series[0].remove();
                 }
                 if (this.chart.series.length == 0) {
-                    $.getJSON("/dev/kline/basic").then((res) => {
+                    $.getJSON("/kline/basic").then((res) => {
                         this.ohlc = res;
                         this.basicKline();
                         this.settingLength(30);
                         this.chart.hideLoading();
-                        if (this.emmitDeliver.key != undefined) {
-                            (typeof this["handle" + this.emmitDeliver.key] == 'function') ? this["handle" + this.emmitDeliver.key](this.emmitDeliver.params): "";
-                        }
-                        if (this.addtionDeliver.key != undefined) {
-                            (typeof this["handle" + this.addtionDeliver.key] == 'function') ? this["handle" + this.addtionDeliver.key](this.addtionDeliver.params): "";
-                        }
                     })
+                    if (emmitDeliver.key != undefined) {
+                        (typeof this["handle" + emmitDeliver.key] == 'function') ? this["handle" + emmitDeliver.key](emmitDeliver.params): "";
+                    }
+                    if (addtionDeliver.key != undefined) {
+                        (typeof this["handle" + addtionDeliver.key] == 'function') ? this["handle" + addtionDeliver.key](addtionDeliver.params): "";
+                    }
                 }
             },
             basicKline() { //基础k线
@@ -190,8 +195,9 @@ export default {
                 this.chart.xAxis[0].setExtremes(first[0], last[0]);
             },
             handleCJBS() { //CJBS线(已)
-                $.getJSON("/dev/kline/cjbs").then(res => {
+                $.getJSON("/kline/cjbs").then(res => {
                     this.chart.addSeries({
+                        id: "Another",
                         name: 'CJBS',
                         type: 'column',
                         color: "#009933",
@@ -205,8 +211,9 @@ export default {
                 })
             },
             handlePSY(params) { //PSY线(已)
-                $.getJSON("/dev/kline/psy", params).then(res => {
+                $.getJSON("/kline/psy", params).then(res => {
                     this.chart.addSeries({
+                        id: "Another",
                         name: 'PSY',
                         type: 'spline',
                         color: "#0066cc",
@@ -220,7 +227,7 @@ export default {
                 })
             },
             handleARBR(params) { //ARBR线(已)
-                $.getJSON("/dev/kline/arbr?", params).then(res => {
+                $.getJSON("/kline/arbr?", params).then(res => {
                     this.chart.addSeries({
                         name: 'BR',
                         type: 'spline',
@@ -246,7 +253,7 @@ export default {
                 })
             },
             handleCR(params) { //CR线(已)
-                $.getJSON("/dev/kline/cr", params).then(res => {
+                $.getJSON("/kline/cr", params).then(res => {
                     this.chart.addSeries({
                         name: 'MA1',
                         type: 'spline',
@@ -294,7 +301,7 @@ export default {
                 })
             },
             handleOBV() { //OBV线(已)
-                $.getJSON("/dev/kline/obv").then(res => {
+                $.getJSON("/kline/obv").then(res => {
                     this.chart.addSeries({
                         name: 'OBV',
                         type: 'spline',
@@ -309,7 +316,7 @@ export default {
                 })
             },
             handleCCI(params) { //CCI线(已)
-                $.getJSON("/dev/kline/cci?", params).then(res => {
+                $.getJSON("/kline/cci?", params).then(res => {
                     this.chart.addSeries({
                         name: 'CCI',
                         type: 'spline',
@@ -324,7 +331,7 @@ export default {
                 })
             },
             handleDMA(params) { //DMA线(已)
-                $.getJSON("/dev/kline/dma?", params).then(res => {
+                $.getJSON("/kline/dma?", params).then(res => {
                     this.chart.addSeries({
                         name: 'AMA',
                         type: 'spline',
@@ -350,7 +357,7 @@ export default {
                 })
             },
             handleDMI(params) { //DMI线(已)
-                $.getJSON("/dev/kline/dmi?", params).then(res => {
+                $.getJSON("/kline/dmi?", params).then(res => {
                     this.chart.addSeries({
                         name: 'ADX',
                         type: 'spline',
@@ -398,7 +405,7 @@ export default {
                 })
             },
             handleWR(params) { //WR线(已)
-                $.getJSON("/dev/kline/wr?", params).then((res) => {
+                $.getJSON("/kline/wr?", params).then((res) => {
                     this.chart.addSeries({
                         name: 'WR1',
                         type: 'spline',
@@ -424,7 +431,7 @@ export default {
                 })
             },
             handleKDJ(params) { //KDJ线(已)
-                $.getJSON("/dev/kline/kdj?", params).then(res => {
+                $.getJSON("/kline/kdj?", params).then(res => {
                     this.chart.addSeries({
                         name: 'K',
                         type: 'spline',
@@ -461,7 +468,7 @@ export default {
                 })
             },
             handleRSI(params) { //RSI线(已)
-                $.getJSON("/dev/kline/rsi?", params).then(res => {
+                $.getJSON("/kline/rsi?", params).then(res => {
                     this.chart.addSeries({
                         name: 'RSI1',
                         type: 'spline',
@@ -498,7 +505,7 @@ export default {
                 })
             },
             handleBOLL(params) { //布林线(已)
-                $.getJSON("/dev/kline/boll?", params).then((res) => {
+                $.getJSON("/kline/boll?", params).then((res) => {
                     this.chart.addSeries({
                         name: 'LOWER',
                         type: 'spline',
@@ -532,7 +539,7 @@ export default {
                 })
             },
             handleMACD(params) { //MACD附图(已)
-                $.getJSON("/dev/kline/macd?", params).then((res) => {
+                $.getJSON("/kline/macd?", params).then((res) => {
                     var macd = res['MACD'];
                     var data = new Array();
                     for (var i = 0; i < macd.length; i++) {
@@ -568,7 +575,7 @@ export default {
                 });
             },
             handleMA(params) { //MA线(已)
-                $.getJSON("/dev/kline/ma?", params).then((res) => {
+                $.getJSON("/kline/ma?", params).then((res) => {
                     const keys = Object.keys(res);
                     this.chart.addSeries({
                         name: 'MA' + params.p1,

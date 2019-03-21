@@ -3,7 +3,8 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Biaodian Pro Sans GB', "Helvetica Neue", Helvetica, Arial, "pingfang sc", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", sans-serif;
+    font-family: "Segoe UI Light", "Segoe UI", "Microsoft Jhenghei", "微软雅黑", sans-serif;
+    // font-family: 'Biaodian Pro Sans GB', "Helvetica Neue", Helvetica, Arial, "pingfang sc", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", sans-serif;
 }
 
 ul li,
@@ -110,14 +111,13 @@ ol li {
 .header {
     padding: 15px 5px;
     min-width: 1190px;
-    background: #999;
+    background: rgb(84, 92, 100);
 }
 
 .subtitle-h1 {
     width: 200px;
     line-height: 40px;
     text-align: center;
-    background: #999;
     color: #fff;
 }
 
@@ -152,6 +152,11 @@ ol li {
         display: block;
         margin-right: 5px;
     }
+}
+
+.subtitle-filter {
+  color: #fff;
+
 }
 
 .list-tip {

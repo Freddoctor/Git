@@ -38,7 +38,7 @@
                         <span>主图</span>
                     </template>
                     <el-menu-item-group>
-                        <el-menu-item :index="item.key" :key="item.key" v-for="(item,index) in mainplot" @click="handleMainparm(item)">{{ item.key }}</el-menu-item>
+                        <el-menu-item :index="item.key" :key="item.key" v-for="(item,index) in mainplot" @click="handleMainparm(item)" :disabled="isClick">{{ item.key }}</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="3">
@@ -46,15 +46,15 @@
                         <span>附图</span>
                     </template>
                     <el-menu-item-group>
-                        <el-menu-item :index="item.key" :key="item.key" v-for="(item,index) in attachplot" @click="handleMainparm(item)">{{ item.key }} </el-menu-item>
+                        <el-menu-item :index="item.key" :key="item.key" v-for="(item,index) in attachplot" @click="handleMainparm(item)" :disabled="isClick">{{ item.key }} </el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
             </el-menu>
         </aside>
-        <aside class="right-aside left clearfix">
+        <aside class="right-aside left clearfix" v-loading="isClick">
             <h1 v-if="settingOption.key">
               {{settingOption.title}}
-              <el-button class="el-icon-setting" @click="saveSetting()" v-if="settingOption.params"><span>&nbsp;保存设置</span></el-button>
+              <el-button class="el-icon-setting" :disabled="isClick" @click="saveSetting()" v-if="settingOption.params"><span>&nbsp;保存设置</span></el-button>
             </h1>
             <section class="show-area left">
                 <div class="settting" v-if="settingOption.params">
@@ -108,6 +108,7 @@ export default {
     data() {
         return {
             isZoom: false,
+            isClick: false,
             quoteval: "",
             quotation: [{
                 label: '上证指数',
@@ -404,10 +405,17 @@ export default {
                         params: obj
                     }
                 }
+                this.deliverSetting();
+            },
+            deliverSetting() { //阻止多次提交
+                this.isClick = true;
                 if (!this.validateParams()) {
                     return false;
                 }
-                this.$refs.CalHighchart.HighchartInit();
+                this.$refs.CalHighchart.HighchartInit(this.emmitDeliver, this.addtionDeliver);
+                setTimeout(() => {
+                    this.isClick = false;
+                }, 650)
             },
             validateParams() { //验证参数
                 if (this.addtionDeliver.key == 'DMA') {
