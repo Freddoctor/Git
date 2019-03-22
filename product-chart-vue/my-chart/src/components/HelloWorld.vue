@@ -405,7 +405,9 @@ export default {
                         params: obj
                     }
                 }
-                this.deliverSetting();
+                this.$nextTick(()=>{
+                  this.deliverSetting();
+                })
             },
             deliverSetting() { //阻止多次提交
                 this.isClick = true;

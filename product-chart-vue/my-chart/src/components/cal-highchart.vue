@@ -142,8 +142,10 @@ export default {
     },
     methods: {
         HighchartInit(emmitDeliver, addtionDeliver) {
-                $("#renderer").html("");
-                this.updataHighchart(emmitDeliver, addtionDeliver);
+                this.$nextTick(()=>{
+                  $("#renderer").html("");
+                  this.updataHighchart(emmitDeliver, addtionDeliver);
+                })
             },
             resizeHighchart(isTrue) { //图表缩放
                 if (isTrue == true) {
