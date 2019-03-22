@@ -76,7 +76,18 @@ $(function() {
   });
 
   var dataListArr = [];
-
+  // 数据迁移
+  var dateArr = []; //时间
+  var titleArr = [] //标题
+  var tradePriceArr = [] //现价
+  var rangeArr = []; //涨跌
+  var rangePercentArr = []; //涨跌幅
+  var openPriceArr = []; //今开
+  var highPriceArr = []; //最高
+  var preClosePriceArr = [] //昨收
+  var lowPriceArr = [] //最低
+  var h1KeyArr = []; //key
+  var decimalDigits = [];
   // 回调ajax外汇数据请求success方法
   function getTabListData(data) {
     // console.log(data);
@@ -98,40 +109,37 @@ $(function() {
         '<span>' + dataListArr[i].tradePrice + '</span>' +
         '</div>' +
         '<div class="range">' +
-        '<span class="rangeShow1">' + dataListArr[i].range + '</span>' +
-        '<span class="rangeShow2">' + dataListArr[i].rangePercent + '</span>' +
+        '<span class="rangeShow1" style="'+  BackgroundGive(dataListArr[i].range) + '">' + dataListArr[i].range + '</span>' +
+        '<span class="rangeShow2" style="'+ BackgroundGive(dataListArr[i].range) + '">' + dataListArr[i].rangePercent + '</span>' +
         '</div>' +
         '</a>'
+    }
+
+    function BackgroundGive(range){
+       if(range < 0) {
+         return "background:#119A38";
+       }else if(range > 0) {
+         return "background:#CE2121";
+       }else {
+         return "background:#666973"
+       }
     }
     // 插入数据列表到content
     $('.content').html("");
     $('.content').append(hqListResult);
     // 判断背景颜色
-    for (var i = 0; i < $('.hq_List').length; i++) {
-      if ($('.rangeShow1').eq(i).html() < 0) {
-        $('.rangeShow1').eq(i).css("background", "#119A38");
-        $('.rangeShow2').eq(i).css("background", "#119A38");
-      } else if ($('.rangeShow1').eq(i).html() > 0) {
-        $('.rangeShow1').eq(i).css("background", "#CE2121");
-        $('.rangeShow2').eq(i).css("background", "#CE2121");
-      } else {
-        $('.rangeShow1').eq(i).css("background", "#666973");
-        $('.rangeShow2').eq(i).css("background", "#666973");
-      }
-    }
-
-    // 数据迁移
-    var dateArr = []; //时间
-    var titleArr = [] //标题
-    var tradePriceArr = [] //现价
-    var rangeArr = []; //涨跌
-    var rangePercentArr = []; //涨跌幅
-    var openPriceArr = []; //今开
-    var highPriceArr = []; //最高
-    var preClosePriceArr = [] //昨收
-    var lowPriceArr = [] //最低
-    var h1KeyArr = []; //key
-    var decimalDigits = [];
+    // for (var i = 0; i < $('.hq_List').length; i++) {
+    //   if ($('.rangeShow1').eq(i).html() < 0) {
+    //     $('.rangeShow1').eq(i).css("background", "#119A38");
+    //     $('.rangeShow2').eq(i).css("background", "#119A38");
+    //   } else if ($('.rangeShow1').eq(i).html() > 0) {
+    //     $('.rangeShow1').eq(i).css("background", "#CE2121");
+    //     $('.rangeShow2').eq(i).css("background", "#CE2121");
+    //   } else {
+    //     $('.rangeShow1').eq(i).css("background", "#666973");
+    //     $('.rangeShow2').eq(i).css("background", "#666973");
+    //   }
+    // }
     for (var i = 0; i < dataListArr.length; i++) {
       dateArr.push(dataListArr[i].date); //时间
       titleArr.push(dataListArr[i].name) //标题
@@ -145,23 +153,25 @@ $(function() {
       h1KeyArr.push(dataListArr[i].key) //key
       decimalDigits.push(dataListArr[i].decimalDigits);
     }
-    $('.hq_List').click(function() {
-      for (var i = 0; i < $('.hq_List').length; i++) {
-        var index = $(this).index();
-        sessionStorage.hq_inner_date = dateArr[index]; //时间
-        sessionStorage.hq_inner_title = titleArr[index]; //标题
-        sessionStorage.hq_inner_tradePrice = tradePriceArr[index]; //现价
-        sessionStorage.hq_inner_range = rangeArr[index]; //涨跌
-        sessionStorage.hq_inner_rangePercent = rangePercentArr[index]; //涨跌幅
-        sessionStorage.hq_inner_openPrice = openPriceArr[index]; //今开
-        sessionStorage.hq_inner_highPrice = highPriceArr[index]; //最高
-        sessionStorage.hq_inner_preClosePrice = preClosePriceArr[index]; //昨收
-        sessionStorage.hq_inner_lowPrice = lowPriceArr[index]; //最低
-        sessionStorage.hq_inner_key = h1KeyArr[index]; //key
-        sessionStorage.decimalDigits = decimalDigits[index]; //key
-      }
-    })
   }
+
+  $('.content').on('click','.hq_List', function() {
+    for (var i = 0; i < $('.hq_List').length; i++) {
+      var index = $(this).index();
+      sessionStorage.hq_inner_date = dateArr[index]; //时间
+      sessionStorage.hq_inner_title = titleArr[index]; //标题
+      sessionStorage.hq_inner_tradePrice = tradePriceArr[index]; //现价
+      sessionStorage.hq_inner_range = rangeArr[index]; //涨跌
+      sessionStorage.hq_inner_rangePercent = rangePercentArr[index]; //涨跌幅
+      sessionStorage.hq_inner_openPrice = openPriceArr[index]; //今开
+      sessionStorage.hq_inner_highPrice = highPriceArr[index]; //最高
+      sessionStorage.hq_inner_preClosePrice = preClosePriceArr[index]; //昨收
+      sessionStorage.hq_inner_lowPrice = lowPriceArr[index]; //最低
+      sessionStorage.hq_inner_key = h1KeyArr[index]; //key
+      sessionStorage.decimalDigits = decimalDigits[index]; //key
+    }
+  })
+
 
   // 点击涨跌幅
   $('.tab_son_zd span').click(function() {
@@ -206,45 +216,49 @@ function initQuate() {
       data = value;
     })
 
+    var index ;
     for (var i = 0; i < $('.hq_List').length; i++) {
       if ($('.hq_List').eq(i).attr("data-key") == key1) {
-        if (data[0] > $('.hq_List .hq_tradePrice span').eq(i).html()) {
-          $('.hq_List .hq_tradePrice span').eq(i).css({
-            "background": "rgb(206, 33, 33)"
-          });
-        } else if (data[0] < $('.hq_List .hq_tradePrice span').eq(i).html()) {
-          $('.hq_List .hq_tradePrice span').eq(i).css({
-            "background": "rgb(17, 154, 56)"
-          });
-        }
-        if (data[5] > 0) {
-          $('.hq_List .rangeShow1').eq(i).css({
-            "background": "rgb(206, 33, 33)"
-          });
-        } else if (data[5] < 0) {
-          $('.hq_List .rangeShow1').eq(i).css({
-            "background": "rgb(17, 154, 56)"
-          });
-        }
-        if (data[6] > 0) {
-          $('.hq_List .rangeShow2').eq(i).css({
-            "background": "rgb(206, 33, 33)"
-          });
-        } else if (data[6] < 0) {
-          $('.hq_List .rangeShow2').eq(i).css({
-            "background": "rgb(17, 154, 56)"
-          });
-        }
-        $('.hq_List .hq_tradePrice span').eq(i).html(data[0]);
-
-        $('.hq_List .rangeShow1').eq(i).html(data[5]);
-        $('.hq_List .rangeShow2').eq(i).html(data[6]);
-        var myTime = setTimeout(function() {
-          $('.hq_List .hq_tradePrice span').css({
-            "background": "none"
-          });
-        }, 300)
+        index = i;
+        break;
       }
     }
+
+    if (data[0] > $('.hq_List .hq_tradePrice span').eq(index).html()) {
+      $('.hq_List .hq_tradePrice span').eq(index).css({
+        "background": "rgb(206, 33, 33)"
+      });
+    } else if (data[0] < $('.hq_List .hq_tradePrice span').eq(index).html()) {
+      $('.hq_List .hq_tradePrice span').eq(index).css({
+        "background": "rgb(17, 154, 56)"
+      });
+    }
+    if (data[5] > 0) {
+      $('.hq_List .rangeShow1').eq(index).css({
+        "background": "rgb(206, 33, 33)"
+      });
+    } else if (data[5] < 0) {
+      $('.hq_List .rangeShow1').eq(index).css({
+        "background": "rgb(17, 154, 56)"
+      });
+    }
+    if (data[6] > 0) {
+      $('.hq_List .rangeShow2').eq(index).css({
+        "background": "rgb(206, 33, 33)"
+      });
+    } else if (data[6] < 0) {
+      $('.hq_List .rangeShow2').eq(index).css({
+        "background": "rgb(17, 154, 56)"
+      });
+    }
+    $('.hq_List .hq_tradePrice span').eq(index).html(data[0]);
+
+    $('.hq_List .rangeShow1').eq(index).html(data[5]);
+    $('.hq_List .rangeShow2').eq(index).html(data[6]);
+    var myTime = setTimeout(function() {
+      $('.hq_List .hq_tradePrice span').css({
+        "background": "none"
+      });
+    }, 300)
   });
 }

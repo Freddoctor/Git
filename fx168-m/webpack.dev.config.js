@@ -34,7 +34,7 @@ module.exports = {
     // _oil: ["./src/oil.js"],
     // _pinglun: ["./src/pinglun.js"],
     // _politics: ["./src/politics.js"],
-    // _quote: ["./src/quote.js"],
+    _quote: ["./src/quote.js"],
     // _rlzbny: ["./src/rlzbny.js"],
     // _sfo: ["./src/sfo.js"],
     // _stock: ["./src/stock.js"],
@@ -165,11 +165,11 @@ module.exports = {
     //   template: './src/politics.html',
     //   chunks: ['_politics', 'vendor'],
     // }),
-    // new HtmlWebpackPlugin({
-    //   filename: './quote.html',
-    //   template: './src/quote.html',
-    //   chunks: ['_quote', 'vendor'],
-    // }),
+    new HtmlWebpackPlugin({
+      filename: './quote.html',
+      template: './src/quote.html',
+      chunks: ['_quote', 'vendor'],
+    }),
     // new HtmlWebpackPlugin({
     //   filename: './rlzbny.html',
     //   template: './src/rlzbny.html',
