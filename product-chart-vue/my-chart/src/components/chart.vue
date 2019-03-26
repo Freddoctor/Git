@@ -1,11 +1,9 @@
+<style lang="sass">
+
+</style>
+
 <template>
   <div>
-    <input v-model="msg">
-    <p>prop: {{propMessage}}</p>
-    <p>msg: {{msg}}</p>
-    <p>helloMsg: {{helloMsg}}</p>
-    <p>computed msg: {{computedMsg}}</p>
-    <button @click="greet">Greet</button>
   </div>
 </template>
 
@@ -38,4 +36,6 @@ export default class Chart extends Vue {
     alert("greeting: " + this.msg);
   }
 }
+
+
 </script>
