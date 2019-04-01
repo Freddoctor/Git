@@ -10,6 +10,7 @@ var socketUrl = "";
 var searchUrl = "https://app4.fx168api.com/";
 var index_socket = Math.floor((Math.random() * socketUrlArr.length));
 socketUrl = socketUrlArr[index_socket];
+socketUrl = "http://123.206.229.231:9091"
 // 数据监控
 // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 //   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -134,6 +134,7 @@
       </aside>
     </section>
     <chart></chart>
+    {{computedName}}
   </div>
 </template>
 
@@ -784,6 +785,11 @@ export default {
       }
     };
   },
+  computed: {
+    computedName () {
+      return this.$store.state.name;
+    }
+  },
   methods: {
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
@@ -875,6 +881,7 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+      this.$store.commit('SetName', "好人一生平安");
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

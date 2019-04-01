@@ -1,4 +1,4 @@
-#### echarts 参考网站:
+﻿#### echarts 参考网站:
 https://blog.csdn.net/ScapeD/article/details/79766008
 http://echarts.baidu.com/echarts2/doc/example/dynamicLineBar.html
 https://www.jianshu.com/p/8cac22daca98
@@ -35,3 +35,5 @@ highchart 内部实例 :https://bbs.hcharts.cn/thread-2200-1-1.html
 股票 K线 canvas 手工实现 ：https://www.jianshu.com/p/7b1cabf11b4d
 
 canvas绘制股票K线图： https://cloud.tencent.com/info/e80d71eface91cae5491069180fc4888.html
+
+小程序picker ：https://github.com/huanghaodong/wxminiprogram-picker

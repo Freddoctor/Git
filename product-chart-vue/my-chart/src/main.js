@@ -20,12 +20,15 @@ loadHighchartsMore(Highcharts);
 import OptionsZhCn from './assets/highcharts-zh_CN.es6.js' //中文数据格式
 OptionsZhCn(Highcharts);
 
-import darkUnica from 'highcharts/themes/dark-unica.js'; //highstock 风格
+
+// import darkUnica from 'highcharts/themes/dark-unica.js'; //highstock 风格
 // darkUnica(Highcharts);
 
 import indicators from 'highcharts/indicators/indicators.js'; // plotOptions新增指数
 import ema  from 'highcharts/indicators/ema.js';
 import macd from 'highcharts/indicators/macd.js';
+
+import store from './store/index.js'; 
 
 indicators(Highcharts);
 ema(Highcharts);
@@ -60,6 +63,7 @@ Date.prototype.Format = function(fmt) {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   render: h => h(App)

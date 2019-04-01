@@ -18,17 +18,18 @@ $(function() {
   // socket 行情请求
   initQuate();
   //断开重连
-  socket.on('disconnect', function() {
-    var socketUrlArr = [sckUrl1, sckUrl2]; ///行情
-    var index_socket = Math.floor((Math.random() * socketUrlArr.length));
-    socketUrl = socketUrlArr[index_socket];
-    initQuate();
-  });
+  // socket.on('disconnect', function() {
+  //   var socketUrlArr = [sckUrl1, sckUrl2]; ///行情
+  //   var index_socket = Math.floor((Math.random() * socketUrlArr.length));
+  //   socketUrl = socketUrlArr[index_socket];
+  //   initQuate();
+  // });
   // ajax外汇数据请求
   sessionStorage.tabUrlKey == "";
   if (sessionStorage.tabUrlKey == undefined) {
     sessionStorage.tabUrlKey = "wh";
   }
+  
   // 加载外汇页面数据
   $.ajax({
     type: 'GET',
