@@ -28,7 +28,7 @@ import indicators from 'highcharts/indicators/indicators.js'; // plotOptionsæ–°å
 import ema  from 'highcharts/indicators/ema.js';
 import macd from 'highcharts/indicators/macd.js';
 
-import store from './store/index.js'; 
+import store from './store/index.js';
 
 indicators(Highcharts);
 ema(Highcharts);
