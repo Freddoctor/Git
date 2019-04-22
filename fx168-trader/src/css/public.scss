@@ -1,0 +1,332 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+body {
+    font-size: .26rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: normal;
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+ul li {
+    list-style: none;
+}
+
+img {
+    display: block;
+}
+
+body {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.header {
+    img {
+        width: 100%;
+    }
+}
+
+.mar_ltr_30 {
+    margin: 0 .3rem;
+}
+
+.mar_bot_154 {
+    margin-bottom: 1.54rem;
+}
+
+.list {
+    h3 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        height: .36rem;
+
+        img {
+            height: 100%;
+        }
+    }
+
+    .list_article {
+        width: 6.14rem;
+        margin: 0 auto;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    p {
+        font-size: .28rem;
+        line-height: .4rem;
+        padding-left: 1em;
+        padding-bottom: .26rem;
+        text-indent: -1em;
+        text-align: justify;
+        color: rgb(53, 54, 65);
+    }
+
+    .ellipsis {
+        display: block;
+        position: relative;
+        font-size: 0;
+        text-align: center;
+
+        ins {
+            display: inline-block;
+            margin: 0 .02rem;
+            height: 3px;
+            width: 3px;
+            border-radius: 50%;
+            background: rgb(108, 110, 117);
+        }
+
+    }
+
+    .list_target {
+        display: block;
+        font-size: .24rem;
+        line-height: .6rem;
+        text-align: center;
+        color: rgb(108, 110, 117);
+    }
+}
+
+.list_plan {
+    overflow: hidden;
+    padding-bottom: .49rem;
+    background: rgb(240, 242, 245);
+
+    h3 {
+        margin: .41rem 0 .55rem;
+    }
+}
+
+.list_reward {
+    overflow: hidden;
+
+    h3 {
+        margin: .65rem 0 .33rem;
+    }
+
+    ul li {
+        display: flex;
+        align-items: center;
+        width: 6.8rem;
+        height: 1.79rem;
+        margin: 0 auto .2rem;
+        background: url("../images/bg1@2x.png") no-repeat 0 0;
+        background-size: 100%;
+    }
+
+    .one_img {
+        width: 1.39rem;
+    }
+
+    .one_dollar {
+        height: .45rem;
+    }
+
+    .two_img {
+        width: 1.31rem;
+    }
+
+    .three_img {
+        width: 1.44rem;
+    }
+
+    .four_img {
+        height: .76rem;
+        margin-left: .8rem !important;
+    }
+
+    .list_reward_logo {
+        width: 2.4rem;
+
+        img {
+            margin-left: .62rem;
+        }
+    }
+
+    .list_reward_ranking {
+        width: 3.1rem;
+
+        h4 {
+            color: rgb(58, 64, 72);
+            font-size: .26rem;
+            margin-bottom: .13rem;
+            line-height: 1;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            img {
+                display: inline-block;
+                vertical-align: bottom;
+            }
+        }
+    }
+
+    .list_reward_more {
+        width: 1.3rem;
+        height: 1.19rem;
+        padding-top: 0.6rem;
+
+        span {
+            display: block;
+            font-size: .26rem;
+            color: rgb(227, 232, 246);
+            text-align: center;
+            line-height: 1;
+        }
+
+        img {
+            margin: 0 auto;
+            width: .64rem;
+        }
+    }
+
+    .four_nine {
+        background-image: url("../images/bg2@2x.png")
+    }
+
+    .the_other {
+        background-image: url("../images/bg3@2x.png")
+    }
+}
+
+.list_rule {
+    overflow: hidden;
+    padding-top: .52rem;
+
+    h3 {
+        margin-bottom: .29rem;
+    }
+
+    article {
+        padding: .6rem .26rem .28rem;
+        background: rgb(247, 247, 247);
+        border-radius: .1rem;
+    }
+}
+
+.footer {
+    position: fixed;
+    bottom: .1rem;
+    left: 50%;
+    margin-left: -2.91rem;
+    height: 1.07rem;
+    width: 5.82rem;
+    font-size: .36rem;
+    background: url("../images/button@2x.png") no-repeat 0 0;
+    background-size: 100%;
+
+    a {
+        display: block;
+        line-height: 1rem;
+        font-size: .36rem;
+        text-align: center;
+        color: rgb(105, 59, 10);
+    }
+}
+
+.dialog {
+    display:none;
+    z-index: 9;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.7);
+
+    .dialog_content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 6.74rem;
+        height: 10.15rem;
+        background: url("../images/tankuang@2x.png") no-repeat 0 0;
+        background-size: 100% 100%;
+    }
+
+    .wrap {
+        margin-top: 3rem;
+
+        h3 {
+            text-align: center;
+
+            img {
+                margin: 0 auto;
+                height: .42rem;
+            }
+        }
+
+        .article {
+            padding-left: 1.12rem;
+            padding-right: 1.27rem;
+            padding-top: .78rem;
+
+            p {
+                position: relative;
+                padding-bottom: .25rem;
+                padding-left: .3rem;
+                line-height: .37rem;
+                font-size: .28rem;
+                color: rgb(108, 66, 72);
+
+                &:before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: .09rem;
+                    height: .19rem;
+                    width: .19rem;
+                    background: url("../images/biaoqian@2x.png") no-repeat 0 0;
+                    background-size: 100% 100%;
+                }
+            }
+        }
+    }
+
+    ins {
+        position: absolute;
+        bottom: -.84rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: .68rem;
+        height: .68rem;
+
+        img {
+            width: 100%;
+        }
+
+    }
+}
+
+@media screen and (max-device-height: 480px) {
+    .dialog .dialog_content {
+        top:36%;
+        transform:translate(-50%,-50%);
+    }
+}
