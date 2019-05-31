@@ -1,4 +1,4 @@
-### 资料内页详情
+﻿### 资料内页详情
 ```
   data.json 格式
   label:{
@@ -10,6 +10,7 @@
 #### 网站 ：https://www.sge.com.cn/cpfw/Product_service
 #### data.json 代码来源:
 ```
+  
   var label = new Array();
   $(".tdLeft").each(function(){label.push($(this).text())});
 
@@ -29,6 +30,12 @@
       }
     }
   }
-  console.log(JSON.stringify(children))
+
+  $(".jzk_swhj_jyHead").find("li").text();
+  
+  var data = new Object();
+  data.label = $(".jzk_swhj_jyHead").find("li").text(),
+  data.value = children ;
+  console.log(JSON.stringify(data))
 
 ```

@@ -1,11 +1,12 @@
 import "jquery";
-import "./css/service.scss"
+import "./css/template.css"
 //数据data.json
 import {
-  dataList
-} from "./js/data.json"
+  data
+}
+from "./js/detail.json"
 
-console.log(dataList);
+console.log(data);
 
 ! function(n) {
   var e = n.document,
@@ -28,55 +29,75 @@ function getQueryString(name) {
   return null;
 }
 
-function showTop(proId) {
-  $("[data-idpro]").html(proId);
-}
 
-function showList(result) {
-  var str = "";
-  if (Object.prototype.toString.call(result) == "[object Array]") {
-    for (var i = 0; i < result.length; i++) {
-      str += "<li><span class='label'>" + result[i].label + "</span>" + "<span class='value'>" + result[i].value + "</span></li>"
-    }
-  }
-  $("[data-childpro]").html(str);
-
-}
-
-function ServiceDetail(idName) {
-  this.idName = idName;
-  this.id = null;
-  this.result = [];
-}
-
-ServiceDetail.prototype.getQueryId = function() {
-  this.id = getQueryString.call(this, this.idName);
-  return this;
-}
-
-ServiceDetail.prototype.getResult = function() {
-  for (var i = 0; i < dataList.length; i++) {
-    if (dataList[i].value == this.id) {
-      this.result = dataList[i].label.children;
+function showQueryList() { //根据pro_id获取相应的页面信息
+  var queryString = getQueryString("pro_id");
+  var list = data;
+  var valueList = new Array();
+  for(var i = 0 ;i < list.length ;i ++) {
+    if (list[i].label == queryString) {
+      valueList = list[i].value;
       break;
     }
   }
-  return this;
+  var str = "";
+  for(var j = 0 ;j < valueList.length ;j ++) {
+    str += '<li><span class="label">' + valueList[j].label + '</span><span class="value">' + valueList[j].value +'</span></li>'
+  }
+  $("[data-idpro]").html(queryString);
+  $("[data-childpro]").html(str);
 }
 
-ServiceDetail.prototype.showTop = function() {
-  showTop.call(this, this.id);
-  return this;
-}
+showQueryList();
+// function showTop(proId) {
+//   $("[data-idpro]").html(proId);
+// }
 
-ServiceDetail.prototype.showList = function() {
-  showList.call(this, this.result);
-  return this;
-}
+// function showList(result) {
+//   var str = "";
+//   if (Object.prototype.toString.call(result) == "[object Array]") {
+//     for (var i = 0; i < result.length; i++) {
+//       str += "<li><span class='label'>" + result[i].label + "</span>" + "<span class='value'>" + result[i].value + "</span></li>"
+//     }
+//   }
+//   $("[data-childpro]").html(str);
 
-ServiceDetail.prototype.init = function() {
-  this.getQueryId().getResult().showTop().showList();
-  return this;
-}
+// }
 
-var product = new ServiceDetail("pro_id").init();
+// function ServiceDetail(idName) {
+//   this.idName = idName;
+//   this.id = null;
+//   this.result = [];
+// }
+
+// ServiceDetail.prototype.getQueryId = function() {
+//   this.id = getQueryString.call(this, this.idName);
+//   return this;
+// }
+
+// ServiceDetail.prototype.getResult = function() {
+//   for (var i = 0; i < dataList.length; i++) {
+//     if (dataList[i].value == this.id) {
+//       this.result = dataList[i].label.children;
+//       break;
+//     }
+//   }
+//   return this;
+// }
+
+// ServiceDetail.prototype.showTop = function() {
+//   showTop.call(this, this.id);
+//   return this;
+// }
+
+// ServiceDetail.prototype.showList = function() {
+//   showList.call(this, this.result);
+//   return this;
+// }
+
+// ServiceDetail.prototype.init = function() {
+//   this.getQueryId().getResult().showTop().showList();
+//   return this;
+// }
+
+// var product = new ServiceDetail("pro_id").init();

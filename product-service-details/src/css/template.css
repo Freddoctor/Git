@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 400;
+    font-style: normal
+}
+
+body {
+    background: #fff
+}
+
+ol li,
+ul li {
+    list-style: none;
+}
+
+.pro-header {
+    margin: 0 .32rem;
+    border: 1px solid rgb(230, 230, 230);
+    border-bottom: 0;
+}
+
+.pro-header .paging {
+    width: 100%;
+    display: table;
+    text-align: justify;
+    vertical-align: middle;
+    color: rgb(51, 51, 51);
+}
+
+.pro-header h3 {
+
+    display: table-cell;
+    padding: .2rem .22rem;
+    font-size: .26rem;
+    line-height: .36rem;
+    vertical-align: middle;
+    text-align: center;
+    color: rgb(51, 51, 51);
+}
+
+.pro-header h3:first-child {
+    width: 44.3%;
+    position: relative;
+    border-right: 1px solid transparent;
+}
+
+.pro-header h3:first-child:after {
+    position: absolute;
+    top: 40%;
+    bottom: 0;
+    right: -1px;
+    content: "";
+    width: 1px;
+    background: rgb(230, 230, 230);
+}
+
+.pro-header h3:last-child {
+    width: 55.7%
+}
+
+.pro-table ul {
+    margin: 0 .32rem .16rem;
+    border: 1px solid rgb(230, 230, 230)
+}
+
+.pro-table ul:empty {
+    display: none
+}
+
+.pro-table .no-info {
+    display: none;
+    padding-top: 2.2rem
+}
+
+.pro-table .no-info img {
+    display: block;
+    width: 2.66rem;
+    margin: 0 auto
+}
+
+.pro-table .no-info span {
+    display: block;
+    margin-top: .3rem;
+    line-height: .42rem;
+    font-size: .32rem;
+    text-align: center;
+    color: #bbb
+}
+
+.pro-table ul:empty+.no-info {
+    display: block
+}
+
+.pro-table li {
+    width: 100%;
+    display: table;
+    text-align: justify;
+    vertical-align: middle;
+    border-bottom: 1px solid rgb(230, 230, 230);
+    color: rgb(51, 51, 51);
+}
+
+.pro-table li:last-child {
+    border-bottom: none
+}
+
+.pro-table li span {
+    display: table-cell;
+    padding: .2rem .22rem;
+    font-size: .26rem;
+    line-height: .36rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.pro-table li .label {
+    width: 44.3%;
+    border-right: 1px solid rgb(230, 230, 230);
+}
+
+.pro-table li .value {
+    width: 55.7%;
+}

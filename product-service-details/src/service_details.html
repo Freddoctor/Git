@@ -3,24 +3,40 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="format-detection" content="telephone=no, email=no" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <link rel="stylesheet" href="./css/template.css"> -->
 </head>
 
 <body>
   <section class="product-wrap">
     <aside class="pro-header">
-      <h3 data-idpro="true"></h3>
+      <div class="paging">
+        <h3 data-idpro="true"></h3>
+        <h3>&nbsp;</h3>
+      </div>
     </aside>
     <aside class="pro-table">
-      <ul data-childpro="true"></ul>
-      <!-- <div class="no-info">
-        <img src="./images/btwuzhuangtai@2x.png" alt="">
-        <span>暂无数据</span>
-      </div> -->
+      <ul data-childpro="true">
+      </ul>
     </aside>
   </section>
+  <script type="text/javascript">
+    ! function(n) {
+      var e = n.document,
+        t = e.documentElement,
+        i = 750,
+        d = i / 100,
+        o = "orientationchange" in n ? "orientationchange" : "resize",
+        a = function() {
+          var n = t.clientWidth || 320;
+          n > 750 && (n = 750);
+          t.style.fontSize = n / d + "px"
+        };
+      e.addEventListener && (n.addEventListener(o, a, !1), e.addEventListener("DOMContentLoaded", a, !1))
+    }(window);
+  </script>
 </body>
 
 </html>
