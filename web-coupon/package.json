@@ -12,7 +12,7 @@
     "expose-loader": "^0.7.5",
     "handlebars": "^4.0.12",
     "handlebars-loader": "^1.7.0",
-    "highcharts": "^6.1.4",
+    "highcharts": "^8.2.0",
     "html-loader": "^0.5.5",
     "html-withimg-loader": "^0.1.16",
     "image-webpack-loader": "^4.3.1",
